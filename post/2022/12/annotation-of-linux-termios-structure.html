@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 结构体定义 该结构体定义在头文件 &amp;lt;termios.h&amp;gt; 中，至少包含以下成员：
+1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ 2. 结构体成员注解 2.1. 输入模式标志 c_iflag c_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下：
+IGNBRK
+忽略输入时的中断（BREAK）条件
+BRKINT
+如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&amp;rsquo;\0&amp;rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \377 \0 \0。 IGNPAR'>
+<title>Linux termios 结构体注解</title>
+
+<link rel='canonical' href='https://kcode.cc/post/2022/12/annotation-of-linux-termios-structure.html'>
+
+<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='Linux termios 结构体注解'>
+<meta property='og:description' content='1. 结构体定义 该结构体定义在头文件 &amp;lt;termios.h&amp;gt; 中，至少包含以下成员：
+1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ 2. 结构体成员注解 2.1. 输入模式标志 c_iflag c_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下：
+IGNBRK
+忽略输入时的中断（BREAK）条件
+BRKINT
+如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&amp;rsquo;\0&amp;rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \377 \0 \0。 IGNPAR'>
+<meta property='og:url' content='https://kcode.cc/post/2022/12/annotation-of-linux-termios-structure.html'>
+<meta property='og:site_name' content='K CODE'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='内核' /><meta property='article:tag' content='termios' /><meta property='article:published_time' content='2022-12-05T19:17:40&#43;08:00'/><meta property='article:modified_time' content='2022-12-05T19:17:40&#43;08:00'/>
+<meta name="twitter:title" content="Linux termios 结构体注解">
+<meta name="twitter:description" content="1. 结构体定义 该结构体定义在头文件 &amp;lt;termios.h&amp;gt; 中，至少包含以下成员：
+1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ 2. 结构体成员注解 2.1. 输入模式标志 c_iflag c_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下：
+IGNBRK
+忽略输入时的中断（BREAK）条件
+BRKINT
+如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&amp;rsquo;\0&amp;rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \377 \0 \0。 IGNPAR">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🌀</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">K CODE</a></h1>
+            <h2 class="site-description">A Simple Blog</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-hexagon" width="44" height="44" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" />
+</svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-结构体定义">1. 结构体定义</a></li>
+    <li><a href="#2-结构体成员注解">2. 结构体成员注解</a>
+      <ul>
+        <li><a href="#21-输入模式标志-c_iflag">2.1. 输入模式标志 <code>c_iflag</code></a></li>
+        <li><a href="#22-输出模式标志-c_oflag">2.2. 输出模式标志 <code>c_oflag</code></a></li>
+        <li><a href="#23-控制模式标志-c_cflag">2.3. 控制模式标志 <code>c_cflag</code></a></li>
+        <li><a href="#24-本地模式标志-c_lflag">2.4. 本地模式标志 <code>c_lflag</code></a></li>
+        <li><a href="#25-终端特殊字符定义数组-c_cc">2.5. 终端特殊字符定义数组 <code>c_cc</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FFD133; color: #000;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/2022/12/annotation-of-linux-termios-structure.html">Linux termios 结构体注解</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2022/12/05</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-结构体定义">1. 结构体定义</h2>
+<p>该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">tcflag_t</span> <span class="n">c_iflag</span><span class="p">;</span>      <span class="cm">/* input modes */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">tcflag_t</span> <span class="n">c_oflag</span><span class="p">;</span>      <span class="cm">/* output modes */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">tcflag_t</span> <span class="n">c_cflag</span><span class="p">;</span>      <span class="cm">/* control modes */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">tcflag_t</span> <span class="n">c_lflag</span><span class="p">;</span>      <span class="cm">/* local modes */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">cc_t</span>     <span class="n">c_cc</span><span class="p">[</span><span class="n">NCCS</span><span class="p">];</span>   <span class="cm">/* special characters */</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><!-- raw HTML omitted -->
+<h2 id="2-结构体成员注解">2. 结构体成员注解</h2>
+<h3 id="21-输入模式标志-c_iflag">2.1. 输入模式标志 <code>c_iflag</code></h3>
+<p><code>c_iflag</code> 用于设置终端 I/O 的输入参数，标志宏定义如下：</p>
+<ul>
+<li>
+<p>IGNBRK<br>
+忽略输入时的中断（BREAK）条件</p>
+</li>
+<li>
+<p>BRKINT</p>
+<ol>
+<li>如果设置了 <code>IGNBRK</code> ，则忽略中断；</li>
+<li>如果没有设置 <code>IGNBRK</code> ，但设置了 <code>BRKINT</code> ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（<code>BREAK</code>）将会向该终端发送 <code>SIGINT</code> 信号；</li>
+<li>如果 <code>IGNBRK</code> 和 <code>BRKINT</code> 都未设置，中断（<code>BREAK</code>）字符将被读取为空字节（&rsquo;\0&rsquo;）；如果设置了 <code>PARMAR</code> 标志，那么它将被读取为序列 <code>\377 \0 \0</code>。</li>
+</ol>
+</li>
+<li>
+<p>IGNPAR<br>
+忽略帧错误和校验错误</p>
+</li>
+<li>
+<p>PARMRK<br>
+（待补充）</p>
+</li>
+<li>
+<p>INPCK<br>
+使能输入奇偶校验</p>
+</li>
+<li>
+<p>ISTRIP<br>
+有效输入字节被剥离为 7 位</p>
+</li>
+<li>
+<p>INLCR<br>
+将输入的 <code>NL</code> 转换为 <code>CR</code></p>
+</li>
+<li>
+<p>IGNCR<br>
+忽略输入时的 <code>CR</code></p>
+</li>
+<li>
+<p>ICRNL<br>
+将输入的 <code>CR</code> 转换为 <code>NL</code> （除非设置了 <code>IGNCR</code> ）</p>
+</li>
+<li>
+<p>IUCLC<br>
+（不属于 POSIX）在输入时将大写字符转换成小写</p>
+</li>
+<li>
+<p>IXON<br>
+在输出上使能 XON/XOFF 流控制</p>
+</li>
+<li>
+<p>IXANY<br>
+输入任何字符都将重启停止的输出</p>
+</li>
+<li>
+<p>IXOFF
+在输入上使能 XON/XOFF 流控制</p>
+</li>
+<li>
+<p>IMAXBEL<br>
+（不属于 POSIX）输入队列已满时响铃；Linux 没有实现该标志位</p>
+</li>
+<li>
+<p>IUTF8<br>
+（不属于 POSIX）输入为 UTF8 字符</p>
+</li>
+</ul>
+<h3 id="22-输出模式标志-c_oflag">2.2. 输出模式标志 <code>c_oflag</code></h3>
+<p><code>c_oflag</code> 用于设置终端 I/O 的输出参数，标志宏定义如下：</p>
+<ul>
+<li>
+<p>OPOST<br>
+使能实现定义（implementation-defined）的输出处理（？）</p>
+</li>
+<li>
+<p>OLCUC<br>
+（不属于 POSIX）在输出时将大写字符转换成小写</p>
+</li>
+<li>
+<p>ONLCR<br>
+在输出时将 NL 转换成 <code>CR-NL</code></p>
+</li>
+<li>
+<p>OCRNL<br>
+在输出时将 CR 转换成 <code>NL</code></p>
+</li>
+<li>
+<p>ONOCR<br>
+不在第 0 列输出 <code>CR</code></p>
+</li>
+<li>
+<p>ONLRET<br>
+不输出 <code>CR</code></p>
+</li>
+<li>
+<p>OFILL<br>
+以发送填充字符代替使用定时进行延时</p>
+</li>
+<li>
+<p>OFDEL<br>
+填充字符设为 <code>ASCII DEL</code> (0177)，如果未设置，则为 <code>ASCII NULL</code> (&rsquo;\0&rsquo;)；Linux 没有实现该标志位</p>
+</li>
+<li>
+<p>NLDLY<br>
+（待补充）</p>
+</li>
+<li>
+<p>CRDLY<br>
+（待补充）</p>
+</li>
+<li>
+<p>TABDLY<br>
+（待补充）</p>
+</li>
+<li>
+<p>BSDLY<br>
+（待补充）</p>
+</li>
+<li>
+<p>VTDLY<br>
+（待补充）</p>
+</li>
+<li>
+<p>FFDLY<br>
+（待补充）</p>
+</li>
+</ul>
+<h3 id="23-控制模式标志-c_cflag">2.3. 控制模式标志 <code>c_cflag</code></h3>
+<p><code>c_cflag</code> 用于设置终端 I/O 的控制参数，标志宏定义如下：</p>
+<ul>
+<li>
+<p>CBAUD<br>
+（不属于 POSIX）波特率掩码（ 4 + 1 位）。[要求 <code>_BSD_SOURCE</code> 或 <code>_SVID_SOURCE</code>]</p>
+</li>
+<li>
+<p>CBAUDEX<br>
+（不属于 POSIX）额外的波特率掩码（ 1 位），包含在 <code>CBAUD</code> 中。 [要求 <code>_BSD_SOURCE</code> 或 <code>_SVID_SOURCE</code>]</p>
+</li>
+<li>
+<p>CSIZE<br>
+字符大小掩码，值为 <code>CS5</code>、<code>CS6</code>、<code>CS7</code> 或 <code>CS8</code></p>
+</li>
+<li>
+<p>CSTOPB<br>
+将停止位设为 2 位，如果未设置，则为 1 位</p>
+</li>
+<li>
+<p>CREAD<br>
+启用接收器</p>
+</li>
+<li>
+<p>PARENB
+使能对输出的奇偶校验生成和对输入的奇偶校验检查</p>
+</li>
+<li>
+<p>PARODD<br>
+使能奇校验，如果未设置，则为偶校验</p>
+</li>
+<li>
+<p>HUPCL<br>
+（待补充）</p>
+</li>
+<li>
+<p>CLOCAL<br>
+忽略解制解调器状态行</p>
+</li>
+<li>
+<p>LOBLK<br>
+（待补充）</p>
+</li>
+<li>
+<p>CIBAUD<br>
+（不属于 POSIX）输入波特率掩码</p>
+</li>
+<li>
+<p>CMSPAR<br>
+（不属于 POSIX）（待补充）</p>
+</li>
+<li>
+<p>CRTSCTS<br>
+（不属于 POSIX）启用硬件 RTS/CTS 流控制</p>
+</li>
+</ul>
+<h3 id="24-本地模式标志-c_lflag">2.4. 本地模式标志 <code>c_lflag</code></h3>
+<p><code>c_lflag</code> 用于设置终端 I/O 的本地参数，标志宏定义如下：</p>
+<ul>
+<li>
+<p>ISIG<br>
+当接收到 <code>INTR</code>、<code>QUIT</code>、<code>SUSP</code> 或 <code>DSUSP</code> 字符时，产生相应的信号</p>
+</li>
+<li>
+<p>ICANON<br>
+使能规范模式</p>
+</li>
+<li>
+<p>XCASE<br>
+（不属于 POSIX）（待补充）</p>
+</li>
+<li>
+<p>ECHO<br>
+使能回显</p>
+</li>
+<li>
+<p>ECHOE<br>
+如果设置了 <code>ICANON</code>，则 <code>ERASE</code> 字符将可视地擦除字符</p>
+</li>
+<li>
+<p>ECHOK<br>
+如果设置了 <code>ICANON</code>，则 <code>KILL</code> 字符将可视地擦除当前行</p>
+</li>
+<li>
+<p>ECHONL<br>
+如果设置了 <code>ICANON</code>，则回显 <code>NL</code> 字符（ <code>ECHO</code> 是否设置都有效 ）</p>
+</li>
+<li>
+<p>ECHOCTL<br>
+（不属于 POSIX）如果设置了 <code>ECHO</code>，则除 <code>TAB</code>、<code>NL</code>、<code>START</code> 和 <code>STOP</code> 外的特殊终端字符，都回显为 <code>^X</code>，例如 0x08 (<code>BS</code>) 将回显为 <code>^H</code></p>
+</li>
+<li>
+<p>ECHOPRT<br>
+如果设置了 <code>ICANON</code> 和 <code>ECHO</code>，则 ERASE 字符使所有正被擦除的字符按它们被擦除的方式打印</p>
+</li>
+<li>
+<p>ECHOKE<br>
+如果设置了 <code>ICANON</code>，则按照 <code>ECHOE</code> 和 <code>ECHOPRT</code> 指定的方式来回显行中的每个字符</p>
+</li>
+<li>
+<p>DEFECHO<br>
+（不属于 POSIX）仅在进程正在读取时回显；Linux 没有实现该标志位</p>
+</li>
+<li>
+<p>FLUSHO<br>
+（不属于 POSIX）（待补充）</p>
+</li>
+<li>
+<p>NOFLSH<br>
+（不属于 POSIX）（待补充）</p>
+</li>
+<li>
+<p>TOSTOP<br>
+（待补充）</p>
+</li>
+<li>
+<p>PENDIN<br>
+（不属于 POSIX）（待补充）</p>
+</li>
+<li>
+<p>IEXTEN<br>
+（不属于 POSIX）（待补充）</p>
+</li>
+</ul>
+<h3 id="25-终端特殊字符定义数组-c_cc">2.5. 终端特殊字符定义数组 <code>c_cc</code></h3>
+<ul>
+<li>VDISCARD</li>
+<li>VDSUSP</li>
+<li>VEOF</li>
+<li>VEOL</li>
+<li>VEOL2</li>
+<li>VERASE</li>
+<li>VINTR</li>
+<li>VKILL</li>
+<li>VLNEXT</li>
+<li>VMIN</li>
+<li>VQUIT</li>
+<li>VPEPRINT</li>
+<li>VSTART</li>
+<li>VSTATUS</li>
+<li>VSTOP</li>
+<li>VSUSP</li>
+<li>VSWTCH</li>
+<li>VTIME</li>
+<li>VMERASE</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%86%85%E6%A0%B8/">内核</a>
+        
+            <a href="/tags/termios/">termios</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/post/2023/06/erpnext-14-manual-installation.html">
+        
+        
+            <div class="article-image">
+                <img src="/post/2023/06/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post ERPNext 14 常规安装流程记录"
+                        
+                        data-hash="md5-f8CPFVNGnA0/M9&#43;wu88c/Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ERPNext 14 常规安装流程记录</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssh.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSH</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-paho-mqtt.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 Paho MQTT</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssl.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSL</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2019/06/vim-configuration-for-self-use.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自用 vim 配置文件</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2023 K CODE
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

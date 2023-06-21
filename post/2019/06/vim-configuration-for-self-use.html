@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='自用的 vim 配置，方便以后新装系统使用。
+.vimrc 配置如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 colorscheme inkpot filetype on syntax on set nu set autoindent &amp;#34; 自动缩进 set cindent &amp;#34; 针对C语言自动缩进 set smartindent &amp;#34; 智能对齐 set tabstop=4 &amp;#34; 缩进时4个空格长度 set softtabstop=4 &amp;#34; 退格退回缩进长度 set shiftwidth=4 &amp;#34; 每一级缩进的长度 set expandtab &amp;#34; 用空格代替制表符缩进 set showmatch &amp;#34; 自动匹配括号 &amp;#34; 状态栏 set laststatus=2 set statusline=%F%m%r%h%w\ [FORMAT=%{&amp;amp;ff}]\ [TYPE=%Y]\ [ASCII=\%03.'>
+<title>自用 vim 配置文件</title>
+
+<link rel='canonical' href='https://kcode.cc/post/2019/06/vim-configuration-for-self-use.html'>
+
+<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='自用 vim 配置文件'>
+<meta property='og:description' content='自用的 vim 配置，方便以后新装系统使用。
+.vimrc 配置如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 colorscheme inkpot filetype on syntax on set nu set autoindent &amp;#34; 自动缩进 set cindent &amp;#34; 针对C语言自动缩进 set smartindent &amp;#34; 智能对齐 set tabstop=4 &amp;#34; 缩进时4个空格长度 set softtabstop=4 &amp;#34; 退格退回缩进长度 set shiftwidth=4 &amp;#34; 每一级缩进的长度 set expandtab &amp;#34; 用空格代替制表符缩进 set showmatch &amp;#34; 自动匹配括号 &amp;#34; 状态栏 set laststatus=2 set statusline=%F%m%r%h%w\ [FORMAT=%{&amp;amp;ff}]\ [TYPE=%Y]\ [ASCII=\%03.'>
+<meta property='og:url' content='https://kcode.cc/post/2019/06/vim-configuration-for-self-use.html'>
+<meta property='og:site_name' content='K CODE'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vim' /><meta property='article:published_time' content='2019-06-30T21:51:18&#43;08:00'/><meta property='article:modified_time' content='2019-06-30T21:51:18&#43;08:00'/>
+<meta name="twitter:title" content="自用 vim 配置文件">
+<meta name="twitter:description" content="自用的 vim 配置，方便以后新装系统使用。
+.vimrc 配置如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 colorscheme inkpot filetype on syntax on set nu set autoindent &amp;#34; 自动缩进 set cindent &amp;#34; 针对C语言自动缩进 set smartindent &amp;#34; 智能对齐 set tabstop=4 &amp;#34; 缩进时4个空格长度 set softtabstop=4 &amp;#34; 退格退回缩进长度 set shiftwidth=4 &amp;#34; 每一级缩进的长度 set expandtab &amp;#34; 用空格代替制表符缩进 set showmatch &amp;#34; 自动匹配括号 &amp;#34; 状态栏 set laststatus=2 set statusline=%F%m%r%h%w\ [FORMAT=%{&amp;amp;ff}]\ [TYPE=%Y]\ [ASCII=\%03.">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🌀</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">K CODE</a></h1>
+            <h2 class="site-description">A Simple Blog</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-hexagon" width="44" height="44" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" />
+</svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FFD133; color: #000;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/2019/06/vim-configuration-for-self-use.html">自用 vim 配置文件</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2019/06/30</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>自用的 vim 配置，方便以后新装系统使用。</p>
+<p><code>.vimrc</code> 配置如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-vim" data-lang="vim"><span class="line"><span class="cl"><span class="nx">colorscheme</span> <span class="nx">inkpot</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">filetype</span> <span class="nx">on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">syntax</span> <span class="nx">on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">nu</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">autoindent</span>  <span class="c">&#34; 自动缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">cindent</span>  <span class="c">&#34; 针对C语言自动缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">smartindent</span>  <span class="c">&#34; 智能对齐</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">tabstop</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 缩进时4个空格长度</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">softtabstop</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 退格退回缩进长度</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">shiftwidth</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 每一级缩进的长度</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">expandtab</span>  <span class="c">&#34; 用空格代替制表符缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">showmatch</span>  <span class="c">&#34; 自动匹配括号</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; 状态栏</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">laststatus</span><span class="p">=</span><span class="m">2</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">statusline</span><span class="p">=</span>%<span class="nx">F</span>%<span class="nx">m</span>%<span class="nx">r</span>%<span class="nx">h</span>%<span class="nx">w</span>\ [<span class="nx">FORMAT</span><span class="p">=</span>%{&amp;<span class="nx">ff</span>}]\ [<span class="nx">TYPE</span><span class="p">=</span>%<span class="nx">Y</span>]\ [<span class="nx">ASCII</span><span class="p">=</span>\%<span class="m">03</span>.<span class="m">3</span>b]\ [<span class="nx">HEX</span><span class="p">=</span>\%<span class="m">02</span>.<span class="m">2</span>B]\ [<span class="nx">POS</span><span class="p">=</span>%<span class="m">04</span>l<span class="p">,</span>%<span class="m">04</span>v][%<span class="nx">p</span>%%]\ [<span class="nx">LEN</span><span class="p">=</span>%<span class="nx">L</span>]<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; 配置括号自动补全</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="p">(</span> <span class="p">()&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> [ []<span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> { {<span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>}<span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">O</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">autocmd</span> <span class="nx">Syntax</span> <span class="nx">html</span><span class="p">,</span><span class="nx">vim</span> <span class="nx">inoremap</span> <span class="p">&lt;</span> <span class="p">&lt;</span><span class="nx">lt</span><span class="p">&gt;&gt;&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="p">|</span> <span class="nx">inoremap</span> <span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="p">)</span> <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> ] <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> } <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">CloseBracket</span><span class="p">()&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="s2">&#34; &lt;c-r&gt;=QuoteDelim(&#39;&#34;</span>&#39;<span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="s1">&#39; &lt;c-r&gt;=QuoteDelim(&#34;&#39;</span>&#34;<span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">ClosePair</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span> <span class="nx">getline</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>[<span class="nx">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">-</span> <span class="m">1</span>] <span class="p">==</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;Right&gt;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">else</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">endf</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">CloseBracket</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span> <span class="nx">match</span><span class="p">(</span><span class="nx">getline</span><span class="p">(</span><span class="nx">line</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">+</span> <span class="m">1</span><span class="p">),</span> <span class="s1">&#39;\s*}&#39;</span><span class="p">)</span> <span class="p">&lt;</span> <span class="m">0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;CR&gt;}&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">else</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;Esc&gt;j0f}a&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">endf</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">QuoteDelim</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">let</span> <span class="nx">line</span> <span class="p">=</span> <span class="nx">getline</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">let</span> <span class="nx">col</span> <span class="p">=</span> <span class="nx">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span> <span class="nx">line</span>[<span class="nx">col</span> <span class="p">-</span> <span class="m">2</span>] <span class="p">==</span> <span class="s2">&#34;\\&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">elseif</span> <span class="nx">line</span>[<span class="nx">col</span> <span class="p">-</span> <span class="m">1</span>] <span class="p">==</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;Right&gt;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">else</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span>.<span class="nx">a</span>:<span class="nx">char</span>.<span class="s2">&#34;\&lt;Esc&gt;i&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">endf</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>配色方案 <code>inkpot</code> 来自 <a class="link" href="http://bytefluent.com/vivify/"  target="_blank" rel="noopener"
+    >Vivify</a>。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vim/">vim</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/post/2023/06/erpnext-14-manual-installation.html">
+        
+        
+            <div class="article-image">
+                <img src="/post/2023/06/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post ERPNext 14 常规安装流程记录"
+                        
+                        data-hash="md5-f8CPFVNGnA0/M9&#43;wu88c/Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ERPNext 14 常规安装流程记录</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2022/12/annotation-of-linux-termios-structure.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux termios 结构体注解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssh.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSH</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-paho-mqtt.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 Paho MQTT</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssl.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSL</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2023 K CODE
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

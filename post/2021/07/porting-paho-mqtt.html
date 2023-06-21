@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 准备工作 1.1. 下载源码 两种方式下载源码:
+git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
+在其项目 Release 页找到最新的 Release Tag，下载 Source code。
+1.2. 安装依赖 1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。
+如果需要生成文档，还需要安装 doxygen 和 graphhviz：
+1 apt install doxygen graphviz 2. 配置 Makefile 2.1. 修改交叉编译工具链 新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：
+1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.'>
+<title>移植 Paho MQTT</title>
+
+<link rel='canonical' href='https://kcode.cc/post/2021/07/porting-paho-mqtt.html'>
+
+<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='移植 Paho MQTT'>
+<meta property='og:description' content='1. 准备工作 1.1. 下载源码 两种方式下载源码:
+git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
+在其项目 Release 页找到最新的 Release Tag，下载 Source code。
+1.2. 安装依赖 1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。
+如果需要生成文档，还需要安装 doxygen 和 graphhviz：
+1 apt install doxygen graphviz 2. 配置 Makefile 2.1. 修改交叉编译工具链 新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：
+1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.'>
+<meta property='og:url' content='https://kcode.cc/post/2021/07/porting-paho-mqtt.html'>
+<meta property='og:site_name' content='K CODE'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MQTT' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-13T14:24:40&#43;08:00'/><meta property='article:modified_time' content='2021-07-13T14:24:40&#43;08:00'/>
+<meta name="twitter:title" content="移植 Paho MQTT">
+<meta name="twitter:description" content="1. 准备工作 1.1. 下载源码 两种方式下载源码:
+git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
+在其项目 Release 页找到最新的 Release Tag，下载 Source code。
+1.2. 安装依赖 1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。
+如果需要生成文档，还需要安装 doxygen 和 graphhviz：
+1 apt install doxygen graphviz 2. 配置 Makefile 2.1. 修改交叉编译工具链 新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：
+1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🌀</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">K CODE</a></h1>
+            <h2 class="site-description">A Simple Blog</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-hexagon" width="44" height="44" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" />
+</svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-准备工作">1. 准备工作</a>
+      <ul>
+        <li><a href="#11-下载源码">1.1. 下载源码</a></li>
+        <li><a href="#12-安装依赖">1.2. 安装依赖</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-配置-makefile">2. 配置 Makefile</a>
+      <ul>
+        <li><a href="#21-修改交叉编译工具链">2.1. 修改交叉编译工具链</a></li>
+        <li><a href="#22-生成-makefile">2.2. 生成 Makefile</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-编译">3. 编译</a>
+      <ul>
+        <li><a href="#31-打包可选">3.1. 打包（可选）</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FFD133; color: #000;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/2021/07/porting-paho-mqtt.html">移植 Paho MQTT</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2021/07/13</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-准备工作">1. 准备工作</h2>
+<h3 id="11-下载源码">1.1. 下载源码</h3>
+<p>两种方式下载源码:</p>
+<ol>
+<li>git clone</li>
+<li>直接下载指定 tag 源码</li>
+</ol>
+<p>对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。</p>
+<p>在其项目 <a class="link" href="https://github.com/eclipse/paho.mqtt.c/releases"  target="_blank" rel="noopener"
+    >Release</a> 页找到最新的 Release Tag，下载 <code>Source code</code>。</p>
+<h3 id="12-安装依赖">1.2. 安装依赖</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">apt install build-essential gcc make cmake cmake-gui cmake-curses-gui
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 <a class="link" href="./porting-openssl" >移植 OpenSSL</a>。</p>
+<p>如果需要生成文档，还需要安装 <code>doxygen</code> 和 <code>graphhviz</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">apt install doxygen graphviz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="2-配置-makefile">2. 配置 Makefile</h2>
+<h3 id="21-修改交叉编译工具链">2.1. 修改交叉编译工具链</h3>
+<p>新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">SET</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span> <span class="s">arm-linux-gnueabihf-gcc</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="22-生成-makefile">2.2. 生成 Makefile</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cmake <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-DPAHO_WITH_SSL<span class="o">=</span>TRUE <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-DPAHO_BUILD_SAMPLES<span class="o">=</span>TRUE <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-DPAHO_BUILD_DOCUMENTATION<span class="o">=</span>TRUE <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-DPAHO_HIGH_PERFORMANCE<span class="o">=</span>TRUE <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-DOPENSSL_ROOT_DIR<span class="o">=</span>/path/to/openssl/install/root <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>/path/to/toolchain.linux-arm11.cmake <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>/path/to/paho.mqtt.c/source
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PAHO_BUILD_SHARED</td>
+<td>TRUE</td>
+<td>编译成共享库</td>
+</tr>
+<tr>
+<td>PAHO_BUILD_STATIC</td>
+<td>FALSE</td>
+<td>编译成静态库</td>
+</tr>
+<tr>
+<td>PAHO_HIGH_PERFORMANCE</td>
+<td>FALSE</td>
+<td>高性能模式，如果设为 TRUE 则编译时 debug 追踪等功能将会被排除</td>
+</tr>
+<tr>
+<td>PAHO_WITH_SSL</td>
+<td>FALSE</td>
+<td>开启 SSL 功能</td>
+</tr>
+<tr>
+<td>OPENSSL_ROOT_DIR</td>
+<td>“”</td>
+<td>OpenSSL 安装目录</td>
+</tr>
+<tr>
+<td>PAHO_BUILD_DOCUMENTATION</td>
+<td>FALSE</td>
+<td>生成文档</td>
+</tr>
+<tr>
+<td>PAHO_BUILD_SAMPLES</td>
+<td>FALSE</td>
+<td>编译示例</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>如果 OPENSSL_ROOT_DIR 目录内含有共享库，那么编译完成的 paho.mqtt 共享库需要依赖 OpenSSL 的共享库。</em></p>
+<h2 id="3-编译">3. 编译</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">make
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果遇到 <code>ld: cannot find -lanl</code> 的错误，则需要在源码目录下，找到 <code>src/CMakeLists.txt</code>，将其中的以下内容注释（使用 # 注释）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">FIND_LIBRARY</span><span class="p">(</span><span class="s">LIB_ANL</span> <span class="s">anl</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">IF</span><span class="p">(</span><span class="s">LIB_ANL</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="nb">SET</span><span class="p">(</span><span class="s">LIBS_SYSTEM</span> <span class="s2">&#34;${LIBS_SYSTEM}&#34;</span> <span class="s">anl</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">ENDIF</span><span class="p">()</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后重新生成一次 Makefile。原因是 <code>libanl</code> 只支持 <code>glibc</code>。</p>
+<h3 id="31-打包可选">3.1. 打包（可选）</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">make package
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mqtt/">MQTT</a>
+        
+            <a href="/tags/%E7%A7%BB%E6%A4%8D/">移植</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssh.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSH</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssl.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSL</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/post/2023/06/erpnext-14-manual-installation.html">
+        
+        
+            <div class="article-image">
+                <img src="/post/2023/06/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post ERPNext 14 常规安装流程记录"
+                        
+                        data-hash="md5-f8CPFVNGnA0/M9&#43;wu88c/Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ERPNext 14 常规安装流程记录</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2022/12/annotation-of-linux-termios-structure.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux termios 结构体注解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2019/06/vim-configuration-for-self-use.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自用 vim 配置文件</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2023 K CODE
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Categories on K CODE</title>
+        <link>https://kcode.cc/categories/</link>
+        <description>Recent content in Categories on K CODE</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cmn-Hans</language>
+        <lastBuildDate>Wed, 21 Jun 2023 11:58:37 +0800</lastBuildDate><atom:link href="https://kcode.cc/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux</title>
+        <link>https://kcode.cc/categories/linux/</link>
+        <pubDate>Wed, 21 Jun 2023 11:58:37 +0800</pubDate>
+        
+        <guid>https://kcode.cc/categories/linux/</guid>
+        <description>&lt;img src="https://kcode.cc/categories/linux/linux.webp" alt="Featured image of post Linux" /&gt;</description>
+        </item>
+        <item>
+        <title>Windows</title>
+        <link>https://kcode.cc/categories/windows/</link>
+        <pubDate>Thu, 29 Dec 2022 17:36:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/categories/windows/</guid>
+        <description>&lt;img src="https://kcode.cc/categories/windows/windows.webp" alt="Featured image of post Windows" /&gt;</description>
+        </item>
+        <item>
+        <title>RaspberryPi</title>
+        <link>https://kcode.cc/categories/raspberrypi/</link>
+        <pubDate>Sun, 30 Jun 2019 21:27:10 +0800</pubDate>
+        
+        <guid>https://kcode.cc/categories/raspberrypi/</guid>
+        <description>&lt;img src="https://kcode.cc/categories/raspberrypi/raspberry-pi.webp" alt="Featured image of post RaspberryPi" /&gt;</description>
+        </item>
+        <item>
+        <title>PHP</title>
+        <link>https://kcode.cc/categories/php/</link>
+        <pubDate>Thu, 12 Oct 2017 12:00:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/categories/php/</guid>
+        <description>&lt;img src="https://kcode.cc/categories/php/php.webp" alt="Featured image of post PHP" /&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

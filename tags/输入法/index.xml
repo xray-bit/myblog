@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>输入法 on K CODE</title>
+        <link>https://kcode.cc/tags/%E8%BE%93%E5%85%A5%E6%B3%95/</link>
+        <description>Recent content in 输入法 on K CODE</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cmn-Hans</language>
+        <lastBuildDate>Thu, 29 Dec 2022 17:36:00 +0800</lastBuildDate><atom:link href="https://kcode.cc/tags/%E8%BE%93%E5%85%A5%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>在 Windows 自带输入法上使用小鹤双拼</title>
+        <link>https://kcode.cc/post/2022/12/set-up-flypy-on-windows.html</link>
+        <pubDate>Thu, 29 Dec 2022 17:36:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/post/2022/12/set-up-flypy-on-windows.html</guid>
+        <description>&lt;p&gt;系统自带输入法对我而言已经完全足够了，但是没有内置“小鹤双拼”的方案，每次到新的电脑都要在输入法设置里一个一个按键绑定，较为繁琐。&lt;/p&gt;
+&lt;p&gt;偶然的机会发现可以直接在注册表里添加键值，步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开注册表编辑器&lt;/li&gt;
+&lt;li&gt;进入如下路径：&lt;code&gt;HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;新建 &lt;code&gt;字符串值&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;名称为 &lt;code&gt;UserDefinedDoublePinyinScheme{X}&lt;/code&gt;，其中 &lt;code&gt;{X}&lt;/code&gt; 为数字，一般做序号用，如：&lt;code&gt;UserDefinedDoublePinyinScheme0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;数据值为 &lt;code&gt;小鹤双拼*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt&lt;/code&gt;，“小鹤双拼”为自定义方案的名称，“2”为零声母模式，后面的估计是按声韵母排序绑定到每个键的顺序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;在输入法里将“小鹤双拼”设为默认即可&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

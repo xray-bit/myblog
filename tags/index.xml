@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on K CODE</title>
+        <link>https://kcode.cc/tags/</link>
+        <description>Recent content in Tags on K CODE</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cmn-Hans</language>
+        <lastBuildDate>Wed, 21 Jun 2023 11:58:37 +0800</lastBuildDate><atom:link href="https://kcode.cc/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>erp</title>
+        <link>https://kcode.cc/tags/erp/</link>
+        <pubDate>Wed, 21 Jun 2023 11:58:37 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/erp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>erpnext</title>
+        <link>https://kcode.cc/tags/erpnext/</link>
+        <pubDate>Wed, 21 Jun 2023 11:58:37 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/erpnext/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>输入法</title>
+        <link>https://kcode.cc/tags/%E8%BE%93%E5%85%A5%E6%B3%95/</link>
+        <pubDate>Thu, 29 Dec 2022 17:36:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/%E8%BE%93%E5%85%A5%E6%B3%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>termios</title>
+        <link>https://kcode.cc/tags/termios/</link>
+        <pubDate>Mon, 05 Dec 2022 19:17:40 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/termios/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>内核</title>
+        <link>https://kcode.cc/tags/%E5%86%85%E6%A0%B8/</link>
+        <pubDate>Mon, 05 Dec 2022 19:17:40 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/%E5%86%85%E6%A0%B8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ssh</title>
+        <link>https://kcode.cc/tags/ssh/</link>
+        <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/ssh/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ssl</title>
+        <link>https://kcode.cc/tags/ssl/</link>
+        <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/ssl/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>zlib</title>
+        <link>https://kcode.cc/tags/zlib/</link>
+        <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/zlib/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>移植</title>
+        <link>https://kcode.cc/tags/%E7%A7%BB%E6%A4%8D/</link>
+        <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/%E7%A7%BB%E6%A4%8D/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>MQTT</title>
+        <link>https://kcode.cc/tags/mqtt/</link>
+        <pubDate>Tue, 13 Jul 2021 14:24:40 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/mqtt/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>kms</title>
+        <link>https://kcode.cc/tags/kms/</link>
+        <pubDate>Sun, 30 Jun 2019 22:52:13 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/kms/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>vim</title>
+        <link>https://kcode.cc/tags/vim/</link>
+        <pubDate>Sun, 30 Jun 2019 21:51:18 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/vim/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>samba</title>
+        <link>https://kcode.cc/tags/samba/</link>
+        <pubDate>Thu, 23 May 2019 21:25:02 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/samba/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

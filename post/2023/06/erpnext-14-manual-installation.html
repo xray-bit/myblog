@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 安装基础依赖 1 2 3 sudo apt update sudo apt upgrade sudo apt dist-upgrade 1 sudo apt install git python3 python3-pip python3-venv software-properties-common mariadb-server mariadb-client redis-server curl nodejs npm xvfb libfontconfig wkhtmltopdf libmysqlclient-dev supervisior 2. 配置 Mariadb Server 2.1. 初始化 Mariadb 1 sudo mysql_secure_installation 2.2. 编辑配置文件 1 sudo vim /etc/ 1 2 3 4 5 6 [mysqld] bind-address = 0.0.0.0 # 此处根据需要修改 character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci 2.'>
+<title>ERPNext 14 常规安装流程记录</title>
+
+<link rel='canonical' href='https://kcode.cc/post/2023/06/erpnext-14-manual-installation.html'>
+
+<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='ERPNext 14 常规安装流程记录'>
+<meta property='og:description' content='1. 安装基础依赖 1 2 3 sudo apt update sudo apt upgrade sudo apt dist-upgrade 1 sudo apt install git python3 python3-pip python3-venv software-properties-common mariadb-server mariadb-client redis-server curl nodejs npm xvfb libfontconfig wkhtmltopdf libmysqlclient-dev supervisior 2. 配置 Mariadb Server 2.1. 初始化 Mariadb 1 sudo mysql_secure_installation 2.2. 编辑配置文件 1 sudo vim /etc/ 1 2 3 4 5 6 [mysqld] bind-address = 0.0.0.0 # 此处根据需要修改 character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci 2.'>
+<meta property='og:url' content='https://kcode.cc/post/2023/06/erpnext-14-manual-installation.html'>
+<meta property='og:site_name' content='K CODE'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='erp' /><meta property='article:tag' content='erpnext' /><meta property='article:published_time' content='2023-06-21T11:58:37&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T11:58:37&#43;08:00'/><meta property='og:image' content='https://kcode.cc/post/2023/06/cover.webp' />
+<meta name="twitter:title" content="ERPNext 14 常规安装流程记录">
+<meta name="twitter:description" content="1. 安装基础依赖 1 2 3 sudo apt update sudo apt upgrade sudo apt dist-upgrade 1 sudo apt install git python3 python3-pip python3-venv software-properties-common mariadb-server mariadb-client redis-server curl nodejs npm xvfb libfontconfig wkhtmltopdf libmysqlclient-dev supervisior 2. 配置 Mariadb Server 2.1. 初始化 Mariadb 1 sudo mysql_secure_installation 2.2. 编辑配置文件 1 sudo vim /etc/ 1 2 3 4 5 6 [mysqld] bind-address = 0.0.0.0 # 此处根据需要修改 character-set-client-handshake = FALSE character-set-server = utf8mb4 collation-server = utf8mb4_unicode_ci 2."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://kcode.cc/post/2023/06/cover.webp' />
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🌀</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">K CODE</a></h1>
+            <h2 class="site-description">A Simple Blog</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-hexagon" width="44" height="44" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" />
+</svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-安装基础依赖">1. 安装基础依赖</a></li>
+    <li><a href="#2-配置-mariadb-server">2. 配置 Mariadb Server</a>
+      <ul>
+        <li><a href="#21-初始化-mariadb">2.1. 初始化 Mariadb</a></li>
+        <li><a href="#22-编辑配置文件">2.2. 编辑配置文件</a></li>
+        <li><a href="#23-重启-mariadb-服务">2.3. 重启 Mariadb 服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-安装-node-npm-yarn">3. 安装 Node, NPM, Yarn</a></li>
+    <li><a href="#4-配置-redis">4. 配置 Redis</a>
+      <ul>
+        <li><a href="#41-新增两份配置">4.1. 新增两份配置</a></li>
+        <li><a href="#42-启动服务">4.2. 启动服务</a></li>
+        <li><a href="#43-检查服务是否启动">4.3. 检查服务是否启动</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-安装-frappe-bench">5. 安装 Frappe Bench</a>
+      <ul>
+        <li><a href="#51-配置虚拟环境">5.1. 配置虚拟环境</a></li>
+        <li><a href="#52-初始化-frappe-bench">5.2. 初始化 Frappe Bench</a></li>
+        <li><a href="#53-切换工作目录">5.3. 切换工作目录</a></li>
+        <li><a href="#54-修改用户目录权限">5.4. 修改用户目录权限</a></li>
+        <li><a href="#55-创建新的站点">5.5. 创建新的站点</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-安装-erpnext-和其他应用">6. 安装 ERPNext 和其他应用</a>
+      <ul>
+        <li><a href="#61-下载必要的应用">6.1. 下载必要的应用</a></li>
+        <li><a href="#62-安装应用">6.2. 安装应用</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-配置生产环境">7. 配置生产环境</a>
+      <ul>
+        <li><a href="#71-启用-scheduler-服务">7.1. 启用 scheduler 服务</a></li>
+        <li><a href="#72-关闭维护模式">7.2. 关闭维护模式</a></li>
+        <li><a href="#73-切换到生产环境配置">7.3. 切换到生产环境配置</a></li>
+        <li><a href="#74-配置-nginx">7.4. 配置 Nginx</a></li>
+        <li><a href="#75-配置最终服务">7.5. 配置最终服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-访问-erpnext">6. 访问 ERPNext</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/post/2023/06/erpnext-14-manual-installation.html">
+                <img src="/post/2023/06/cover_hu001c7eb3bc249382dee1503e32d3ae7c_31552_800x0_resize_q75_h2_box_2.webp"
+                        srcset="/post/2023/06/cover_hu001c7eb3bc249382dee1503e32d3ae7c_31552_800x0_resize_q75_h2_box_2.webp 800w, /post/2023/06/cover_hu001c7eb3bc249382dee1503e32d3ae7c_31552_1600x0_resize_q75_h2_box_2.webp 1600w"
+                        width="800" 
+                        height="552" 
+                        loading="lazy"
+                        alt="Featured image of post ERPNext 14 常规安装流程记录" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" style="background-color: #FFD133; color: #000;">
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/2023/06/erpnext-14-manual-installation.html">ERPNext 14 常规安装流程记录</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2023/06/21</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-安装基础依赖">1. 安装基础依赖</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt upgrade
+</span></span><span class="line"><span class="cl">sudo apt dist-upgrade
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install git python3 python3-pip python3-venv software-properties-common mariadb-server mariadb-client redis-server curl nodejs npm xvfb libfontconfig wkhtmltopdf libmysqlclient-dev supervisior
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="2-配置-mariadb-server">2. 配置 Mariadb Server</h2>
+<h3 id="21-初始化-mariadb">2.1. 初始化 Mariadb</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo mysql_secure_installation
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="22-编辑配置文件">2.2. 编辑配置文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[mysqld]</span>
+</span></span><span class="line"><span class="cl"><span class="na">bind-address</span>                   <span class="o">=</span> <span class="s">0.0.0.0    # 此处根据需要修改</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">character-set-client-handshake</span> <span class="o">=</span> <span class="s">FALSE</span>
+</span></span><span class="line"><span class="cl"><span class="na">character-set-server</span>           <span class="o">=</span> <span class="s">utf8mb4</span>
+</span></span><span class="line"><span class="cl"><span class="na">collation-server</span>               <span class="o">=</span> <span class="s">utf8mb4_unicode_ci</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="23-重启-mariadb-服务">2.3. 重启 Mariadb 服务</h3>
+<p>重启服务，使配置文件生效。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart mariadb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3-安装-node-npm-yarn">3. 安装 Node, NPM, Yarn</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install nodejs npm
+</span></span><span class="line"><span class="cl">sudo npm install -g yarn
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="4-配置-redis">4. 配置 Redis</h2>
+<h3 id="41-新增两份配置">4.1. 新增两份配置</h3>
+<p><code>frappe-bench-redis-cache</code> 和 <code>frappe-bench-redis-queue</code> 需要用到。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp /etc/redis/redis.conf /etc/redis/redis2.conf
+</span></span><span class="line"><span class="cl">sudo cp /etc/redis/redis.conf /etc/redis/redis3.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改 <code>/etc/redis/redis2.conf</code> 配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">port 11000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改 <code>/etc/redis/redis3.conf</code> 配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">port 13000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="42-启动服务">4.2. 启动服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/usr/bin/redis-server /etc/redis/redis2.conf --daemonzie yes
+</span></span><span class="line"><span class="cl">/usr/bin/redis-server /etc/redis/redis3.conf --daemonzie yes
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="43-检查服务是否启动">4.3. 检查服务是否启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">redis-cli -h localhost -p <span class="m">11000</span> ping
+</span></span><span class="line"><span class="cl">redis-cli -h localhost -p <span class="m">13000</span> ping
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="5-安装-frappe-bench">5. 安装 Frappe Bench</h2>
+<h3 id="51-配置虚拟环境">5.1. 配置虚拟环境</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -m venv frappe_install_venv
+</span></span><span class="line"><span class="cl">. ./frappe_install_venv/bin/active
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="52-初始化-frappe-bench">5.2. 初始化 Frappe Bench</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench init --frappe-brach version-14 frappe-bench
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="53-切换工作目录">5.3. 切换工作目录</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> frappe-bench
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="54-修改用户目录权限">5.4. 修改用户目录权限</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod -R o+rx /home/<span class="o">[</span>frappe-user<span class="o">]</span>/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="55-创建新的站点">5.5. 创建新的站点</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench new-site <span class="o">[</span>your-site-name<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="6-安装-erpnext-和其他应用">6. 安装 ERPNext 和其他应用</h2>
+<h3 id="61-下载必要的应用">6.1. 下载必要的应用</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench get-app payments
+</span></span><span class="line"><span class="cl">bench get-app --branch version-14 erpnext
+</span></span><span class="line"><span class="cl">bench get-app hrms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="62-安装应用">6.2. 安装应用</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench --site <span class="o">[</span>your-site-name<span class="o">]</span> install-app erpnext
+</span></span><span class="line"><span class="cl">bench --site <span class="o">[</span>your-site-name<span class="o">]</span> install-app hrms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="7-配置生产环境">7. 配置生产环境</h2>
+<h3 id="71-启用-scheduler-服务">7.1. 启用 scheduler 服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench --site <span class="o">[</span>your-site-name<span class="o">]</span> enable-scheduler
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="72-关闭维护模式">7.2. 关闭维护模式</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench --site <span class="o">[</span>your-site-name<span class="o">]</span> set-maintenance-mode off
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="73-切换到生产环境配置">7.3. 切换到生产环境配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench setup production <span class="o">[</span>frappe-user<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="74-配置-nginx">7.4. 配置 Nginx</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench setup nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="75-配置最终服务">7.5. 配置最终服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo supervisorctl restart all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bench setup production <span class="o">[</span>frappe-user<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="6-访问-erpnext">6. 访问 ERPNext</h2>
+<p>浏览器输入服务器IP即可访问，初始用户名为：administrator，初始密码为安装 Frappe 时的密码。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/erp/">erp</a>
+        
+            <a href="/tags/erpnext/">erpnext</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/2022/12/annotation-of-linux-termios-structure.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux termios 结构体注解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssh.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSH</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-paho-mqtt.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 Paho MQTT</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2021/07/porting-openssl.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">移植 OpenSSL</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/2019/06/vim-configuration-for-self-use.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自用 vim 配置文件</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2023 K CODE
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

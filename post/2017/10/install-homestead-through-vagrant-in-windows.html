@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 简介 Laravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。
+Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！
+Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下：
+Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程
+2. 准备工作 需要先安装的软件：
+Vagrant
+Oracle VM VirtualBox
+可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。'>
+<title>Windows 环境下通过 Vagrant 安装 Homestead</title>
+
+<link rel='canonical' href='https://kcode.cc/post/2017/10/install-homestead-through-vagrant-in-windows.html'>
+
+<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='Windows 环境下通过 Vagrant 安装 Homestead'>
+<meta property='og:description' content='1. 简介 Laravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。
+Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！
+Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下：
+Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程
+2. 准备工作 需要先安装的软件：
+Vagrant
+Oracle VM VirtualBox
+可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。'>
+<meta property='og:url' content='https://kcode.cc/post/2017/10/install-homestead-through-vagrant-in-windows.html'>
+<meta property='og:site_name' content='K CODE'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2017-10-12T12:00:00&#43;08:00'/><meta property='article:modified_time' content='2017-10-12T12:00:00&#43;08:00'/>
+<meta name="twitter:title" content="Windows 环境下通过 Vagrant 安装 Homestead">
+<meta name="twitter:description" content="1. 简介 Laravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。
+Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！
+Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下：
+Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程
+2. 准备工作 需要先安装的软件：
+Vagrant
+Oracle VM VirtualBox
+可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🌀</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">K CODE</a></h1>
+            <h2 class="site-description">A Simple Blog</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-hexagon" width="44" height="44" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" />
+</svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-简介">1. 简介</a></li>
+    <li><a href="#2-准备工作">2. 准备工作</a></li>
+    <li><a href="#3-安装">3. 安装</a>
+      <ul>
+        <li><a href="#31-安装-homestead-vagrant-box">3.1. 安装 Homestead Vagrant Box</a></li>
+        <li><a href="#32-安装-homestead">3.2. 安装 Homestead</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-配置-homestead">4. 配置 Homestead</a>
+      <ul>
+        <li><a href="#41-配置系统资源">4.1. 配置系统资源</a></li>
+        <li><a href="#42-配置共享文件夹">4.2. 配置共享文件夹</a></li>
+        <li><a href="#43-配置-homestead-的-nginx">4.3. 配置 Homestead 的 Nginx</a>
+          <ul>
+            <li><a href="#431-配置本机-host">4.3.1. 配置本机 Host</a></li>
+          </ul>
+        </li>
+        <li><a href="#44-配置数据库">4.4. 配置数据库</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-启动虚拟系统">5. 启动虚拟系统</a></li>
+    <li><a href="#6-其他操作">6. 其他操作</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/php/" style="background-color: #7A86B8; color: #FFF;">
+                PHP
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/2017/10/install-homestead-through-vagrant-in-windows.html">Windows 环境下通过 Vagrant 安装 Homestead</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2017/10/12</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-简介">1. 简介</h2>
+<blockquote>
+<p>Laravel 为开发者提供了一套完善的重量级本地开发环境  Laravel Homestead。</p>
+<p>Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 <a class="link" href="https://www.vagrantup.com/docs/boxes.html"  target="_blank" rel="noopener"
+    >Vagrant 官方文档</a>），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统  因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！</p>
+<p>Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下：</p>
+<ul>
+<li>Ubuntu 16.04</li>
+<li>Git</li>
+<li>PHP 7.1</li>
+<li>Nginx</li>
+<li>MySQL</li>
+<li>MariaDB</li>
+<li>SQLite 3</li>
+<li>Postgres</li>
+<li>Composer</li>
+<li>Node（With Yarn, Bower, Grunt, and Gulp）</li>
+<li>Redis</li>
+<li>Memcached</li>
+<li>Beanstalkd</li>
+<li>Mailhog</li>
+<li>ngrok</li>
+</ul>
+</blockquote>
+<p>引用自<a class="link" href="http://laravelacademy.org/post/7658.html"  target="_blank" rel="noopener"
+    >[ Laravel 5.5 文档 ] 快速入门  重量级开发环境：Homestead 安装使用详细教程</a></p>
+<h2 id="2-准备工作">2. 准备工作</h2>
+<p>需要先安装的软件：</p>
+<ul>
+<li>
+<p><a class="link" href="https://www.vagrantup.com/"  target="_blank" rel="noopener"
+    >Vagrant</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.virtualbox.org/"  target="_blank" rel="noopener"
+    >Oracle VM VirtualBox</a><br>
+可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。</p>
+</li>
+<li>
+<p><a class="link" href="https://git-for-windows.github.io/"  target="_blank" rel="noopener"
+    >Git For Windows</a><br>
+主要是用到 Git Bash，如果你已经有替代的软件，可以不用安装。注意：Windows 的 CMD 是不行的。</p>
+</li>
+</ul>
+<p>可提前下载的文件：</p>
+<ul>
+<li><a class="link" href="https://app.vagrantup.com/laravel/boxes/homestead"  target="_blank" rel="noopener"
+    >laravel/homestead</a><br>
+由于官方 box 源都在境外，国内网络在线安装可能会不稳定，有文章说在线安装时不支持断点续传的，所以可以先自行用下载工具下好，具体链接为: <a class="link" href="https://atlas.hashicorp.com/laravel/boxes/homestead/versions/3.1.0/providers/virtualbox.box"  target="_blank" rel="noopener"
+    >https://atlas.hashicorp.com/laravel/boxes/homestead/versions/3.1.0/providers/virtualbox.box</a>，其中 3.1.0 为版本号，可自行在根据情况替换。</li>
+</ul>
+<h2 id="3-安装">3. 安装</h2>
+<p>在装备儿工作都做好以后，就可以开始安装了。</p>
+<p>如无特殊说明，都可使用 CMD 或者 Git Bash 键入命令，尽量使用 Git Bash，本文使用 <code>$</code> 来表示 Bash 下的命令，复制命令的时候请勿将 <code>$</code> 一起复制。
+首先使用 Git Bash 键入以下命令生成 ssh 密钥：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">$ ssh-keygen -t rsa
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一路回车即可。</p>
+<p>默认安装会将 box 安装在 <code>C:\Users\你的用户名\</code> 下的，如果你像我 C 盘容量紧缺的情况下，可以更改 Vagrant 的 HOME 路径，将 box 安装到其他地方，更改方法为<code>计算机 &gt; 右键 &gt; 属性 &gt; 高级系统设置 &gt; 高级 &gt; 环境变量 &gt; 新建</code>，变量名：<code>VAGRANT_HOME</code>，变量值：<code>目标路径</code>。改完需要重启一次计算机才能生效。</p>
+<h3 id="31-安装-homestead-vagrant-box">3.1. 安装 Homestead Vagrant Box</h3>
+<p>如果你是使用在线安装，可直接键入以下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vagrant box add laravel/homestead 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后出现选择虚拟机，本文使用的是 VirtualBox ，键入2，回车，然后等待下载完成。
+<img src="http://ws1.sinaimg.cn/large/9c5cc3ebgy1g1k0daghc1j20e004tgll.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Add Box Online"
+	
+	
+></p>
+<p>如果使用离线安装，在 <code>C:\Users\你的用户名\</code> 下新建 <code>metadata.json</code> 文件，输入如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;laravel/homestead&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;versions&#34;</span><span class="p">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;3.1.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;providers&#34;</span><span class="p">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;virtualbox&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;url&#34;</span><span class="p">:</span> <span class="s2">&#34;file:///path/to/boxfile&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>version</code> 根据实际情况填写，下载的是 3.1.0 就填入 3.1.0， <code>url</code> 填写已经下载的 box 的路径，比如在 D 盘根目录，就填写 <code>file://D:/virtualbox.box</code> 。</p>
+<p>保存后键入以下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">$ vagrant box add metadata.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>等待载入完毕。</p>
+<p>若键入：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vagrant box list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>显示结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">laravel/homestead<span class="o">(</span>virtualbox, 3.1.0<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>则说明已经安装成功。</p>
+<h3 id="32-安装-homestead">3.2. 安装 Homestead</h3>
+<p>通过克隆 Laravel 的 Github 代码来安装 Homestead :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">$ git clone https://github.com/laravel/homestead.git Homestead
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>克隆完成后进入 Homestead 目录进行初始化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> Homestead
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// Mac/Linux...
+</span></span><span class="line"><span class="cl">$ bash init.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// Windows...
+</span></span><span class="line"><span class="cl">init.bat
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="4-配置-homestead">4. 配置 Homestead</h2>
+<p>初始化完成后，使用文本编辑器打开 <code>../Homestead/</code> 目录下的 <code>Homestead.yaml</code> 。</p>
+<h3 id="41-配置系统资源">4.1. 配置系统资源</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;192.168.10.10&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="m">2048</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l">virtualbox</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这几行配置的是：虚拟机 IP 、虚拟机可使用的内存大小、虚拟机可使用的 CPU 数量、使用的虚拟机环境。可根据实际情况修改。</p>
+<h3 id="42-配置共享文件夹">4.2. 配置共享文件夹</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">folders</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">map</span><span class="p">:</span><span class="w"> </span><span class="l">D:/Laravel/code</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l">/home/vagrant/code</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这项配置的是本地与虚拟机共享的目录，如果需要增加共享文件夹的数量，可按格式自行填写即可。</p>
+<h3 id="43-配置-homestead-的-nginx">4.3. 配置 Homestead 的 Nginx</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">sites</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">map</span><span class="p">:</span><span class="w"> </span><span class="l">homestead.app</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l">/home/vagrant/code/project/public</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过 <code>sites</code> 属性可以很方便地将站点映射到虚拟机的指定目录下，而不需要进入虚拟手动修改 Nignx 的配置。如果你打算在同一个Homestead同时开发多个项目，可以按照相同格式添加更多映射。</p>
+<h4 id="431-配置本机-host">4.3.1. 配置本机 Host</h4>
+<p>使用管理员权限用文本编辑器将 <code>C:\Windows\System32\drivers\etc</code>路径下的 <code>hosts</code> 文件打开，向末尾添加一行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">192.168.10.10    homestead.app
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以后你就可以直接在浏览器中输入 <code>http://homestead.app</code> 访问你的项目站点了。</p>
+<h3 id="44-配置数据库">4.4. 配置数据库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">databases</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">homestead</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>本项默认数据库名为 <code>homestead</code> ，使用的数据库为 MySQL ，默认用户名 <code>homestead</code> ，默认密码 <code>secret</code> ，如果需要增加数据库，同样按照格式添加一个数据库名即可，Homestead 将自动为你创建。</p>
+<h2 id="5-启动虚拟系统">5. 启动虚拟系统</h2>
+<p>安装和配置都完成了，接下来就可以启动 Vagrant Box 了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">cd</span> ~/Homestead/
+</span></span><span class="line"><span class="cl">$ vagrant up
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>等待虚拟机启动完成。接下来就可以使用 SSH 工具登陆虚拟机了，或者使用 Vagrant 自带的命令登陆亦可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vgrant ssh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="6-其他操作">6. 其他操作</h2>
+<p>如果你修改了配置文件 Homestead.yaml ，只需要执行以下命令即可生效：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ vagrant reload --provision
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>关闭虚拟机：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vagrant halt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>销毁虚拟机：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vagrant destroy 虚拟机名
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>虚拟机状态：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vagrant global-status
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更多高级玩法可以参考 <a class="link" href="https://www.vagrantup.com/docs/index.html"  target="_blank" rel="noopener"
+    >Vagrant 官方文档</a>。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2023 K CODE
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

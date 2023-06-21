@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Windows on K CODE</title>
+        <link>https://kcode.cc/categories/windows/</link>
+        <description>Recent content in Windows on K CODE</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cmn-Hans</language>
+        <lastBuildDate>Thu, 29 Dec 2022 17:36:00 +0800</lastBuildDate><atom:link href="https://kcode.cc/categories/windows/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>在 Windows 自带输入法上使用小鹤双拼</title>
+        <link>https://kcode.cc/post/2022/12/set-up-flypy-on-windows.html</link>
+        <pubDate>Thu, 29 Dec 2022 17:36:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/post/2022/12/set-up-flypy-on-windows.html</guid>
+        <description>&lt;p&gt;系统自带输入法对我而言已经完全足够了，但是没有内置“小鹤双拼”的方案，每次到新的电脑都要在输入法设置里一个一个按键绑定，较为繁琐。&lt;/p&gt;
+&lt;p&gt;偶然的机会发现可以直接在注册表里添加键值，步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开注册表编辑器&lt;/li&gt;
+&lt;li&gt;进入如下路径：&lt;code&gt;HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;新建 &lt;code&gt;字符串值&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;名称为 &lt;code&gt;UserDefinedDoublePinyinScheme{X}&lt;/code&gt;，其中 &lt;code&gt;{X}&lt;/code&gt; 为数字，一般做序号用，如：&lt;code&gt;UserDefinedDoublePinyinScheme0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;数据值为 &lt;code&gt;小鹤双拼*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt&lt;/code&gt;，“小鹤双拼”为自定义方案的名称，“2”为零声母模式，后面的估计是按声韵母排序绑定到每个键的顺序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;在输入法里将“小鹤双拼”设为默认即可&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>通过 KMS 激活 Windows 和 Office</title>
+        <link>https://kcode.cc/post/2019/06/activate-windows-and-office-by-kms.html</link>
+        <pubDate>Sun, 30 Jun 2019 22:52:13 +0800</pubDate>
+        
+        <guid>https://kcode.cc/post/2019/06/activate-windows-and-office-by-kms.html</guid>
+        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;1. 准备工作&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;确定自己的是 VOL 版 Windows 或者 Office&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;找到对应版本（专业版、教育版等）的 VOL 密钥&lt;br&gt;
+可参考 &lt;a class=&#34;link&#34; href=&#34;https://kcode.cc/post/2017/03/gvlks-of-windows-and-office.html&#34; &gt;Windows 和 Office KMS 密钥&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;2-激活-windows&#34;&gt;2. 激活 Windows&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;管理员权限运行 CMD 或 PowerShell&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装产品密钥( xxxxx 表示对应自己版本的密钥)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;slmgr /ipk xxxxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置 KMS 服务器&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;slmgr /skms example.com:1688
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;激活 Windows&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;slmgr /ato
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看激活信息&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;slmgr /dlv
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;更多命令及命令帮助直接输入 &lt;code&gt;slmgr&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;3-激活-ms-office&#34;&gt;3. 激活 MS Office&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;管理员权限运行 CMD 或 PowerShell&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;进入 Office 安装的根路径&lt;br&gt;
+（以 64 位 Office 2016 默认安装路径为例：C:\Program Files\Microsoft Office\Office16）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;cd&lt;/span&gt; C:\Program Files\Microsoft Office\Office16
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装产品密钥( xxxxx 表示对应自己版本的密钥)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cscript ospp.vbs /inpkey:xxxxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置 KMS 服务器&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cscript ospp.vbs /sethst:example.com:1688
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;激活 Office&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cscript ospp.vbs /act
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>Windows 和 Office KMS 密钥</title>
+        <link>https://kcode.cc/post/2017/03/gvlks-of-windows-and-office.html</link>
+        <pubDate>Tue, 14 Mar 2017 12:00:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/post/2017/03/gvlks-of-windows-and-office.html</guid>
+        <description>&lt;p&gt;GVLK (Generic Volume License Key) 是用于 KMS 客户端的通用序列号。
+这里提供部分微软官方公布的 Windows 10 / Office 2013 / Office 2016 / Office 2019 的 GVLKs ，可用于 KMS 激活。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Office 的 GVLKs 只能用于 VOL 版!&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;windows-10&#34;&gt;Windows 10&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;产品&lt;/th&gt;
+&lt;th&gt;GVLK&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Professional&lt;/td&gt;
+&lt;td&gt;W269N-WFGWX-YVC9B-4J6C9-T83GX&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Professional N&lt;/td&gt;
+&lt;td&gt;MH37W-N47XK-V7XM9-C7227-GCQG9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Enterprise&lt;/td&gt;
+&lt;td&gt;NPPR9-FWDCX-D2C8J-H872K-2YT43&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Enterprise N&lt;/td&gt;
+&lt;td&gt;DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Education&lt;/td&gt;
+&lt;td&gt;NW6C2-QMPVW-D7KKK-3GKT6-VCFB2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Education N&lt;/td&gt;
+&lt;td&gt;2WH4N-8QGBV-H22JP-CT43Q-MDWWJ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Enterprise 2015 LTSB&lt;/td&gt;
+&lt;td&gt;WNMTR-4C88C-JK8YV-HQ7T2-76DF9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows 10 Enterprise 2015 LTSB N&lt;/td&gt;
+&lt;td&gt;2F77B-TNFGY-69QQF-B8YKP-D69TJ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;注意：带 N 的版本去掉了 Windows Media Player 播放器&lt;/li&gt;
+&lt;li&gt;家庭版不需要 KMS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;office-2013&#34;&gt;Office 2013&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;产品&lt;/th&gt;
+&lt;th&gt;GVLK&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Office 2013 Professional Plus&lt;/td&gt;
+&lt;td&gt;YC7DK-G2NP3-2QQC3-J6H88-GVGXT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Office 2013 Standard&lt;/td&gt;
+&lt;td&gt;KBKQT-2NMXY-JJWGP-M62JB-92CD4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Project 2013 Professional&lt;/td&gt;
+&lt;td&gt;FN8TT-7WMH6-2D4X9-M337T-2342K&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Project 2013 Standard&lt;/td&gt;
+&lt;td&gt;6NTH3-CW976-3G3Y2-JK3TX-8QHTT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Visio 2013 Professional&lt;/td&gt;
+&lt;td&gt;C2FG9-N6J68-H8BTJ-BW3QX-RM3B3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Visio 2013 Standard&lt;/td&gt;
+&lt;td&gt;J484Y-4NKBF-W2HMG-DBMJC-PGWR7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Access 2013&lt;/td&gt;
+&lt;td&gt;NG2JY-H4JBT-HQXYP-78QH9-4JM2D&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Excel 2013&lt;/td&gt;
+&lt;td&gt;VGPNG-Y7HQW-9RHP7-TKPV3-BG7GB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;InfoPath 2013&lt;/td&gt;
+&lt;td&gt;DKT8B-N7VXH-D963P-Q4PHY-F8894&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Lync 2013&lt;/td&gt;
+&lt;td&gt;2MG3G-3BNTT-3MFW9-KDQW3-TCK7R&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OneNote 2013&lt;/td&gt;
+&lt;td&gt;TGN6P-8MMBC-37P2F-XHXXK-P34VW&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Outlook 2013&lt;/td&gt;
+&lt;td&gt;QPN8Q-BJBTJ-334K3-93TGY-2PMBT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PowerPoint 2013&lt;/td&gt;
+&lt;td&gt;4NT99-8RJFH-Q2VDH-KYG2C-4RD4F&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Publisher 2013&lt;/td&gt;
+&lt;td&gt;PN2WF-29XG2-T9HJ7-JQPJR-FCXK4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Word 2013&lt;/td&gt;
+&lt;td&gt;6Q7VD-NX8JD-WJ2VH-88V73-4GBJ7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;office-2016&#34;&gt;Office 2016&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;产品&lt;/th&gt;
+&lt;th&gt;GVLK&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Office Professional Plus 2016&lt;/td&gt;
+&lt;td&gt;XQNVK-8JYDB-WJ9W3-YJ8YR-WFG99&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Office Standard 2016&lt;/td&gt;
+&lt;td&gt;JNRGM-WHDWX-FJJG3-K47QV-DRTFM&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Project Professional 2016&lt;/td&gt;
+&lt;td&gt;YG9NW-3K39V-2T3HJ-93F3Q-G83KT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Project Standard 2016&lt;/td&gt;
+&lt;td&gt;GNFHQ-F6YQM-KQDGJ-327XX-KQBVC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Visio Professional 2016&lt;/td&gt;
+&lt;td&gt;PD3-PC-RHNGV-FXJ29-8JK7D-RJRJK&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Visio Standard 2016&lt;/td&gt;
+&lt;td&gt;7WHWM-4T7MP-G96JF-G33KR-W8GF4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Access 2016&lt;/td&gt;
+&lt;td&gt;GNH9Y-D2J4T-FJHGG-QRVH7-QPFDW&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Excel 2016&lt;/td&gt;
+&lt;td&gt;9C2PK-NWTVB-JMPW8-BFT28-7FTBF&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OneNote 2016&lt;/td&gt;
+&lt;td&gt;DR92N-9HTF2-97XKM-XW2WJ-XW3J6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Outlook 2016&lt;/td&gt;
+&lt;td&gt;R69KK-NTPKF-7M3Q4-QYBHW-6MT9B&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PowerPoint 2016&lt;/td&gt;
+&lt;td&gt;J7MQP-HNJ4Y-WJ7YM-PFYGF-BY6C6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Publisher 2016&lt;/td&gt;
+&lt;td&gt;F47MM-N3XJP-TQXJ9-BP99D-8K837&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SKype for Business 2016&lt;/td&gt;
+&lt;td&gt;869NQ-FJ69K-466HW-QYCP2-DDBV6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Word 2016&lt;/td&gt;
+&lt;td&gt;WXY84-JN2Q9-RBCCQ-3Q3J3-3PFJ6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;office-2019&#34;&gt;Office 2019&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;产品&lt;/th&gt;
+&lt;th&gt;GVLK&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Office Professional Plus 2019&lt;/td&gt;
+&lt;td&gt;NMMKJ-6RK4F-KMJVX-8D9MJ-6MWKP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Office Standard 2019&lt;/td&gt;
+&lt;td&gt;6NWWJ-YQWMR-QKGCB-6TMB3-9D9HK&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Project Professional 2019&lt;/td&gt;
+&lt;td&gt;B4NPR-3FKK7-T2MBV-FRQ4W-PKD2B&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Project Standard 2019&lt;/td&gt;
+&lt;td&gt;C4F7P-NCP8C-6CQPT-MQHV9-JXD2M&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Visio Professional 2019&lt;/td&gt;
+&lt;td&gt;7TQNQ-K3YQQ-3PFH7-CCPPM-X4VQ2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Access 2019&lt;/td&gt;
+&lt;td&gt;9N9PT-27V4Y-VJ2PD-YXFMF-YTFQT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Excel 2019&lt;/td&gt;
+&lt;td&gt;TMJWT-YYNMB-3BKTF-644 FC-RVXBD&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Outlook 2019&lt;/td&gt;
+&lt;td&gt;7HD7K-N4PVK-BHBCQ-YWQRW-XW4VK&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PowerPoint 2019&lt;/td&gt;
+&lt;td&gt;RRNCX-C64HY-W2MM7-MCH9G-TJHMQ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Publisher 2019&lt;/td&gt;
+&lt;td&gt;G2KWX-3NW6P-PY93R-JXK2T-C9Y9V&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Skype for Business 2019&lt;/td&gt;
+&lt;td&gt;NCJ33-JHBBY-HTK98-MYCV8-HMKHJ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Word 2019&lt;/td&gt;
+&lt;td&gt;PBX3G-NWMT6-Q7XBW-PYJGG-WXD33&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;附部分-office2016-vol-下载地址&#34;&gt;附部分 Office2016 VOL 下载地址&lt;/h2&gt;
+&lt;h3 id=&#34;office-2016-pro-plus-64位&#34;&gt;Office 2016 Pro Plus 64位&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO&lt;br&gt;
+&lt;strong&gt;文件大小:&lt;/strong&gt; 1123452928 字节&lt;br&gt;
+&lt;strong&gt;MD5:&lt;/strong&gt; 60DC8B1892F611E41140DD3631F39793&lt;br&gt;
+&lt;strong&gt;SHA1:&lt;/strong&gt; AEB58DE1BC97685F8BC6BFB0A614A8EF6903E318&lt;br&gt;
+&lt;strong&gt;CRC32:&lt;/strong&gt; 8D8AC6D1&lt;br&gt;
+&lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO%7c1123452928%7c31087A00FF67D4F5B4CBF4AA07C3433B%7c/&#34; &gt;ed2k://|file|SW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO|1123452928|31087A00FF67D4F5B4CBF4AA07C3433B|/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;office-2016-pro-plus-32位&#34;&gt;Office 2016 Pro Plus 32位&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO
+&lt;strong&gt;文件大小:&lt;/strong&gt; 986441728 字节
+&lt;strong&gt;MD5:&lt;/strong&gt; 49D97BD1B4DFEAAA6B45E3DD3803DAC1
+&lt;strong&gt;SHA1:&lt;/strong&gt; 0218F50774AAB63AF7755B0986CDB9972B853E44
+&lt;strong&gt;CRC32:&lt;/strong&gt; FF96B0B5
+&lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO%7c986441728%7c2DE74581C10096137481873B3AD57D43%7c/&#34; &gt;ed2k://|file|SW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO|986441728|2DE74581C10096137481873B3AD57D43|/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;office-2016-project-pro-64位&#34;&gt;Office 2016 Project Pro 64位&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO
+&lt;strong&gt;文件大小:&lt;/strong&gt; 647157760 字节
+&lt;strong&gt;MD5:&lt;/strong&gt; B872E55B8F4A8791D65BCF1DB46D1DCB
+&lt;strong&gt;SHA1:&lt;/strong&gt; 3C180FDAF91DBD0CB767BD040B42B0599FC53438
+&lt;strong&gt;CRC32:&lt;/strong&gt; 6AB6A570
+&lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO%7c647157760%7c0BBBF20CA3A5F61A819586ADCE6E4DCB%7c/&#34; &gt;ed2k://|file|SW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO|647157760|0BBBF20CA3A5F61A819586ADCE6E4DCB|/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;office-2016-project-pro-32位&#34;&gt;Office 2016 Project Pro 32位&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO
+&lt;strong&gt;文件大小:&lt;/strong&gt; 714913792 字节
+&lt;strong&gt;MD5:&lt;/strong&gt; 93BEB874F5A5870D5854519856047103
+&lt;strong&gt;SHA1:&lt;/strong&gt; 71E082174812F748AB1A70CA33E6004E1E1AACA8
+&lt;strong&gt;CRC32:&lt;/strong&gt; F813794B
+&lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Project_Pro_2016_W32_ChnSimp_MLF_X20-41511.ISO%7c555210752%7cCA3BD5F8C7B3E263105B041DDD4104AB%7c/&#34; &gt;ed2k://|file|SW_DVD5_Project_Pro_2016_W32_ChnSimp_MLF_X20-41511.ISO|555210752|CA3BD5F8C7B3E263105B041DDD4104AB|/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;office-2016-visio-pro-64位&#34;&gt;Office 2016 Visio Pro 64位&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO
+&lt;strong&gt;文件大小:&lt;/strong&gt; 714913792 字节
+&lt;strong&gt;MD5:&lt;/strong&gt; 93BEB874F5A5870D5854519856047103
+&lt;strong&gt;SHA1:&lt;/strong&gt; 71E082174812F748AB1A70CA33E6004E1E1AACA8
+&lt;strong&gt;CRC32:&lt;/strong&gt; F813794B
+&lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO%7c714913792%7cFC930AB97B366B3595FC2F28ABAC2A6F%7c/&#34; &gt;ed2k://|file|SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO|714913792|FC930AB97B366B3595FC2F28ABAC2A6F|/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;office-2016-visio-pro-32位&#34;&gt;Office 2016 Visio Pro 32位&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_W32_ChnSimp_MLF_X20-41580.ISO
+&lt;strong&gt;文件大小:&lt;/strong&gt; 609447936 字节
+&lt;strong&gt;MD5:&lt;/strong&gt; 96E008B110F308F1E424D11964D82CE0
+&lt;strong&gt;SHA1:&lt;/strong&gt; 780046411EB18874AA2DA7E4A11322557EB00D92
+&lt;strong&gt;CRC32:&lt;/strong&gt; 42E1653D
+&lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Visio_Pro_2016_W32_ChnSimp_MLF_X20-41580.ISO%7c609447936%7c91EB248558F236AA66D234EA03FAD9A9%7c/&#34; &gt;ed2k://|file|SW_DVD5_Visio_Pro_2016_W32_ChnSimp_MLF_X20-41580.ISO|609447936|91EB248558F236AA66D234EA03FAD9A9|/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
