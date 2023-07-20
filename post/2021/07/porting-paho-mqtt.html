@@ -22,7 +22,7 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.'>
 <meta property='og:url' content='https://kcode.cc/post/2021/07/porting-paho-mqtt.html'>
 <meta property='og:site_name' content='K CODE'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MQTT' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-13T14:24:40&#43;08:00'/><meta property='article:modified_time' content='2021-07-13T14:24:40&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MQTT' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-13T14:24:40&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="移植 Paho MQTT">
 <meta name="twitter:description" content="1. 准备工作 1.1. 下载源码 两种方式下载源码:
 git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
@@ -472,7 +472,19 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 
         <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
     </section>
-    </footer>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2023/06/21 14:42 CST
+        </span>
+    </section></footer>
 
 
     

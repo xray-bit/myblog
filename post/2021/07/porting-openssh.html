@@ -34,7 +34,7 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 2.3. OpenSSH 2.3.1. 配置 Makefile 1 2 3 4 5 6 7 CC=arm-linux-gcc \ ./configure \ --host=arm-linux \ --with-libs \ --with-zlib=/path/to/zlib/install \ --with-ssl-dir=/path/to/openssl/install \ --disable-etc-default-login CC'>
 <meta property='og:url' content='https://kcode.cc/post/2021/07/porting-openssh.html'>
 <meta property='og:site_name' content='K CODE'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssl' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='zlib' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-30T19:08:55&#43;08:00'/><meta property='article:modified_time' content='2021-07-30T19:08:55&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssl' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='zlib' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-30T19:08:55&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="移植 OpenSSH">
 <meta name="twitter:description" content="1. 准备工作 OpenSSH 依赖 zlib、OpenSSL。
 源码下载：
@@ -693,7 +693,19 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 
         <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
     </section>
-    </footer>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2023/06/21 14:42 CST
+        </span>
+    </section></footer>
 
 
     

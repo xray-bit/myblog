@@ -182,8 +182,8 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;make linux-update-defconfig&lt;/code&gt; 命令会将 Linux kernel 的配置文件保存在宏 &lt;code&gt;BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;make busybox-update-config&lt;/code&gt; 命令会将 BusyBox 的配置文件保存在宏 &lt;code&gt;BR2_PACKAGE_BUSYBOX_CONFIG&lt;/code&gt; 指定的位置&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;make uclibc-update-config&lt;/code&gt; 命令会将 BusyBox 的配置文件保存在宏 &lt;code&gt;BR2_UCLIBC_CONFIG&lt;/code&gt; 指定的位置&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;make barebox-update-defconfig&lt;/code&gt;  命令会将 BusyBox 的配置文件保存在宏 &lt;code&gt;BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;make uclibc-update-config&lt;/code&gt; 命令会将 uClibc 的配置文件保存在宏 &lt;code&gt;BR2_UCLIBC_CONFIG&lt;/code&gt; 指定的位置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;make barebox-update-defconfig&lt;/code&gt;  命令会将 BareBox 的配置文件保存在宏 &lt;code&gt;BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;make uboot-update-defconfig&lt;/code&gt;  命令会将  U-Boot 的配置文件保存在宏 &lt;code&gt;BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;5-客制化已经生成的文件系统&#34;&gt;5. 客制化已经生成的文件系统&lt;/h2&gt;
@@ -217,6 +217,19 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;li&gt;直接修改&lt;/li&gt;
 &lt;li&gt;自定义文件系统骨架(skeleton) (&lt;code&gt;BR2_ROOTFS_SKELETON_CUSTOM&lt;/code&gt;)&lt;/li&gt;
 &lt;li&gt;Post-fakeroot scripts (&lt;code&gt;BR2_ROOTFS_POST_FAKEROOT_SCRIPT&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;附1文章修订记录&#34;&gt;附1：文章修订记录&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;2023/06/29 15:35 CST
+&lt;ul&gt;
+&lt;li&gt;文章初次发表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;2023/07/20 19:44 CST
+&lt;ul&gt;
+&lt;li&gt;修正 &lt;a class=&#34;link&#34; href=&#34;#4-%e4%bf%9d%e5%ad%98%e5%85%b6%e4%bb%96%e7%bb%84%e4%bb%b6%e7%9a%84%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6&#34; &gt;4. 保存其他组件的配置文件&lt;/a&gt; 中的描述错误&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>
