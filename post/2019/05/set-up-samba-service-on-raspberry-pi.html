@@ -7,7 +7,7 @@
 
 <link rel='canonical' href='https://kcode.cc/post/2019/05/set-up-samba-service-on-raspberry-pi.html'>
 
-<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='在树莓派上搭建 Samba 服务'>
+<link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content='在树莓派上搭建 Samba 服务'>
 <meta property='og:description' content='1. 安装 Samba 1 sudo apt sintall samba 2. 编辑配置文件 /etc/samba/smb.conf
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 # Global parameters [global] log file = /var/log/samba/log.%m max log size = 50 syslog = 0 panic action = /usr/share/samba/panic-action %d usershare allow guests = Yes load printers = No # 没有打印机，不需要加载 client max protocol = SMB3 # 设置客户端最大协议版本 client min protocol = SMB2 # 设置客户端最小协议版本 server min protocol = SMB2 # 服务器最小协议版本 map to guest = Bad User obey pam restrictions = Yes pam password change = Yes passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .'>
 <meta property='og:url' content='https://kcode.cc/post/2019/05/set-up-samba-service-on-raspberry-pi.html'>
@@ -81,7 +81,6 @@
         
         
         
-
         <li >
             <a href='/' >
                 
@@ -102,7 +101,6 @@
         </li>
         
         
-
         <li >
             <a href='/archives.html' >
                 
@@ -123,7 +121,6 @@
         </li>
         
         
-
         <li >
             <a href='/about.html' >
                 
@@ -516,7 +513,7 @@
     
     <section class="powerby">
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

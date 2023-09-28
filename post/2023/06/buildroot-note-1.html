@@ -7,7 +7,7 @@
 
 <link rel='canonical' href='https://kcode.cc/post/2023/06/buildroot-note-1.html'>
 
-<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='Buildroot 注解 1'>
+<link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content='Buildroot 注解 1'>
 <meta property='og:description' content='1. 项目客制化 用户可以自定义的内容有：
 配置 Buildroot，即 make menuconfig 的内容 配置其他组件，即 make linux-menuconfig、make busybox-menuconfig 等等 自定义已生成的文件系统： 添加或覆盖目标板文件系统的文件（通过宏 BR2_ROOTFS_OVERLAY） 修改或删除目标板文件系统的文件（通过宏 BR2_ROOTFS_POST_BUILD_SCRIPT） 在生成镜像文件前运行任意命令（通过宏 BR2_ROOTFS_POST_BUILD_SCRIPT） 修改文件权限和所属关系（通过宏 BR2_ROOTFS_DEVICE_TABLE） 添加自定义设备节点（devices node）（通过宏 BR2_ROOTFS_STATIC_DEVICE_TABLE） 添加自定义用户账户（通过宏 BR2_ROOTFS_USERS_TABLES） 在生成镜像文件后运行任意命令（通过宏 BR2_ROOTFS_POST_IMAGE_SCRIPT） 为某些软件包打补丁（通过宏 BR2_GLOBAL_PATCH_DIR） 添加自定义软件包 2. 官方推荐目录结构 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 &#43;-- board/ | &#43;-- &amp;lt;company&amp;gt;/ | &#43;-- &amp;lt;boardname&amp;gt;/ | &#43;-- linux.'>
 <meta property='og:url' content='https://kcode.cc/post/2023/06/buildroot-note-1.html'>
@@ -82,7 +82,6 @@
         
         
         
-
         <li >
             <a href='/' >
                 
@@ -103,7 +102,6 @@
         </li>
         
         
-
         <li >
             <a href='/archives.html' >
                 
@@ -124,7 +122,6 @@
         </li>
         
         
-
         <li >
             <a href='/about.html' >
                 
@@ -659,7 +656,7 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：</p>
     
     <section class="powerby">
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

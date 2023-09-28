@@ -8,7 +8,7 @@
 
 <link rel='canonical' href='https://kcode.cc/post/2019/06/vim-configuration-for-self-use.html'>
 
-<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='自用 vim 配置文件'>
+<link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content='自用 vim 配置文件'>
 <meta property='og:description' content='自用的 vim 配置，方便以后新装系统使用。
 .vimrc 配置如下：
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 colorscheme inkpot filetype on syntax on set nu set autoindent &amp;#34; 自动缩进 set cindent &amp;#34; 针对C语言自动缩进 set smartindent &amp;#34; 智能对齐 set tabstop=4 &amp;#34; 缩进时4个空格长度 set softtabstop=4 &amp;#34; 退格退回缩进长度 set shiftwidth=4 &amp;#34; 每一级缩进的长度 set expandtab &amp;#34; 用空格代替制表符缩进 set showmatch &amp;#34; 自动匹配括号 &amp;#34; 状态栏 set laststatus=2 set statusline=%F%m%r%h%w\ [FORMAT=%{&amp;amp;ff}]\ [TYPE=%Y]\ [ASCII=\%03.'>
@@ -84,7 +84,6 @@
         
         
         
-
         <li >
             <a href='/' >
                 
@@ -105,7 +104,6 @@
         </li>
         
         
-
         <li >
             <a href='/archives.html' >
                 
@@ -126,7 +124,6 @@
         </li>
         
         
-
         <li >
             <a href='/about.html' >
                 
@@ -304,63 +301,63 @@
 </span><span class="lnt">56
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-vim" data-lang="vim"><span class="line"><span class="cl"><span class="nx">colorscheme</span> <span class="nx">inkpot</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">filetype</span> <span class="nx">on</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">syntax</span> <span class="nx">on</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">nu</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">autoindent</span>  <span class="c">&#34; 自动缩进</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">cindent</span>  <span class="c">&#34; 针对C语言自动缩进</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">smartindent</span>  <span class="c">&#34; 智能对齐</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">tabstop</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 缩进时4个空格长度</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">softtabstop</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 退格退回缩进长度</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">shiftwidth</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 每一级缩进的长度</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">expandtab</span>  <span class="c">&#34; 用空格代替制表符缩进</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">showmatch</span>  <span class="c">&#34; 自动匹配括号</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; 状态栏</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">laststatus</span><span class="p">=</span><span class="m">2</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">statusline</span><span class="p">=</span>%<span class="nx">F</span>%<span class="nx">m</span>%<span class="nx">r</span>%<span class="nx">h</span>%<span class="nx">w</span>\ [<span class="nx">FORMAT</span><span class="p">=</span>%{&amp;<span class="nx">ff</span>}]\ [<span class="nx">TYPE</span><span class="p">=</span>%<span class="nx">Y</span>]\ [<span class="nx">ASCII</span><span class="p">=</span>\%<span class="m">03</span>.<span class="m">3</span>b]\ [<span class="nx">HEX</span><span class="p">=</span>\%<span class="m">02</span>.<span class="m">2</span>B]\ [<span class="nx">POS</span><span class="p">=</span>%<span class="m">04</span>l<span class="p">,</span>%<span class="m">04</span>v][%<span class="nx">p</span>%%]\ [<span class="nx">LEN</span><span class="p">=</span>%<span class="nx">L</span>]<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; 配置括号自动补全</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="p">(</span> <span class="p">()&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> [ []<span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> { {<span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>}<span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">O</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">autocmd</span> <span class="nx">Syntax</span> <span class="nx">html</span><span class="p">,</span><span class="nx">vim</span> <span class="nx">inoremap</span> <span class="p">&lt;</span> <span class="p">&lt;</span><span class="nx">lt</span><span class="p">&gt;&gt;&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="p">|</span> <span class="nx">inoremap</span> <span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="p">)</span> <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> ] <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> } <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">CloseBracket</span><span class="p">()&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="s2">&#34; &lt;c-r&gt;=QuoteDelim(&#39;&#34;</span>&#39;<span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">inoremap</span> <span class="s1">&#39; &lt;c-r&gt;=QuoteDelim(&#34;&#39;</span>&#34;<span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">ClosePair</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span> <span class="nx">getline</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>[<span class="nx">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">-</span> <span class="m">1</span>] <span class="p">==</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;Right&gt;&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">else</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">endf</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">CloseBracket</span><span class="p">()</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span> <span class="nx">match</span><span class="p">(</span><span class="nx">getline</span><span class="p">(</span><span class="nx">line</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">+</span> <span class="m">1</span><span class="p">),</span> <span class="s1">&#39;\s*}&#39;</span><span class="p">)</span> <span class="p">&lt;</span> <span class="m">0</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;CR&gt;}&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">else</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;Esc&gt;j0f}a&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">endf</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">QuoteDelim</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">let</span> <span class="nx">line</span> <span class="p">=</span> <span class="nx">getline</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">let</span> <span class="nx">col</span> <span class="p">=</span> <span class="nx">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span> <span class="nx">line</span>[<span class="nx">col</span> <span class="p">-</span> <span class="m">2</span>] <span class="p">==</span> <span class="s2">&#34;\\&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">elseif</span> <span class="nx">line</span>[<span class="nx">col</span> <span class="p">-</span> <span class="m">1</span>] <span class="p">==</span> <span class="nx">a</span>:<span class="nx">char</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="s2">&#34;\&lt;Right&gt;&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">else</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span>.<span class="nx">a</span>:<span class="nx">char</span>.<span class="s2">&#34;\&lt;Esc&gt;i&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">endf</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-vim" data-lang="vim"><span class="line"><span class="cl"><span class="k">colorscheme</span> <span class="nx">inkpot</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">filetype</span> <span class="nx">on</span>
+</span></span><span class="line"><span class="cl"><span class="k">syntax</span> <span class="nx">on</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">nu</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">autoindent</span>  <span class="c">&#34; 自动缩进</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">cindent</span>  <span class="c">&#34; 针对C语言自动缩进</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">smartindent</span>  <span class="c">&#34; 智能对齐</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">tabstop</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 缩进时4个空格长度</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">softtabstop</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 退格退回缩进长度</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">shiftwidth</span><span class="p">=</span><span class="m">4</span>  <span class="c">&#34; 每一级缩进的长度</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">expandtab</span>  <span class="c">&#34; 用空格代替制表符缩进</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">showmatch</span>  <span class="c">&#34; 自动匹配括号</span>
+</span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; 状态栏</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">laststatus</span><span class="p">=</span><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="k">set</span> <span class="nx">statusline</span><span class="p">=</span>%<span class="nx">F</span>%<span class="nx">m</span>%<span class="nx">r</span>%<span class="nx">h</span>%<span class="nx">w</span>\ [<span class="nx">FORMAT</span><span class="p">=</span>%{&amp;<span class="nx">ff</span>}]\ [<span class="nx">TYPE</span><span class="p">=</span>%<span class="nx">Y</span>]\ [<span class="nx">ASCII</span><span class="p">=</span>\%<span class="m">03</span>.<span class="m">3</span>b]\ [<span class="nx">HEX</span><span class="p">=</span>\%<span class="m">02</span>.<span class="m">2</span>B]\ [<span class="nx">POS</span><span class="p">=</span>%<span class="m">04</span>l<span class="p">,</span>%<span class="m">04</span>v][%<span class="nx">p</span>%%]\ [<span class="nx">LEN</span><span class="p">=</span>%<span class="nx">L</span>]
+</span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; 配置括号自动补全</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> <span class="p">(</span> <span class="p">()&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> [ []<span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> { {<span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>}<span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">O</span>
+</span></span><span class="line"><span class="cl"><span class="k">autocmd</span> <span class="nx">Syntax</span> <span class="nx">html</span><span class="p">,</span><span class="nx">vim</span> <span class="nx">inoremap</span> <span class="p">&lt;</span> <span class="p">&lt;</span><span class="nx">lt</span><span class="p">&gt;&gt;&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">i</span><span class="p">|</span> <span class="nx">inoremap</span> <span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> <span class="p">)</span> <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> ] <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">ClosePair</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> } <span class="p">&lt;</span><span class="nx">c</span><span class="p">-</span><span class="nx">r</span><span class="p">&gt;=</span><span class="nx">CloseBracket</span><span class="p">()&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> <span class="s2">&#34; &lt;c-r&gt;=QuoteDelim(&#39;&#34;</span>&#39;<span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">inoremap</span> <span class="s1">&#39; &lt;c-r&gt;=QuoteDelim(&#34;&#39;</span>&#34;<span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nx">ClosePair</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">getline</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>[<span class="nx">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">-</span> <span class="m">1</span>] <span class="p">==</span> <span class="nx">a</span>:<span class="nx">char</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="s2">&#34;\&lt;Right&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span>
+</span></span><span class="line"><span class="cl">    <span class="k">endif</span>
+</span></span><span class="line"><span class="cl"><span class="nx">endf</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nx">CloseBracket</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">match</span><span class="p">(</span><span class="nx">getline</span><span class="p">(</span><span class="nx">line</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">+</span> <span class="m">1</span><span class="p">),</span> <span class="s1">&#39;\s*}&#39;</span><span class="p">)</span> <span class="p">&lt;</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="s2">&#34;\&lt;CR&gt;}&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="s2">&#34;\&lt;Esc&gt;j0f}a&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">endif</span>
+</span></span><span class="line"><span class="cl"><span class="nx">endf</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nx">QuoteDelim</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="nx">line</span> <span class="p">=</span> <span class="nx">getline</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="nx">col</span> <span class="p">=</span> <span class="nx">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">line</span>[<span class="nx">col</span> <span class="p">-</span> <span class="m">2</span>] <span class="p">==</span> <span class="s2">&#34;\\&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elseif</span> <span class="nx">line</span>[<span class="nx">col</span> <span class="p">-</span> <span class="m">1</span>] <span class="p">==</span> <span class="nx">a</span>:<span class="nx">char</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="s2">&#34;\&lt;Right&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">return</span> <span class="nx">a</span>:<span class="nx">char</span>.<span class="nx">a</span>:<span class="nx">char</span>.<span class="s2">&#34;\&lt;Esc&gt;i&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">endif</span>
+</span></span><span class="line"><span class="cl"><span class="nx">endf</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>配色方案 <code>inkpot</code> 来自 <a class="link" href="http://bytefluent.com/vivify/"  target="_blank" rel="noopener"
     >Vivify</a>。</p>
@@ -523,7 +520,7 @@
     
     <section class="powerby">
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 
