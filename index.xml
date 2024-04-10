@@ -6,14 +6,62 @@
         <description>Recent content on K CODE</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cmn-Hans</language>
-        <lastBuildDate>Thu, 29 Jun 2023 15:35:00 +0800</lastBuildDate><atom:link href="https://kcode.cc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 10 Apr 2024 20:57:00 +0800</lastBuildDate><atom:link href="https://kcode.cc/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大型项目使用 git merge 导致多文件混乱问题及解决</title>
+        <link>https://kcode.cc/post/2024/04/git-merge-and-patch/</link>
+        <pubDate>Wed, 10 Apr 2024 20:57:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/post/2024/04/git-merge-and-patch/</guid>
+        <description>&lt;img src="https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp" alt="Featured image of post 大型项目使用 git merge 导致多文件混乱问题及解决" /&gt;&lt;h2 id=&#34;1-原因&#34;&gt;
+    &lt;a href=&#34;#1-%e5%8e%9f%e5%9b%a0&#34;&gt;#&lt;/a&gt;
+    1. 原因
+&lt;/h2&gt;&lt;p&gt;之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。&lt;br&gt;
+随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。&lt;br&gt;
+于是使用 &lt;code&gt;git merge -X theirs [other_branch]&lt;/code&gt; 进行合并，该命令是在合并遇到冲突时，保留 &lt;code&gt;[other_branch]&lt;/code&gt; 的改动，删除自己的改动。&lt;/p&gt;
+&lt;p&gt;合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。&lt;/p&gt;
+&lt;p&gt;由于文件太多，不好一一比较删除，遂另寻他法。&lt;/p&gt;
+&lt;h2 id=&#34;2-解决办法&#34;&gt;
+    &lt;a href=&#34;#2-%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95&#34;&gt;#&lt;/a&gt;
+    2. 解决办法
+&lt;/h2&gt;&lt;p&gt;先使用 &lt;code&gt;git diff&lt;/code&gt; 创建差异文件，具体用法：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git diff &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;待合并的分支&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;想要被合并的分支&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -- &lt;span class=&#34;s1&#34;&gt;&amp;#39;:![排除的文件(夹)1，可使用通配符]&amp;#39;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;:![排除的文件(夹)2，可使用通配符]&amp;#39;&lt;/span&gt; &amp;gt; /path/to/patch
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后使用 &lt;code&gt;git apply&lt;/code&gt; 应用差异，具体用法：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 检查是否可以应用，无任何输出则表示可以应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git apply --check /path/to/patch
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 应用差异 (先修复空格)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git apply --reject --whitespace&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;fix /path/to/patch
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;此时基本没太大问题，因为上面使用了 &lt;code&gt;--whitespace=fix&lt;/code&gt;，有些末尾的空行等被删除了，此时再使用 &lt;code&gt;git merge -X theirs [other_branch]&lt;/code&gt; 合并一次即可。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Buildroot 注解 1</title>
         <link>https://kcode.cc/post/2023/06/buildroot-note-1.html</link>
         <pubDate>Thu, 29 Jun 2023 15:35:00 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2023/06/buildroot-note-1.html</guid>
-        <description>&lt;img src="https://kcode.cc/post/2023/06/cover.webp" alt="Featured image of post Buildroot 注解 1" /&gt;&lt;h2 id=&#34;1-项目客制化&#34;&gt;1. 项目客制化&lt;/h2&gt;
-&lt;p&gt;用户可以自定义的内容有：&lt;/p&gt;
+        <description>&lt;img src="https://kcode.cc/post/2023/06/buildroot-note-1/cover.webp" alt="Featured image of post Buildroot 注解 1" /&gt;&lt;h2 id=&#34;1-项目客制化&#34;&gt;
+    &lt;a href=&#34;#1-%e9%a1%b9%e7%9b%ae%e5%ae%a2%e5%88%b6%e5%8c%96&#34;&gt;#&lt;/a&gt;
+    1. 项目客制化
+&lt;/h2&gt;&lt;p&gt;用户可以自定义的内容有：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;配置 Buildroot，即 make menuconfig 的内容&lt;/li&gt;
 &lt;li&gt;配置其他组件，即 make linux-menuconfig、make busybox-menuconfig 等等&lt;/li&gt;
@@ -31,8 +79,10 @@
 &lt;li&gt;为某些软件包打补丁（通过宏 &lt;code&gt;BR2_GLOBAL_PATCH_DIR&lt;/code&gt;）&lt;/li&gt;
 &lt;li&gt;添加自定义软件包&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;2-官方推荐目录结构&#34;&gt;2. 官方推荐目录结构&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;2-官方推荐目录结构&#34;&gt;
+    &lt;a href=&#34;#2-%e5%ae%98%e6%96%b9%e6%8e%a8%e8%8d%90%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84&#34;&gt;#&lt;/a&gt;
+    2. 官方推荐目录结构
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -106,8 +156,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;+-- external.desc (if using a br2-external tree)
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;21-客制化内容&#34;&gt;2.1. 客制化内容&lt;/h3&gt;
-&lt;p&gt;如果我们有多个相近的项目，可能会共用一些配置，我们不需要为每个项目都配置一遍相同的内容，可以使用以下结构进行配置：&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;21-客制化内容&#34;&gt;
+    &lt;a href=&#34;#21-%e5%ae%a2%e5%88%b6%e5%8c%96%e5%86%85%e5%ae%b9&#34;&gt;#&lt;/a&gt;
+    2.1. 客制化内容
+&lt;/h3&gt;&lt;p&gt;如果我们有多个相近的项目，可能会共用一些配置，我们不需要为每个项目都配置一遍相同的内容，可以使用以下结构进行配置：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -174,11 +226,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;上述宏都可使用此方式配置，以空格分隔，Buildroot 将从左到右顺序执行。&lt;/p&gt;
-&lt;h2 id=&#34;3-保存-buildroot-配置文件&#34;&gt;3. 保存 Buildroot 配置文件&lt;/h2&gt;
-&lt;p&gt;使用 &lt;code&gt;make savedefconfig&lt;/code&gt; 命令可以保存当前 &lt;code&gt;.config&lt;/code&gt; 文件为 &lt;code&gt;defconfig&lt;/code&gt; 文件。也可使用 &lt;code&gt;BR2_DEFCONFIG&lt;/code&gt; 参数指定保存的位置，如 &lt;code&gt;make savedefconfig BR2_DEFCONFIG=&amp;lt;path-to-defconfig&amp;gt;&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;3-保存-buildroot-配置文件&#34;&gt;
+    &lt;a href=&#34;#3-%e4%bf%9d%e5%ad%98-buildroot-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6&#34;&gt;#&lt;/a&gt;
+    3. 保存 Buildroot 配置文件
+&lt;/h2&gt;&lt;p&gt;使用 &lt;code&gt;make savedefconfig&lt;/code&gt; 命令可以保存当前 &lt;code&gt;.config&lt;/code&gt; 文件为 &lt;code&gt;defconfig&lt;/code&gt; 文件。也可使用 &lt;code&gt;BR2_DEFCONFIG&lt;/code&gt; 参数指定保存的位置，如 &lt;code&gt;make savedefconfig BR2_DEFCONFIG=&amp;lt;path-to-defconfig&amp;gt;&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;建议保存的位置为 &lt;code&gt;configs/&amp;lt;boardname&amp;gt;_defconfig&lt;/code&gt;，保存在此位置的文件，可以被 &lt;code&gt;make list-defconfigs&lt;/code&gt; 列处，并且可以使用 &lt;code&gt; make &amp;lt;boardname&amp;gt;_defconfig&lt;/code&gt; 命令重新设为当前的待编译的配置文件。&lt;/p&gt;
-&lt;h2 id=&#34;4-保存其他组件的配置文件&#34;&gt;4. 保存其他组件的配置文件&lt;/h2&gt;
-&lt;p&gt;BusyBox、Linux kernel、U-Boot uClibc 等配置改变后，也需要保存。 对此，Buildroot 也提供了便捷的命令来保存这些文件的修改。&lt;/p&gt;
+&lt;h2 id=&#34;4-保存其他组件的配置文件&#34;&gt;
+    &lt;a href=&#34;#4-%e4%bf%9d%e5%ad%98%e5%85%b6%e4%bb%96%e7%bb%84%e4%bb%b6%e7%9a%84%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6&#34;&gt;#&lt;/a&gt;
+    4. 保存其他组件的配置文件
+&lt;/h2&gt;&lt;p&gt;BusyBox、Linux kernel、U-Boot uClibc 等配置改变后，也需要保存。 对此，Buildroot 也提供了便捷的命令来保存这些文件的修改。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;make linux-update-defconfig&lt;/code&gt; 命令会将 Linux kernel 的配置文件保存在宏 &lt;code&gt;BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;make busybox-update-config&lt;/code&gt; 命令会将 BusyBox 的配置文件保存在宏 &lt;code&gt;BR2_PACKAGE_BUSYBOX_CONFIG&lt;/code&gt; 指定的位置&lt;/li&gt;
@@ -186,8 +242,10 @@
 &lt;li&gt;&lt;code&gt;make barebox-update-defconfig&lt;/code&gt;  命令会将 BareBox 的配置文件保存在宏 &lt;code&gt;BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;make uboot-update-defconfig&lt;/code&gt;  命令会将  U-Boot 的配置文件保存在宏 &lt;code&gt;BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE&lt;/code&gt; 指定的位置&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;5-客制化已经生成的文件系统&#34;&gt;5. 客制化已经生成的文件系统&lt;/h2&gt;
-&lt;p&gt;Buildroot 官方推荐两种方式客制化文件系统：&lt;code&gt;Root filesystem overlays&lt;/code&gt; 和 &lt;code&gt;Post-build scripts&lt;/code&gt;。两种可以组合使用。&lt;/p&gt;
+&lt;h2 id=&#34;5-客制化已经生成的文件系统&#34;&gt;
+    &lt;a href=&#34;#5-%e5%ae%a2%e5%88%b6%e5%8c%96%e5%b7%b2%e7%bb%8f%e7%94%9f%e6%88%90%e7%9a%84%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f&#34;&gt;#&lt;/a&gt;
+    5. 客制化已经生成的文件系统
+&lt;/h2&gt;&lt;p&gt;Buildroot 官方推荐两种方式客制化文件系统：&lt;code&gt;Root filesystem overlays&lt;/code&gt; 和 &lt;code&gt;Post-build scripts&lt;/code&gt;。两种可以组合使用。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Root filesystem overlays (&lt;code&gt;BR2_ROOTFS_OVERLAY&lt;/code&gt;)&lt;br&gt;
@@ -218,8 +276,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;li&gt;自定义文件系统骨架(skeleton) (&lt;code&gt;BR2_ROOTFS_SKELETON_CUSTOM&lt;/code&gt;)&lt;/li&gt;
 &lt;li&gt;Post-fakeroot scripts (&lt;code&gt;BR2_ROOTFS_POST_FAKEROOT_SCRIPT&lt;/code&gt;)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;附1文章修订记录&#34;&gt;附1：文章修订记录&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;附1文章修订记录&#34;&gt;
+    &lt;a href=&#34;#%e9%99%841%e6%96%87%e7%ab%a0%e4%bf%ae%e8%ae%a2%e8%ae%b0%e5%bd%95&#34;&gt;#&lt;/a&gt;
+    附1：文章修订记录
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;2023/06/29 15:35 CST
 &lt;ul&gt;
 &lt;li&gt;文章初次发表&lt;/li&gt;
@@ -239,8 +299,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
         <pubDate>Wed, 21 Jun 2023 11:58:37 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2023/06/erpnext-14-manual-installation.html</guid>
-        <description>&lt;img src="https://kcode.cc/post/2023/06/cover.webp" alt="Featured image of post ERPNext 14 常规安装流程记录" /&gt;&lt;h2 id=&#34;1-安装基础依赖&#34;&gt;1. 安装基础依赖&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+        <description>&lt;img src="https://kcode.cc/post/2023/06/erpnext-14-manual-installation/cover.webp" alt="Featured image of post ERPNext 14 常规安装流程记录" /&gt;&lt;h2 id=&#34;1-安装基础依赖&#34;&gt;
+    &lt;a href=&#34;#1-%e5%ae%89%e8%a3%85%e5%9f%ba%e7%a1%80%e4%be%9d%e8%b5%96&#34;&gt;#&lt;/a&gt;
+    1. 安装基础依赖
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -270,9 +332,13 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    default-libmysqlclient-dev supervisor
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-配置-mariadb-server&#34;&gt;2. 配置 Mariadb Server&lt;/h2&gt;
-&lt;h3 id=&#34;21-初始化-mariadb&#34;&gt;2.1. 初始化 Mariadb&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;2-配置-mariadb-server&#34;&gt;
+    &lt;a href=&#34;#2-%e9%85%8d%e7%bd%ae-mariadb-server&#34;&gt;#&lt;/a&gt;
+    2. 配置 Mariadb Server
+&lt;/h2&gt;&lt;h3 id=&#34;21-初始化-mariadb&#34;&gt;
+    &lt;a href=&#34;#21-%e5%88%9d%e5%a7%8b%e5%8c%96-mariadb&#34;&gt;#&lt;/a&gt;
+    2.1. 初始化 Mariadb
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -280,8 +346,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo mysql_secure_installation
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;22-编辑配置文件&#34;&gt;2.2. 编辑配置文件&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;22-编辑配置文件&#34;&gt;
+    &lt;a href=&#34;#22-%e7%bc%96%e8%be%91%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6&#34;&gt;#&lt;/a&gt;
+    2.2. 编辑配置文件
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -307,8 +375,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;collation-server&lt;/span&gt;               &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;utf8mb4_unicode_ci&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;23-重启-mariadb-服务&#34;&gt;2.3. 重启 Mariadb 服务&lt;/h3&gt;
-&lt;p&gt;重启服务，使配置文件生效。&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;23-重启-mariadb-服务&#34;&gt;
+    &lt;a href=&#34;#23-%e9%87%8d%e5%90%af-mariadb-%e6%9c%8d%e5%8a%a1&#34;&gt;#&lt;/a&gt;
+    2.3. 重启 Mariadb 服务
+&lt;/h3&gt;&lt;p&gt;重启服务，使配置文件生效。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -317,8 +387,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl restart mariadb
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;3-安装-yarn&#34;&gt;3. 安装 Yarn&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;3-安装-yarn&#34;&gt;
+    &lt;a href=&#34;#3-%e5%ae%89%e8%a3%85-yarn&#34;&gt;#&lt;/a&gt;
+    3. 安装 Yarn
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -326,9 +398,13 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo npm install -g yarn
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-配置-redis&#34;&gt;4. 配置 Redis&lt;/h2&gt;
-&lt;h3 id=&#34;41-新增两份配置&#34;&gt;4.1. 新增两份配置&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;frappe-bench-redis-cache&lt;/code&gt; 和 &lt;code&gt;frappe-bench-redis-queue&lt;/code&gt; 需要用到。&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;4-配置-redis&#34;&gt;
+    &lt;a href=&#34;#4-%e9%85%8d%e7%bd%ae-redis&#34;&gt;#&lt;/a&gt;
+    4. 配置 Redis
+&lt;/h2&gt;&lt;h3 id=&#34;41-新增两份配置&#34;&gt;
+    &lt;a href=&#34;#41-%e6%96%b0%e5%a2%9e%e4%b8%a4%e4%bb%bd%e9%85%8d%e7%bd%ae&#34;&gt;#&lt;/a&gt;
+    4.1. 新增两份配置
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;frappe-bench-redis-cache&lt;/code&gt; 和 &lt;code&gt;frappe-bench-redis-queue&lt;/code&gt; 需要用到。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -357,8 +433,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;port 13000
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;42-启动服务&#34;&gt;4.2. 启动服务&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;42-启动服务&#34;&gt;
+    &lt;a href=&#34;#42-%e5%90%af%e5%8a%a8%e6%9c%8d%e5%8a%a1&#34;&gt;#&lt;/a&gt;
+    4.2. 启动服务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -368,8 +446,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo /usr/bin/redis-server /etc/redis/redis-frappe-cahce.conf --daemonzie yes
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;43-检查服务是否启动&#34;&gt;4.3. 检查服务是否启动&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;43-检查服务是否启动&#34;&gt;
+    &lt;a href=&#34;#43-%e6%a3%80%e6%9f%a5%e6%9c%8d%e5%8a%a1%e6%98%af%e5%90%a6%e5%90%af%e5%8a%a8&#34;&gt;#&lt;/a&gt;
+    4.3. 检查服务是否启动
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -379,9 +459,13 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;redis-cli -h localhost -p &lt;span class=&#34;m&#34;&gt;13000&lt;/span&gt; ping
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;5-使用-frappe-bench-创建站点&#34;&gt;5. 使用 Frappe Bench 创建站点&lt;/h2&gt;
-&lt;h3 id=&#34;51-安装&#34;&gt;5.1. 安装&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;5-使用-frappe-bench-创建站点&#34;&gt;
+    &lt;a href=&#34;#5-%e4%bd%bf%e7%94%a8-frappe-bench-%e5%88%9b%e5%bb%ba%e7%ab%99%e7%82%b9&#34;&gt;#&lt;/a&gt;
+    5. 使用 Frappe Bench 创建站点
+&lt;/h2&gt;&lt;h3 id=&#34;51-安装&#34;&gt;
+    &lt;a href=&#34;#51-%e5%ae%89%e8%a3%85&#34;&gt;#&lt;/a&gt;
+    5.1. 安装
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -389,8 +473,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pip3 install frappe-bench ansible --break-system-packages
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;52-初始化-frappe-bench&#34;&gt;5.2. 初始化 Frappe Bench&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;52-初始化-frappe-bench&#34;&gt;
+    &lt;a href=&#34;#52-%e5%88%9d%e5%a7%8b%e5%8c%96-frappe-bench&#34;&gt;#&lt;/a&gt;
+    5.2. 初始化 Frappe Bench
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -398,8 +484,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench init --frappe-branch version-14 frappe-bench
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;53-切换工作目录&#34;&gt;5.3. 切换工作目录&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;53-切换工作目录&#34;&gt;
+    &lt;a href=&#34;#53-%e5%88%87%e6%8d%a2%e5%b7%a5%e4%bd%9c%e7%9b%ae%e5%bd%95&#34;&gt;#&lt;/a&gt;
+    5.3. 切换工作目录
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -407,8 +495,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; frappe-bench
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;54-修改用户目录权限&#34;&gt;5.4. 修改用户目录权限&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;54-修改用户目录权限&#34;&gt;
+    &lt;a href=&#34;#54-%e4%bf%ae%e6%94%b9%e7%94%a8%e6%88%b7%e7%9b%ae%e5%bd%95%e6%9d%83%e9%99%90&#34;&gt;#&lt;/a&gt;
+    5.4. 修改用户目录权限
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -416,8 +506,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo chmod -R o+rx /home/&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;frappe-user&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;55-创建新的站点&#34;&gt;5.5. 创建新的站点&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;55-创建新的站点&#34;&gt;
+    &lt;a href=&#34;#55-%e5%88%9b%e5%bb%ba%e6%96%b0%e7%9a%84%e7%ab%99%e7%82%b9&#34;&gt;#&lt;/a&gt;
+    5.5. 创建新的站点
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -425,9 +517,13 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench new-site &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;your-site-name&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;6-安装-erpnext-和其他应用&#34;&gt;6. 安装 ERPNext 和其他应用&lt;/h2&gt;
-&lt;h3 id=&#34;61-下载必要的应用&#34;&gt;6.1. 下载必要的应用&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;6-安装-erpnext-和其他应用&#34;&gt;
+    &lt;a href=&#34;#6-%e5%ae%89%e8%a3%85-erpnext-%e5%92%8c%e5%85%b6%e4%bb%96%e5%ba%94%e7%94%a8&#34;&gt;#&lt;/a&gt;
+    6. 安装 ERPNext 和其他应用
+&lt;/h2&gt;&lt;h3 id=&#34;61-下载必要的应用&#34;&gt;
+    &lt;a href=&#34;#61-%e4%b8%8b%e8%bd%bd%e5%bf%85%e8%a6%81%e7%9a%84%e5%ba%94%e7%94%a8&#34;&gt;#&lt;/a&gt;
+    6.1. 下载必要的应用
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -439,8 +535,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench get-app hrms
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;62-安装应用&#34;&gt;6.2. 安装应用&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;62-安装应用&#34;&gt;
+    &lt;a href=&#34;#62-%e5%ae%89%e8%a3%85%e5%ba%94%e7%94%a8&#34;&gt;#&lt;/a&gt;
+    6.2. 安装应用
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -450,9 +548,13 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench --site &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;your-site-name&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; install-app hrms
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;7-配置生产环境&#34;&gt;7. 配置生产环境&lt;/h2&gt;
-&lt;h3 id=&#34;71-启用-scheduler-服务&#34;&gt;7.1. 启用 scheduler 服务&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;7-配置生产环境&#34;&gt;
+    &lt;a href=&#34;#7-%e9%85%8d%e7%bd%ae%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83&#34;&gt;#&lt;/a&gt;
+    7. 配置生产环境
+&lt;/h2&gt;&lt;h3 id=&#34;71-启用-scheduler-服务&#34;&gt;
+    &lt;a href=&#34;#71-%e5%90%af%e7%94%a8-scheduler-%e6%9c%8d%e5%8a%a1&#34;&gt;#&lt;/a&gt;
+    7.1. 启用 scheduler 服务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -460,8 +562,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench --site &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;your-site-name&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; enable-scheduler
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;72-关闭维护模式&#34;&gt;7.2. 关闭维护模式&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;72-关闭维护模式&#34;&gt;
+    &lt;a href=&#34;#72-%e5%85%b3%e9%97%ad%e7%bb%b4%e6%8a%a4%e6%a8%a1%e5%bc%8f&#34;&gt;#&lt;/a&gt;
+    7.2. 关闭维护模式
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -469,8 +573,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench --site &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;your-site-name&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; set-maintenance-mode off
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;73-切换到生产环境配置&#34;&gt;7.3. 切换到生产环境配置&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;73-切换到生产环境配置&#34;&gt;
+    &lt;a href=&#34;#73-%e5%88%87%e6%8d%a2%e5%88%b0%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae&#34;&gt;#&lt;/a&gt;
+    7.3. 切换到生产环境配置
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -478,8 +584,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo bench setup production &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;frappe-user&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;74-配置-nginx&#34;&gt;7.4. 配置 Nginx&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;74-配置-nginx&#34;&gt;
+    &lt;a href=&#34;#74-%e9%85%8d%e7%bd%ae-nginx&#34;&gt;#&lt;/a&gt;
+    7.4. 配置 Nginx
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -487,8 +595,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;bench setup nginx
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;75-配置最终服务&#34;&gt;7.5. 配置最终服务&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;75-配置最终服务&#34;&gt;
+    &lt;a href=&#34;#75-%e9%85%8d%e7%bd%ae%e6%9c%80%e7%bb%88%e6%9c%8d%e5%8a%a1&#34;&gt;#&lt;/a&gt;
+    7.5. 配置最终服务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -504,10 +614,14 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo bench setup production &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;frappe-user&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;8-访问-erpnext&#34;&gt;8. 访问 ERPNext&lt;/h2&gt;
-&lt;p&gt;浏览器输入服务器IP即可访问，初始用户名为：Administrator，初始密码为安装 Frappe 时的密码。&lt;/p&gt;
-&lt;h2 id=&#34;附1文章修订记录&#34;&gt;附1：文章修订记录&lt;/h2&gt;
-&lt;ul&gt;
+&lt;/div&gt;&lt;h2 id=&#34;8-访问-erpnext&#34;&gt;
+    &lt;a href=&#34;#8-%e8%ae%bf%e9%97%ae-erpnext&#34;&gt;#&lt;/a&gt;
+    8. 访问 ERPNext
+&lt;/h2&gt;&lt;p&gt;浏览器输入服务器IP即可访问，初始用户名为：Administrator，初始密码为安装 Frappe 时的密码。&lt;/p&gt;
+&lt;h2 id=&#34;附1文章修订记录&#34;&gt;
+    &lt;a href=&#34;#%e9%99%841%e6%96%87%e7%ab%a0%e4%bf%ae%e8%ae%a2%e8%ae%b0%e5%bd%95&#34;&gt;#&lt;/a&gt;
+    附1：文章修订记录
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;2023/06/21 11:58 CST
 &lt;ul&gt;
 &lt;li&gt;文章初次发表&lt;/li&gt;
@@ -548,8 +662,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
         <pubDate>Mon, 05 Dec 2022 19:17:40 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2022/12/annotation-of-linux-termios-structure.html</guid>
-        <description>&lt;h2 id=&#34;1-结构体定义&#34;&gt;1. 结构体定义&lt;/h2&gt;
-&lt;p&gt;该结构体定义在头文件 &amp;lt;termios.h&amp;gt; 中，至少包含以下成员：&lt;/p&gt;
+        <description>&lt;h2 id=&#34;1-结构体定义&#34;&gt;
+    &lt;a href=&#34;#1-%e7%bb%93%e6%9e%84%e4%bd%93%e5%ae%9a%e4%b9%89&#34;&gt;#&lt;/a&gt;
+    1. 结构体定义
+&lt;/h2&gt;&lt;p&gt;该结构体定义在头文件 &amp;lt;termios.h&amp;gt; 中，至少包含以下成员：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -567,9 +683,13 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
-&lt;h2 id=&#34;2-结构体成员注解&#34;&gt;2. 结构体成员注解&lt;/h2&gt;
-&lt;h3 id=&#34;21-输入模式标志-c_iflag&#34;&gt;2.1. 输入模式标志 &lt;code&gt;c_iflag&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;c_iflag&lt;/code&gt; 用于设置终端 I/O 的输入参数，标志宏定义如下：&lt;/p&gt;
+&lt;h2 id=&#34;2-结构体成员注解&#34;&gt;
+    &lt;a href=&#34;#2-%e7%bb%93%e6%9e%84%e4%bd%93%e6%88%90%e5%91%98%e6%b3%a8%e8%a7%a3&#34;&gt;#&lt;/a&gt;
+    2. 结构体成员注解
+&lt;/h2&gt;&lt;h3 id=&#34;21-输入模式标志-c_iflag&#34;&gt;
+    &lt;a href=&#34;#21-%e8%be%93%e5%85%a5%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_iflag&#34;&gt;#&lt;/a&gt;
+    2.1. 输入模式标志 &lt;code&gt;c_iflag&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;c_iflag&lt;/code&gt; 用于设置终端 I/O 的输入参数，标志宏定义如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;IGNBRK&lt;br&gt;
@@ -636,8 +756,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 （不属于 POSIX）输入为 UTF8 字符&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;22-输出模式标志-c_oflag&#34;&gt;2.2. 输出模式标志 &lt;code&gt;c_oflag&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;c_oflag&lt;/code&gt; 用于设置终端 I/O 的输出参数，标志宏定义如下：&lt;/p&gt;
+&lt;h3 id=&#34;22-输出模式标志-c_oflag&#34;&gt;
+    &lt;a href=&#34;#22-%e8%be%93%e5%87%ba%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_oflag&#34;&gt;#&lt;/a&gt;
+    2.2. 输出模式标志 &lt;code&gt;c_oflag&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;c_oflag&lt;/code&gt; 用于设置终端 I/O 的输出参数，标志宏定义如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;OPOST&lt;br&gt;
@@ -696,8 +818,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 （待补充）&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;23-控制模式标志-c_cflag&#34;&gt;2.3. 控制模式标志 &lt;code&gt;c_cflag&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;c_cflag&lt;/code&gt; 用于设置终端 I/O 的控制参数，标志宏定义如下：&lt;/p&gt;
+&lt;h3 id=&#34;23-控制模式标志-c_cflag&#34;&gt;
+    &lt;a href=&#34;#23-%e6%8e%a7%e5%88%b6%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_cflag&#34;&gt;#&lt;/a&gt;
+    2.3. 控制模式标志 &lt;code&gt;c_cflag&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;c_cflag&lt;/code&gt; 用于设置终端 I/O 的控制参数，标志宏定义如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;CBAUD&lt;br&gt;
@@ -752,8 +876,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 （不属于 POSIX）启用硬件 RTS/CTS 流控制&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;24-本地模式标志-c_lflag&#34;&gt;2.4. 本地模式标志 &lt;code&gt;c_lflag&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;c_lflag&lt;/code&gt; 用于设置终端 I/O 的本地参数，标志宏定义如下：&lt;/p&gt;
+&lt;h3 id=&#34;24-本地模式标志-c_lflag&#34;&gt;
+    &lt;a href=&#34;#24-%e6%9c%ac%e5%9c%b0%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_lflag&#34;&gt;#&lt;/a&gt;
+    2.4. 本地模式标志 &lt;code&gt;c_lflag&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;c_lflag&lt;/code&gt; 用于设置终端 I/O 的本地参数，标志宏定义如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;ISIG&lt;br&gt;
@@ -820,8 +946,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 （不属于 POSIX）（待补充）&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;25-终端特殊字符定义数组-c_cc&#34;&gt;2.5. 终端特殊字符定义数组 &lt;code&gt;c_cc&lt;/code&gt;&lt;/h3&gt;
-&lt;ul&gt;
+&lt;h3 id=&#34;25-终端特殊字符定义数组-c_cc&#34;&gt;
+    &lt;a href=&#34;#25-%e7%bb%88%e7%ab%af%e7%89%b9%e6%ae%8a%e5%ad%97%e7%ac%a6%e5%ae%9a%e4%b9%89%e6%95%b0%e7%bb%84-c_cc&#34;&gt;#&lt;/a&gt;
+    2.5. 终端特殊字符定义数组 &lt;code&gt;c_cc&lt;/code&gt;
+&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;VDISCARD&lt;/li&gt;
 &lt;li&gt;VDSUSP&lt;/li&gt;
 &lt;li&gt;VEOF&lt;/li&gt;
@@ -850,8 +978,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
         <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2021/07/porting-openssh.html</guid>
-        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;1. 准备工作&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;OpenSSH&lt;/code&gt; 依赖 &lt;code&gt;zlib&lt;/code&gt;、&lt;code&gt;OpenSSL&lt;/code&gt;。&lt;/p&gt;
+        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;
+    &lt;a href=&#34;#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;
+    1. 准备工作
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;OpenSSH&lt;/code&gt; 依赖 &lt;code&gt;zlib&lt;/code&gt;、&lt;code&gt;OpenSSL&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;源码下载：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -871,10 +1001,16 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;本文基于 &lt;code&gt;zlib-1.2.11&lt;/code&gt;、&lt;code&gt;openssl-1.1.1k&lt;/code&gt;、&lt;code&gt;openssh-8.6p1&lt;/code&gt; 撰写。&lt;/p&gt;
-&lt;h2 id=&#34;2-交叉编译&#34;&gt;2. 交叉编译&lt;/h2&gt;
-&lt;h3 id=&#34;21-zlib&#34;&gt;2.1. zlib&lt;/h3&gt;
-&lt;h4 id=&#34;211-配置-makefile&#34;&gt;2.1.1. 配置 Makefile&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;2-交叉编译&#34;&gt;
+    &lt;a href=&#34;#2-%e4%ba%a4%e5%8f%89%e7%bc%96%e8%af%91&#34;&gt;#&lt;/a&gt;
+    2. 交叉编译
+&lt;/h2&gt;&lt;h3 id=&#34;21-zlib&#34;&gt;
+    &lt;a href=&#34;#21-zlib&#34;&gt;#&lt;/a&gt;
+    2.1. zlib
+&lt;/h3&gt;&lt;h4 id=&#34;211-配置-makefile&#34;&gt;
+    &lt;a href=&#34;#211-%e9%85%8d%e7%bd%ae-makefile&#34;&gt;#&lt;/a&gt;
+    2.1.1. 配置 Makefile
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -890,8 +1026,10 @@ Buildroot 在执行这些脚本时，会传递一些参数进去：&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;CHOST&lt;/code&gt;&lt;br&gt;
 zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;212-编译与安装&#34;&gt;2.1.2. 编译与安装&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h4 id=&#34;212-编译与安装&#34;&gt;
+    &lt;a href=&#34;#212-%e7%bc%96%e8%af%91%e4%b8%8e%e5%ae%89%e8%a3%85&#34;&gt;#&lt;/a&gt;
+    2.1.2. 编译与安装
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -900,11 +1038,17 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;将安装在 &lt;code&gt;--prefix&lt;/code&gt; 所指定的目录。&lt;/p&gt;
-&lt;h3 id=&#34;22-openssl&#34;&gt;2.2. OpenSSL&lt;/h3&gt;
-&lt;p&gt;参考之前的文章 &lt;a class=&#34;link&#34; href=&#34;./porting-openssl&#34; &gt;移植 OpenSSL&lt;/a&gt;。&lt;/p&gt;
-&lt;h3 id=&#34;23-openssh&#34;&gt;2.3. OpenSSH&lt;/h3&gt;
-&lt;h4 id=&#34;231-配置-makefile&#34;&gt;2.3.1. 配置 Makefile&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;22-openssl&#34;&gt;
+    &lt;a href=&#34;#22-openssl&#34;&gt;#&lt;/a&gt;
+    2.2. OpenSSL
+&lt;/h3&gt;&lt;p&gt;参考之前的文章 &lt;a class=&#34;link&#34; href=&#34;./porting-openssl&#34; &gt;移植 OpenSSL&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;23-openssh&#34;&gt;
+    &lt;a href=&#34;#23-openssh&#34;&gt;#&lt;/a&gt;
+    2.3. OpenSSH
+&lt;/h3&gt;&lt;h4 id=&#34;231-配置-makefile&#34;&gt;
+    &lt;a href=&#34;#231-%e9%85%8d%e7%bd%ae-makefile&#34;&gt;#&lt;/a&gt;
+    2.3.1. 配置 Makefile
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -943,8 +1087,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;em&gt;此处使用默认路径，不设置 &amp;ndash;prefix。&lt;/em&gt;&lt;/p&gt;
-&lt;h4 id=&#34;232-编译&#34;&gt;2.3.2. 编译&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h4 id=&#34;232-编译&#34;&gt;
+    &lt;a href=&#34;#232-%e7%bc%96%e8%af%91&#34;&gt;#&lt;/a&gt;
+    2.3.2. 编译
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -953,10 +1099,16 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;注意：这里不要安装。&lt;/p&gt;
-&lt;h2 id=&#34;3-在目标板上使用&#34;&gt;3. 在目标板上使用&lt;/h2&gt;
-&lt;h3 id=&#34;31-安装至目标板&#34;&gt;3.1. 安装至目标板&lt;/h3&gt;
-&lt;h4 id=&#34;311-准备工作&#34;&gt;3.1.1. 准备工作&lt;/h4&gt;
-&lt;ol&gt;
+&lt;h2 id=&#34;3-在目标板上使用&#34;&gt;
+    &lt;a href=&#34;#3-%e5%9c%a8%e7%9b%ae%e6%a0%87%e6%9d%bf%e4%b8%8a%e4%bd%bf%e7%94%a8&#34;&gt;#&lt;/a&gt;
+    3. 在目标板上使用
+&lt;/h2&gt;&lt;h3 id=&#34;31-安装至目标板&#34;&gt;
+    &lt;a href=&#34;#31-%e5%ae%89%e8%a3%85%e8%87%b3%e7%9b%ae%e6%a0%87%e6%9d%bf&#34;&gt;#&lt;/a&gt;
+    3.1. 安装至目标板
+&lt;/h3&gt;&lt;h4 id=&#34;311-准备工作&#34;&gt;
+    &lt;a href=&#34;#311-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;
+    3.1.1. 准备工作
+&lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;确保目标板上有以下目录，没有则创建&lt;/p&gt;
 &lt;ul&gt;
@@ -972,7 +1124,7 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;sshd&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;74&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;74&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Privilege&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;separated&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SSH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;empty&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sshd&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sbin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nologin&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
@@ -988,8 +1140,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4 id=&#34;312-拷贝程序至目标板&#34;&gt;3.1.2. 拷贝程序至目标板&lt;/h4&gt;
-&lt;ol&gt;
+&lt;h4 id=&#34;312-拷贝程序至目标板&#34;&gt;
+    &lt;a href=&#34;#312-%e6%8b%b7%e8%b4%9d%e7%a8%8b%e5%ba%8f%e8%87%b3%e7%9b%ae%e6%a0%87%e6%9d%bf&#34;&gt;#&lt;/a&gt;
+    3.1.2. 拷贝程序至目标板
+&lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;将 OpenSSH 交叉编译后的文件（在 &lt;code&gt;openssh-8.6p1&lt;/code&gt; 根目录）拷贝至目标板相应目录&lt;/p&gt;
 &lt;table&gt;
@@ -1117,8 +1271,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;32-建立工作目录&#34;&gt;3.2. 建立工作目录&lt;/h3&gt;
-&lt;ol&gt;
+&lt;h3 id=&#34;32-建立工作目录&#34;&gt;
+    &lt;a href=&#34;#32-%e5%bb%ba%e7%ab%8b%e5%b7%a5%e4%bd%9c%e7%9b%ae%e5%bd%95&#34;&gt;#&lt;/a&gt;
+    3.2. 建立工作目录
+&lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;在目标板上建立工作目录&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -1157,8 +1313,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/div&gt;
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;33-生成密钥&#34;&gt;3.3. 生成密钥&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;33-生成密钥&#34;&gt;
+    &lt;a href=&#34;#33-%e7%94%9f%e6%88%90%e5%af%86%e9%92%a5&#34;&gt;#&lt;/a&gt;
+    3.3. 生成密钥
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -1170,8 +1328,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh-keygen -t ed25519 -f ssh_host_key -N &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;34-开启-sshd&#34;&gt;3.4. 开启 sshd&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;34-开启-sshd&#34;&gt;
+    &lt;a href=&#34;#34-%e5%bc%80%e5%90%af-sshd&#34;&gt;#&lt;/a&gt;
+    3.4. 开启 sshd
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1187,9 +1347,13 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
         <pubDate>Tue, 13 Jul 2021 14:24:40 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2021/07/porting-paho-mqtt.html</guid>
-        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;1. 准备工作&lt;/h2&gt;
-&lt;h3 id=&#34;11-下载源码&#34;&gt;1.1. 下载源码&lt;/h3&gt;
-&lt;p&gt;两种方式下载源码:&lt;/p&gt;
+        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;
+    &lt;a href=&#34;#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;
+    1. 准备工作
+&lt;/h2&gt;&lt;h3 id=&#34;11-下载源码&#34;&gt;
+    &lt;a href=&#34;#11-%e4%b8%8b%e8%bd%bd%e6%ba%90%e7%a0%81&#34;&gt;#&lt;/a&gt;
+    1.1. 下载源码
+&lt;/h3&gt;&lt;p&gt;两种方式下载源码:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;git clone&lt;/li&gt;
 &lt;li&gt;直接下载指定 tag 源码&lt;/li&gt;
@@ -1197,8 +1361,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;p&gt;对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。&lt;/p&gt;
 &lt;p&gt;在其项目 &lt;a class=&#34;link&#34; href=&#34;https://github.com/eclipse/paho.mqtt.c/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Release&lt;/a&gt; 页找到最新的 Release Tag，下载 &lt;code&gt;Source code&lt;/code&gt;。&lt;/p&gt;
-&lt;h3 id=&#34;12-安装依赖&#34;&gt;1.2. 安装依赖&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;12-安装依赖&#34;&gt;
+    &lt;a href=&#34;#12-%e5%ae%89%e8%a3%85%e4%be%9d%e8%b5%96&#34;&gt;#&lt;/a&gt;
+    1.2. 安装依赖
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1216,9 +1382,13 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt install doxygen graphviz
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-配置-makefile&#34;&gt;2. 配置 Makefile&lt;/h2&gt;
-&lt;h3 id=&#34;21-修改交叉编译工具链&#34;&gt;2.1. 修改交叉编译工具链&lt;/h3&gt;
-&lt;p&gt;新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;2-配置-makefile&#34;&gt;
+    &lt;a href=&#34;#2-%e9%85%8d%e7%bd%ae-makefile&#34;&gt;#&lt;/a&gt;
+    2. 配置 Makefile
+&lt;/h2&gt;&lt;h3 id=&#34;21-修改交叉编译工具链&#34;&gt;
+    &lt;a href=&#34;#21-%e4%bf%ae%e6%94%b9%e4%ba%a4%e5%8f%89%e7%bc%96%e8%af%91%e5%b7%a5%e5%85%b7%e9%93%be&#34;&gt;#&lt;/a&gt;
+    2.1. 修改交叉编译工具链
+&lt;/h3&gt;&lt;p&gt;新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -1227,8 +1397,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmake&#34; data-lang=&#34;cmake&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;CMAKE_C_COMPILER&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;arm-linux-gnueabihf-gcc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;22-生成-makefile&#34;&gt;2.2. 生成 Makefile&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;22-生成-makefile&#34;&gt;
+    &lt;a href=&#34;#22-%e7%94%9f%e6%88%90-makefile&#34;&gt;#&lt;/a&gt;
+    2.2. 生成 Makefile
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -1297,8 +1469,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;&lt;em&gt;如果 OPENSSL_ROOT_DIR 目录内含有共享库，那么编译完成的 paho.mqtt 共享库需要依赖 OpenSSL 的共享库。&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;3-编译&#34;&gt;3. 编译&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;3-编译&#34;&gt;
+    &lt;a href=&#34;#3-%e7%bc%96%e8%af%91&#34;&gt;#&lt;/a&gt;
+    3. 编译
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1322,8 +1496,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;然后重新生成一次 Makefile。原因是 &lt;code&gt;libanl&lt;/code&gt; 只支持 &lt;code&gt;glibc&lt;/code&gt;。&lt;/p&gt;
-&lt;h3 id=&#34;31-打包可选&#34;&gt;3.1. 打包（可选）&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;31-打包可选&#34;&gt;
+    &lt;a href=&#34;#31-%e6%89%93%e5%8c%85%e5%8f%af%e9%80%89&#34;&gt;#&lt;/a&gt;
+    3.1. 打包（可选）
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1339,11 +1515,15 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
         <pubDate>Tue, 13 Jul 2021 10:11:05 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2021/07/porting-openssl.html</guid>
-        <description>&lt;h2 id=&#34;1-源码&#34;&gt;1. 源码&lt;/h2&gt;
-&lt;p&gt;官网：&lt;a class=&#34;link&#34; href=&#34;https://www.openssl.org/source/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+        <description>&lt;h2 id=&#34;1-源码&#34;&gt;
+    &lt;a href=&#34;#1-%e6%ba%90%e7%a0%81&#34;&gt;#&lt;/a&gt;
+    1. 源码
+&lt;/h2&gt;&lt;p&gt;官网：&lt;a class=&#34;link&#34; href=&#34;https://www.openssl.org/source/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://www.openssl.org/source/&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;2-配置-makefile&#34;&gt;2. 配置 Makefile&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;2-配置-makefile&#34;&gt;
+    &lt;a href=&#34;#2-%e9%85%8d%e7%bd%ae-makefile&#34;&gt;#&lt;/a&gt;
+    2. 配置 Makefile
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -1376,8 +1556,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。&lt;/p&gt;
-&lt;h2 id=&#34;3-编译与安装&#34;&gt;3. 编译与安装&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;3-编译与安装&#34;&gt;
+    &lt;a href=&#34;#3-%e7%bc%96%e8%af%91%e4%b8%8e%e5%ae%89%e8%a3%85&#34;&gt;#&lt;/a&gt;
+    3. 编译与安装
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1394,8 +1576,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         <pubDate>Sun, 30 Jun 2019 22:52:13 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2019/06/activate-windows-and-office-by-kms.html</guid>
-        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;1. 准备工作&lt;/h2&gt;
-&lt;ol&gt;
+        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;
+    &lt;a href=&#34;#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;
+    1. 准备工作
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;确定自己的是 VOL 版 Windows 或者 Office&lt;/p&gt;
 &lt;/li&gt;
@@ -1404,8 +1588,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 可参考 &lt;a class=&#34;link&#34; href=&#34;https://kcode.cc/post/2017/03/gvlks-of-windows-and-office.html&#34; &gt;Windows 和 Office KMS 密钥&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;2-激活-windows&#34;&gt;2. 激活 Windows&lt;/h2&gt;
-&lt;ol&gt;
+&lt;h2 id=&#34;2-激活-windows&#34;&gt;
+    &lt;a href=&#34;#2-%e6%bf%80%e6%b4%bb-windows&#34;&gt;#&lt;/a&gt;
+    2. 激活 Windows
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;管理员权限运行 CMD 或 PowerShell&lt;/p&gt;
 &lt;/li&gt;
@@ -1455,8 +1641,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;更多命令及命令帮助直接输入 &lt;code&gt;slmgr&lt;/code&gt;。&lt;/p&gt;
-&lt;h2 id=&#34;3-激活-ms-office&#34;&gt;3. 激活 MS Office&lt;/h2&gt;
-&lt;ol&gt;
+&lt;h2 id=&#34;3-激活-ms-office&#34;&gt;
+    &lt;a href=&#34;#3-%e6%bf%80%e6%b4%bb-ms-office&#34;&gt;#&lt;/a&gt;
+    3. 激活 MS Office
+&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;管理员权限运行 CMD 或 PowerShell&lt;/p&gt;
 &lt;/li&gt;
@@ -1644,12 +1832,18 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         <pubDate>Sun, 30 Jun 2019 21:27:10 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2019/06/memo-of-raspberry-pi.html</guid>
-        <description>&lt;h2 id=&#34;1-无显示器键鼠初始化配置&#34;&gt;1. 无显示器/键鼠初始化配置&lt;/h2&gt;
-&lt;h3 id=&#34;11-开启-sshd&#34;&gt;1.1. 开启 sshd&lt;/h3&gt;
-&lt;p&gt;在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 &lt;code&gt;ssh&lt;/code&gt; 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。&lt;br&gt;
+        <description>&lt;h2 id=&#34;1-无显示器键鼠初始化配置&#34;&gt;
+    &lt;a href=&#34;#1-%e6%97%a0%e6%98%be%e7%a4%ba%e5%99%a8%e9%94%ae%e9%bc%a0%e5%88%9d%e5%a7%8b%e5%8c%96%e9%85%8d%e7%bd%ae&#34;&gt;#&lt;/a&gt;
+    1. 无显示器/键鼠初始化配置
+&lt;/h2&gt;&lt;h3 id=&#34;11-开启-sshd&#34;&gt;
+    &lt;a href=&#34;#11-%e5%bc%80%e5%90%af-sshd&#34;&gt;#&lt;/a&gt;
+    1.1. 开启 sshd
+&lt;/h3&gt;&lt;p&gt;在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 &lt;code&gt;ssh&lt;/code&gt; 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。&lt;br&gt;
 树莓派默认账户：&lt;code&gt;pi&lt;/code&gt;，默认密码：&lt;code&gt;raspberry&lt;/code&gt;。&lt;/p&gt;
-&lt;h3 id=&#34;12-配置-wlan&#34;&gt;1.2. 配置 WLAN&lt;/h3&gt;
-&lt;p&gt;在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 &lt;code&gt;wpa_supplicant.conf&lt;/code&gt; 的文本文件，在文件中输入一下内容：&lt;/p&gt;
+&lt;h3 id=&#34;12-配置-wlan&#34;&gt;
+    &lt;a href=&#34;#12-%e9%85%8d%e7%bd%ae-wlan&#34;&gt;#&lt;/a&gt;
+    1.2. 配置 WLAN
+&lt;/h3&gt;&lt;p&gt;在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 &lt;code&gt;wpa_supplicant.conf&lt;/code&gt; 的文本文件，在文件中输入一下内容：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1678,9 +1872,13 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;na&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-其他配置&#34;&gt;2. 其他配置&lt;/h2&gt;
-&lt;h3 id=&#34;21-配置程序自启&#34;&gt;2.1. 配置程序自启&lt;/h3&gt;
-&lt;p&gt;Demo 如下：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;2-其他配置&#34;&gt;
+    &lt;a href=&#34;#2-%e5%85%b6%e4%bb%96%e9%85%8d%e7%bd%ae&#34;&gt;#&lt;/a&gt;
+    2. 其他配置
+&lt;/h2&gt;&lt;h3 id=&#34;21-配置程序自启&#34;&gt;
+    &lt;a href=&#34;#21-%e9%85%8d%e7%bd%ae%e7%a8%8b%e5%ba%8f%e8%87%aa%e5%90%af&#34;&gt;#&lt;/a&gt;
+    2.1. 配置程序自启
+&lt;/h3&gt;&lt;p&gt;Demo 如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1720,8 +1918,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         <pubDate>Thu, 23 May 2019 21:25:02 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2019/05/set-up-samba-service-on-raspberry-pi.html</guid>
-        <description>&lt;h2 id=&#34;1-安装-samba&#34;&gt;1. 安装 Samba&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+        <description>&lt;h2 id=&#34;1-安装-samba&#34;&gt;
+    &lt;a href=&#34;#1-%e5%ae%89%e8%a3%85-samba&#34;&gt;#&lt;/a&gt;
+    1. 安装 Samba
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1729,8 +1929,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt sintall samba
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-编辑配置文件&#34;&gt;2. 编辑配置文件&lt;/h2&gt;
-&lt;p&gt;/etc/samba/smb.conf&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;2-编辑配置文件&#34;&gt;
+    &lt;a href=&#34;#2-%e7%bc%96%e8%be%91%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6&#34;&gt;#&lt;/a&gt;
+    2. 编辑配置文件
+&lt;/h2&gt;&lt;p&gt;/etc/samba/smb.conf&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1763,39 +1965,41 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# Global parameters
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[global]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    log file = /var/log/samba/log.%m
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    max log size = 50
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    syslog = 0
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    panic action = /usr/share/samba/panic-action %d
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    usershare allow guests = Yes
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    load printers = No  # 没有打印机，不需要加载
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    client max protocol = SMB3  # 设置客户端最大协议版本
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    client min protocol = SMB2  # 设置客户端最小协议版本
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    server min protocol = SMB2  # 服务器最小协议版本
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    map to guest = Bad User
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    obey pam restrictions = Yes
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    pam password change = Yes
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    passwd program = /usr/bin/passwd %u
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    security = USER  # 开启非匿名访问
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    server role = standalone server
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    unix password sync = Yes
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    dns proxy = No
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    idmap config * : backend = tdb
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Global parameters&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;global&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;log&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;var&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;samba&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;max&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;log&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;syslog&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;panic&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;action&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;usr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;share&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;samba&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;panic&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;action&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;usershare&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;allow&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;guests&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Yes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;load&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;printers&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;No&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 没有打印机，不需要加载&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;client&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;max&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;protocol&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SMB3&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 设置客户端最大协议版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;client&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;min&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;protocol&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SMB2&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 设置客户端最小协议版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;server&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;min&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;protocol&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SMB2&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 服务器最小协议版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;guest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Bad&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;obey&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pam&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;restrictions&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Yes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;pam&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;password&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;change&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Yes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;passwd&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;chat&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Enter&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;snew&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;spassword&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Retype&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;snew&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;spassword&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;password&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;supdated&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;ssuccessfully&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;passwd&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;program&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;usr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;passwd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;u&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;security&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;USER&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 开启非匿名访问&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;server&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;standalone&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;server&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;unix&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;password&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sync&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Yes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;dns&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;proxy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;No&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;idmap&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;config&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;backend&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tdb&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 共享文件夹名称
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[myshares]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    comment = my shares
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    path = /mnt/hdd # 此处为需要共享的目录
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    read only = No
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    writeable = yes # 开启可写( testparm 默认不显示 )
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 共享文件夹名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;myshares&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;comment&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;my&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shares&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mnt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hdd&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 此处为需要共享的目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;read&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;only&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;No&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;writeable&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;yes&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 开启可写( testparm 默认不显示 )&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;关于 Samba 协议版本：由于 Windows 10 已经默认不支持 SMBv1 了 ( 仍可通过 「启用或关闭 Windows 功能」 来开启对 SMBv1 的支持 )，所以这里将协议版本设置为 SMBv2 。&lt;/p&gt;
-&lt;h3 id=&#34;21-测试配置是否正确&#34;&gt;2.1. 测试配置是否正确&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;21-测试配置是否正确&#34;&gt;
+    &lt;a href=&#34;#21-%e6%b5%8b%e8%af%95%e9%85%8d%e7%bd%ae%e6%98%af%e5%90%a6%e6%ad%a3%e7%a1%ae&#34;&gt;#&lt;/a&gt;
+    2.1. 测试配置是否正确
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1803,9 +2007,13 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;testparm
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;3-建立-samba-账户&#34;&gt;3. 建立 Samba 账户&lt;/h2&gt;
-&lt;h3 id=&#34;31-新建系统账户&#34;&gt;3.1. 新建系统账户&lt;/h3&gt;
-&lt;p&gt;待创建的 Samba 账户必须已经在 Linux 中存在；此处也可直接用已经存在的账户，不要新建。&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;3-建立-samba-账户&#34;&gt;
+    &lt;a href=&#34;#3-%e5%bb%ba%e7%ab%8b-samba-%e8%b4%a6%e6%88%b7&#34;&gt;#&lt;/a&gt;
+    3. 建立 Samba 账户
+&lt;/h2&gt;&lt;h3 id=&#34;31-新建系统账户&#34;&gt;
+    &lt;a href=&#34;#31-%e6%96%b0%e5%bb%ba%e7%b3%bb%e7%bb%9f%e8%b4%a6%e6%88%b7&#34;&gt;#&lt;/a&gt;
+    3.1. 新建系统账户
+&lt;/h3&gt;&lt;p&gt;待创建的 Samba 账户必须已经在 Linux 中存在；此处也可直接用已经存在的账户，不要新建。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -1818,8 +2026,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;输入两次密码，此为 Linux 账户的密码，非 Samba 账户的访问密码&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;32-使用-pdbedit-新增-samba-账户&#34;&gt;3.2. 使用 pdbedit 新增 Samba 账户&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;32-使用-pdbedit-新增-samba-账户&#34;&gt;
+    &lt;a href=&#34;#32-%e4%bd%bf%e7%94%a8-pdbedit-%e6%96%b0%e5%a2%9e-samba-%e8%b4%a6%e6%88%b7&#34;&gt;#&lt;/a&gt;
+    3.2. 使用 pdbedit 新增 Samba 账户
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -1829,8 +2039,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;接下来输入 smb 的密码&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;321-查询目前已经存在的-samba-账号&#34;&gt;3.2.1. 查询目前已经存在的 Samba 账号&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h4 id=&#34;321-查询目前已经存在的-samba-账号&#34;&gt;
+    &lt;a href=&#34;#321-%e6%9f%a5%e8%af%a2%e7%9b%ae%e5%89%8d%e5%b7%b2%e7%bb%8f%e5%ad%98%e5%9c%a8%e7%9a%84-samba-%e8%b4%a6%e5%8f%b7&#34;&gt;#&lt;/a&gt;
+    3.2.1. 查询目前已经存在的 Samba 账号
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1838,8 +2050,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pdbedit -L
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;322-修改密码&#34;&gt;3.2.2 修改密码&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h4 id=&#34;322-修改密码&#34;&gt;
+    &lt;a href=&#34;#322-%e4%bf%ae%e6%94%b9%e5%af%86%e7%a0%81&#34;&gt;#&lt;/a&gt;
+    3.2.2 修改密码
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1847,8 +2061,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;smbpasswd smb
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-重启-samba-服务确保新配置生效&#34;&gt;4. 重启 Samba 服务确保新配置生效&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;4-重启-samba-服务确保新配置生效&#34;&gt;
+    &lt;a href=&#34;#4-%e9%87%8d%e5%90%af-samba-%e6%9c%8d%e5%8a%a1%e7%a1%ae%e4%bf%9d%e6%96%b0%e9%85%8d%e7%bd%ae%e7%94%9f%e6%95%88&#34;&gt;#&lt;/a&gt;
+    4. 重启 Samba 服务确保新配置生效
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -1856,9 +2072,13 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart smbd.service &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; systemctl restart nmbd.service
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;5-其他&#34;&gt;5. 其他&lt;/h2&gt;
-&lt;h3 id=&#34;51-关于挂载-ntfs-的移动硬盘遇到的坑&#34;&gt;5.1. 关于挂载 NTFS 的移动硬盘遇到的坑&lt;/h3&gt;
-&lt;p&gt;使用 &lt;code&gt;sudo mount /dev/sda1 /mnt/hdd&lt;/code&gt; 挂载以后，发现登录 Samba 后无法写入，总是提示没有权限。几番折腾发现是 Linux 内核对 NTFS 文件系统的支持不足，只支持读取，要写入的话需要安装第三方 NTFS 支持包 ntfs-3g，安装后在挂载时加上参数 &lt;code&gt;-t ntfs-3g&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;5-其他&#34;&gt;
+    &lt;a href=&#34;#5-%e5%85%b6%e4%bb%96&#34;&gt;#&lt;/a&gt;
+    5. 其他
+&lt;/h2&gt;&lt;h3 id=&#34;51-关于挂载-ntfs-的移动硬盘遇到的坑&#34;&gt;
+    &lt;a href=&#34;#51-%e5%85%b3%e4%ba%8e%e6%8c%82%e8%bd%bd-ntfs-%e7%9a%84%e7%a7%bb%e5%8a%a8%e7%a1%ac%e7%9b%98%e9%81%87%e5%88%b0%e7%9a%84%e5%9d%91&#34;&gt;#&lt;/a&gt;
+    5.1. 关于挂载 NTFS 的移动硬盘遇到的坑
+&lt;/h3&gt;&lt;p&gt;使用 &lt;code&gt;sudo mount /dev/sda1 /mnt/hdd&lt;/code&gt; 挂载以后，发现登录 Samba 后无法写入，总是提示没有权限。几番折腾发现是 Linux 内核对 NTFS 文件系统的支持不足，只支持读取，要写入的话需要安装第三方 NTFS 支持包 ntfs-3g，安装后在挂载时加上参数 &lt;code&gt;-t ntfs-3g&lt;/code&gt; 即可。&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -1867,8 +2087,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         <pubDate>Thu, 12 Oct 2017 12:00:00 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2017/10/install-homestead-through-vagrant-in-windows.html</guid>
-        <description>&lt;h2 id=&#34;1-简介&#34;&gt;1. 简介&lt;/h2&gt;
-&lt;blockquote&gt;
+        <description>&lt;h2 id=&#34;1-简介&#34;&gt;
+    &lt;a href=&#34;#1-%e7%ae%80%e4%bb%8b&#34;&gt;#&lt;/a&gt;
+    1. 简介
+&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;Laravel 为开发者提供了一套完善的重量级本地开发环境  Laravel Homestead。&lt;/p&gt;
 &lt;p&gt;Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 &lt;a class=&#34;link&#34; href=&#34;https://www.vagrantup.com/docs/boxes.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vagrant 官方文档&lt;/a&gt;），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统  因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！&lt;/p&gt;
@@ -1893,8 +2115,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/blockquote&gt;
 &lt;p&gt;引用自&lt;a class=&#34;link&#34; href=&#34;http://laravelacademy.org/post/7658.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;[ Laravel 5.5 文档 ] 快速入门  重量级开发环境：Homestead 安装使用详细教程&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;2-准备工作&#34;&gt;2. 准备工作&lt;/h2&gt;
-&lt;p&gt;需要先安装的软件：&lt;/p&gt;
+&lt;h2 id=&#34;2-准备工作&#34;&gt;
+    &lt;a href=&#34;#2-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;
+    2. 准备工作
+&lt;/h2&gt;&lt;p&gt;需要先安装的软件：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.vagrantup.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1918,8 +2142,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 由于官方 box 源都在境外，国内网络在线安装可能会不稳定，有文章说在线安装时不支持断点续传的，所以可以先自行用下载工具下好，具体链接为: &lt;a class=&#34;link&#34; href=&#34;https://atlas.hashicorp.com/laravel/boxes/homestead/versions/3.1.0/providers/virtualbox.box&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://atlas.hashicorp.com/laravel/boxes/homestead/versions/3.1.0/providers/virtualbox.box&lt;/a&gt;，其中 3.1.0 为版本号，可自行在根据情况替换。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;3-安装&#34;&gt;3. 安装&lt;/h2&gt;
-&lt;p&gt;在装备儿工作都做好以后，就可以开始安装了。&lt;/p&gt;
+&lt;h2 id=&#34;3-安装&#34;&gt;
+    &lt;a href=&#34;#3-%e5%ae%89%e8%a3%85&#34;&gt;#&lt;/a&gt;
+    3. 安装
+&lt;/h2&gt;&lt;p&gt;在装备儿工作都做好以后，就可以开始安装了。&lt;/p&gt;
 &lt;p&gt;如无特殊说明，都可使用 CMD 或者 Git Bash 键入命令，尽量使用 Git Bash，本文使用 &lt;code&gt;$&lt;/code&gt; 来表示 Bash 下的命令，复制命令的时候请勿将 &lt;code&gt;$&lt;/code&gt; 一起复制。
 首先使用 Git Bash 键入以下命令生成 ssh 密钥：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -1934,8 +2160,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;一路回车即可。&lt;/p&gt;
 &lt;p&gt;默认安装会将 box 安装在 &lt;code&gt;C:\Users\你的用户名\&lt;/code&gt; 下的，如果你像我 C 盘容量紧缺的情况下，可以更改 Vagrant 的 HOME 路径，将 box 安装到其他地方，更改方法为&lt;code&gt;计算机 &amp;gt; 右键 &amp;gt; 属性 &amp;gt; 高级系统设置 &amp;gt; 高级 &amp;gt; 环境变量 &amp;gt; 新建&lt;/code&gt;，变量名：&lt;code&gt;VAGRANT_HOME&lt;/code&gt;，变量值：&lt;code&gt;目标路径&lt;/code&gt;。改完需要重启一次计算机才能生效。&lt;/p&gt;
-&lt;h3 id=&#34;31-安装-homestead-vagrant-box&#34;&gt;3.1. 安装 Homestead Vagrant Box&lt;/h3&gt;
-&lt;p&gt;如果你是使用在线安装，可直接键入以下命令：&lt;/p&gt;
+&lt;h3 id=&#34;31-安装-homestead-vagrant-box&#34;&gt;
+    &lt;a href=&#34;#31-%e5%ae%89%e8%a3%85-homestead-vagrant-box&#34;&gt;#&lt;/a&gt;
+    3.1. 安装 Homestead Vagrant Box
+&lt;/h3&gt;&lt;p&gt;如果你是使用在线安装，可直接键入以下命令：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2014,8 +2242,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;则说明已经安装成功。&lt;/p&gt;
-&lt;h3 id=&#34;32-安装-homestead&#34;&gt;3.2. 安装 Homestead&lt;/h3&gt;
-&lt;p&gt;通过克隆 Laravel 的 Github 代码来安装 Homestead :&lt;/p&gt;
+&lt;h3 id=&#34;32-安装-homestead&#34;&gt;
+    &lt;a href=&#34;#32-%e5%ae%89%e8%a3%85-homestead&#34;&gt;#&lt;/a&gt;
+    3.2. 安装 Homestead
+&lt;/h3&gt;&lt;p&gt;通过克隆 Laravel 的 Github 代码来安装 Homestead :&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2047,10 +2277,14 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;init.bat
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-配置-homestead&#34;&gt;4. 配置 Homestead&lt;/h2&gt;
-&lt;p&gt;初始化完成后，使用文本编辑器打开 &lt;code&gt;../Homestead/&lt;/code&gt; 目录下的 &lt;code&gt;Homestead.yaml&lt;/code&gt; 。&lt;/p&gt;
-&lt;h3 id=&#34;41-配置系统资源&#34;&gt;4.1. 配置系统资源&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;4-配置-homestead&#34;&gt;
+    &lt;a href=&#34;#4-%e9%85%8d%e7%bd%ae-homestead&#34;&gt;#&lt;/a&gt;
+    4. 配置 Homestead
+&lt;/h2&gt;&lt;p&gt;初始化完成后，使用文本编辑器打开 &lt;code&gt;../Homestead/&lt;/code&gt; 目录下的 &lt;code&gt;Homestead.yaml&lt;/code&gt; 。&lt;/p&gt;
+&lt;h3 id=&#34;41-配置系统资源&#34;&gt;
+    &lt;a href=&#34;#41-%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f%e8%b5%84%e6%ba%90&#34;&gt;#&lt;/a&gt;
+    4.1. 配置系统资源
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2065,8 +2299,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这几行配置的是：虚拟机 IP 、虚拟机可使用的内存大小、虚拟机可使用的 CPU 数量、使用的虚拟机环境。可根据实际情况修改。&lt;/p&gt;
-&lt;h3 id=&#34;42-配置共享文件夹&#34;&gt;4.2. 配置共享文件夹&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;42-配置共享文件夹&#34;&gt;
+    &lt;a href=&#34;#42-%e9%85%8d%e7%bd%ae%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6%e5%a4%b9&#34;&gt;#&lt;/a&gt;
+    4.2. 配置共享文件夹
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2079,8 +2315,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这项配置的是本地与虚拟机共享的目录，如果需要增加共享文件夹的数量，可按格式自行填写即可。&lt;/p&gt;
-&lt;h3 id=&#34;43-配置-homestead-的-nginx&#34;&gt;4.3. 配置 Homestead 的 Nginx&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;43-配置-homestead-的-nginx&#34;&gt;
+    &lt;a href=&#34;#43-%e9%85%8d%e7%bd%ae-homestead-%e7%9a%84-nginx&#34;&gt;#&lt;/a&gt;
+    4.3. 配置 Homestead 的 Nginx
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2093,8 +2331,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;通过 &lt;code&gt;sites&lt;/code&gt; 属性可以很方便地将站点映射到虚拟机的指定目录下，而不需要进入虚拟手动修改 Nignx 的配置。如果你打算在同一个Homestead同时开发多个项目，可以按照相同格式添加更多映射。&lt;/p&gt;
-&lt;h4 id=&#34;431-配置本机-host&#34;&gt;4.3.1. 配置本机 Host&lt;/h4&gt;
-&lt;p&gt;使用管理员权限用文本编辑器将 &lt;code&gt;C:\Windows\System32\drivers\etc&lt;/code&gt;路径下的 &lt;code&gt;hosts&lt;/code&gt; 文件打开，向末尾添加一行：&lt;/p&gt;
+&lt;h4 id=&#34;431-配置本机-host&#34;&gt;
+    &lt;a href=&#34;#431-%e9%85%8d%e7%bd%ae%e6%9c%ac%e6%9c%ba-host&#34;&gt;#&lt;/a&gt;
+    4.3.1. 配置本机 Host
+&lt;/h4&gt;&lt;p&gt;使用管理员权限用文本编辑器将 &lt;code&gt;C:\Windows\System32\drivers\etc&lt;/code&gt;路径下的 &lt;code&gt;hosts&lt;/code&gt; 文件打开，向末尾添加一行：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2104,8 +2344,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;以后你就可以直接在浏览器中输入 &lt;code&gt;http://homestead.app&lt;/code&gt; 访问你的项目站点了。&lt;/p&gt;
-&lt;h3 id=&#34;44-配置数据库&#34;&gt;4.4. 配置数据库&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h3 id=&#34;44-配置数据库&#34;&gt;
+    &lt;a href=&#34;#44-%e9%85%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%ba%93&#34;&gt;#&lt;/a&gt;
+    4.4. 配置数据库
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2116,8 +2358,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;本项默认数据库名为 &lt;code&gt;homestead&lt;/code&gt; ，使用的数据库为 MySQL ，默认用户名 &lt;code&gt;homestead&lt;/code&gt; ，默认密码 &lt;code&gt;secret&lt;/code&gt; ，如果需要增加数据库，同样按照格式添加一个数据库名即可，Homestead 将自动为你创建。&lt;/p&gt;
-&lt;h2 id=&#34;5-启动虚拟系统&#34;&gt;5. 启动虚拟系统&lt;/h2&gt;
-&lt;p&gt;安装和配置都完成了，接下来就可以启动 Vagrant Box 了：&lt;/p&gt;
+&lt;h2 id=&#34;5-启动虚拟系统&#34;&gt;
+    &lt;a href=&#34;#5-%e5%90%af%e5%8a%a8%e8%99%9a%e6%8b%9f%e7%b3%bb%e7%bb%9f&#34;&gt;#&lt;/a&gt;
+    5. 启动虚拟系统
+&lt;/h2&gt;&lt;p&gt;安装和配置都完成了，接下来就可以启动 Vagrant Box 了：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2137,8 +2381,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ vgrant ssh
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;6-其他操作&#34;&gt;6. 其他操作&lt;/h2&gt;
-&lt;p&gt;如果你修改了配置文件 Homestead.yaml ，只需要执行以下命令即可生效：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;6-其他操作&#34;&gt;
+    &lt;a href=&#34;#6-%e5%85%b6%e4%bb%96%e6%93%8d%e4%bd%9c&#34;&gt;#&lt;/a&gt;
+    6. 其他操作
+&lt;/h2&gt;&lt;p&gt;如果你修改了配置文件 Homestead.yaml ，只需要执行以下命令即可生效：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2187,8 +2433,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         <description>&lt;p&gt;GVLK (Generic Volume License Key) 是用于 KMS 客户端的通用序列号。
 这里提供部分微软官方公布的 Windows 10 / Office 2013 / Office 2016 / Office 2019 的 GVLKs ，可用于 KMS 激活。&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Office 的 GVLKs 只能用于 VOL 版!&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;windows-10&#34;&gt;Windows 10&lt;/h2&gt;
-&lt;table&gt;
+&lt;h2 id=&#34;windows-10&#34;&gt;
+    &lt;a href=&#34;#windows-10&#34;&gt;#&lt;/a&gt;
+    Windows 10
+&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;产品&lt;/th&gt;
@@ -2234,8 +2482,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;li&gt;注意：带 N 的版本去掉了 Windows Media Player 播放器&lt;/li&gt;
 &lt;li&gt;家庭版不需要 KMS&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;office-2013&#34;&gt;Office 2013&lt;/h2&gt;
-&lt;table&gt;
+&lt;h2 id=&#34;office-2013&#34;&gt;
+    &lt;a href=&#34;#office-2013&#34;&gt;#&lt;/a&gt;
+    Office 2013
+&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;产品&lt;/th&gt;
@@ -2305,8 +2555,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;office-2016&#34;&gt;Office 2016&lt;/h2&gt;
-&lt;table&gt;
+&lt;h2 id=&#34;office-2016&#34;&gt;
+    &lt;a href=&#34;#office-2016&#34;&gt;#&lt;/a&gt;
+    Office 2016
+&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;产品&lt;/th&gt;
@@ -2372,8 +2624,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;office-2019&#34;&gt;Office 2019&lt;/h2&gt;
-&lt;table&gt;
+&lt;h2 id=&#34;office-2019&#34;&gt;
+    &lt;a href=&#34;#office-2019&#34;&gt;#&lt;/a&gt;
+    Office 2019
+&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;产品&lt;/th&gt;
@@ -2431,9 +2685,13 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;附部分-office2016-vol-下载地址&#34;&gt;附部分 Office2016 VOL 下载地址&lt;/h2&gt;
-&lt;h3 id=&#34;office-2016-pro-plus-64位&#34;&gt;Office 2016 Pro Plus 64位&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;h2 id=&#34;附部分-office2016-vol-下载地址&#34;&gt;
+    &lt;a href=&#34;#%e9%99%84%e9%83%a8%e5%88%86-office2016-vol-%e4%b8%8b%e8%bd%bd%e5%9c%b0%e5%9d%80&#34;&gt;#&lt;/a&gt;
+    附部分 Office2016 VOL 下载地址
+&lt;/h2&gt;&lt;h3 id=&#34;office-2016-pro-plus-64位&#34;&gt;
+    &lt;a href=&#34;#office-2016-pro-plus-64%e4%bd%8d&#34;&gt;#&lt;/a&gt;
+    Office 2016 Pro Plus 64位
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO&lt;br&gt;
 &lt;strong&gt;文件大小:&lt;/strong&gt; 1123452928 字节&lt;br&gt;
 &lt;strong&gt;MD5:&lt;/strong&gt; 60DC8B1892F611E41140DD3631F39793&lt;br&gt;
@@ -2441,8 +2699,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;strong&gt;CRC32:&lt;/strong&gt; 8D8AC6D1&lt;br&gt;
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO%7c1123452928%7c31087A00FF67D4F5B4CBF4AA07C3433B%7c/&#34; &gt;ed2k://|file|SW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO|1123452928|31087A00FF67D4F5B4CBF4AA07C3433B|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-pro-plus-32位&#34;&gt;Office 2016 Pro Plus 32位&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;h3 id=&#34;office-2016-pro-plus-32位&#34;&gt;
+    &lt;a href=&#34;#office-2016-pro-plus-32%e4%bd%8d&#34;&gt;#&lt;/a&gt;
+    Office 2016 Pro Plus 32位
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 986441728 字节
 &lt;strong&gt;MD5:&lt;/strong&gt; 49D97BD1B4DFEAAA6B45E3DD3803DAC1
@@ -2450,8 +2710,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;strong&gt;CRC32:&lt;/strong&gt; FF96B0B5
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO%7c986441728%7c2DE74581C10096137481873B3AD57D43%7c/&#34; &gt;ed2k://|file|SW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO|986441728|2DE74581C10096137481873B3AD57D43|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-project-pro-64位&#34;&gt;Office 2016 Project Pro 64位&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;h3 id=&#34;office-2016-project-pro-64位&#34;&gt;
+    &lt;a href=&#34;#office-2016-project-pro-64%e4%bd%8d&#34;&gt;#&lt;/a&gt;
+    Office 2016 Project Pro 64位
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 647157760 字节
 &lt;strong&gt;MD5:&lt;/strong&gt; B872E55B8F4A8791D65BCF1DB46D1DCB
@@ -2459,8 +2721,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;strong&gt;CRC32:&lt;/strong&gt; 6AB6A570
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO%7c647157760%7c0BBBF20CA3A5F61A819586ADCE6E4DCB%7c/&#34; &gt;ed2k://|file|SW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO|647157760|0BBBF20CA3A5F61A819586ADCE6E4DCB|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-project-pro-32位&#34;&gt;Office 2016 Project Pro 32位&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;h3 id=&#34;office-2016-project-pro-32位&#34;&gt;
+    &lt;a href=&#34;#office-2016-project-pro-32%e4%bd%8d&#34;&gt;#&lt;/a&gt;
+    Office 2016 Project Pro 32位
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 714913792 字节
 &lt;strong&gt;MD5:&lt;/strong&gt; 93BEB874F5A5870D5854519856047103
@@ -2468,8 +2732,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;strong&gt;CRC32:&lt;/strong&gt; F813794B
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Project_Pro_2016_W32_ChnSimp_MLF_X20-41511.ISO%7c555210752%7cCA3BD5F8C7B3E263105B041DDD4104AB%7c/&#34; &gt;ed2k://|file|SW_DVD5_Project_Pro_2016_W32_ChnSimp_MLF_X20-41511.ISO|555210752|CA3BD5F8C7B3E263105B041DDD4104AB|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-visio-pro-64位&#34;&gt;Office 2016 Visio Pro 64位&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;h3 id=&#34;office-2016-visio-pro-64位&#34;&gt;
+    &lt;a href=&#34;#office-2016-visio-pro-64%e4%bd%8d&#34;&gt;#&lt;/a&gt;
+    Office 2016 Visio Pro 64位
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 714913792 字节
 &lt;strong&gt;MD5:&lt;/strong&gt; 93BEB874F5A5870D5854519856047103
@@ -2477,8 +2743,10 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 &lt;strong&gt;CRC32:&lt;/strong&gt; F813794B
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO%7c714913792%7cFC930AB97B366B3595FC2F28ABAC2A6F%7c/&#34; &gt;ed2k://|file|SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO|714913792|FC930AB97B366B3595FC2F28ABAC2A6F|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-visio-pro-32位&#34;&gt;Office 2016 Visio Pro 32位&lt;/h3&gt;
-&lt;blockquote&gt;
+&lt;h3 id=&#34;office-2016-visio-pro-32位&#34;&gt;
+    &lt;a href=&#34;#office-2016-visio-pro-32%e4%bd%8d&#34;&gt;#&lt;/a&gt;
+    Office 2016 Visio Pro 32位
+&lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_W32_ChnSimp_MLF_X20-41580.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 609447936 字节
 &lt;strong&gt;MD5:&lt;/strong&gt; 96E008B110F308F1E424D11964D82CE0

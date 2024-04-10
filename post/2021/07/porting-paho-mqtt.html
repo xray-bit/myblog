@@ -1,36 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 准备工作 1.1. 下载源码 两种方式下载源码:
-git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
-在其项目 Release 页找到最新的 Release Tag，下载 Source code。
-1.2. 安装依赖 1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。
-如果需要生成文档，还需要安装 doxygen 和 graphhviz：
-1 apt install doxygen graphviz 2. 配置 Makefile 2.1. 修改交叉编译工具链 新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：
-1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 准备工作\r#\r1.1. 下载源码\r两种方式下载源码: git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。 在其项目 Release 页找到最新的 Release Tag，下载 Source code。 #\r1.2. 安装依赖\r1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。 如果需要生成文档，还需要安装 doxygen 和 graphhviz： 1 apt install doxygen graphviz #\r2. 配置 Makefile\r#\r2.1. 修改交叉编译工具链\r新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.">
 <title>移植 Paho MQTT</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2021/07/porting-paho-mqtt.html'>
 
-<link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content='移植 Paho MQTT'>
-<meta property='og:description' content='1. 准备工作 1.1. 下载源码 两种方式下载源码:
-git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
-在其项目 Release 页找到最新的 Release Tag，下载 Source code。
-1.2. 安装依赖 1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。
-如果需要生成文档，还需要安装 doxygen 和 graphhviz：
-1 apt install doxygen graphviz 2. 配置 Makefile 2.1. 修改交叉编译工具链 新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：
-1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.'>
+<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="移植 Paho MQTT">
+<meta property='og:description' content="#\r1. 准备工作\r#\r1.1. 下载源码\r两种方式下载源码: git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。 在其项目 Release 页找到最新的 Release Tag，下载 Source code。 #\r1.2. 安装依赖\r1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。 如果需要生成文档，还需要安装 doxygen 和 graphhviz： 1 apt install doxygen graphviz #\r2. 配置 Makefile\r#\r2.1. 修改交叉编译工具链\r新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.">
 <meta property='og:url' content='https://kcode.cc/post/2021/07/porting-paho-mqtt.html'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MQTT' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-13T14:24:40&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="移植 Paho MQTT">
-<meta name="twitter:description" content="1. 准备工作 1.1. 下载源码 两种方式下载源码:
-git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。
-在其项目 Release 页找到最新的 Release Tag，下载 Source code。
-1.2. 安装依赖 1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。
-如果需要生成文档，还需要安装 doxygen 和 graphhviz：
-1 apt install doxygen graphviz 2. 配置 Makefile 2.1. 修改交叉编译工具链 新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：
-1 SET(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc) 2.2. 生成 Makefile 1 2 3 4 5 6 7 8 cmake \ -DPAHO_WITH_SSL=TRUE \ -DPAHO_BUILD_SAMPLES=TRUE \ -DPAHO_BUILD_DOCUMENTATION=TRUE \ -DPAHO_HIGH_PERFORMANCE=TRUE \ -DOPENSSL_ROOT_DIR=/path/to/openssl/install/root \ -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.">
+<meta name="twitter:description" content="#\r1. 准备工作\r#\r1.1. 下载源码\r两种方式下载源码: git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。 在其项目 Release 页找到最新的 Release Tag，下载 Source code。 #\r1.2. 安装依赖\r1 apt install build-essential gcc make cmake cmake-gui cmake-curses-gui 如果需要使用 SSL 功能，则还需要预先交叉编译 OpenSSL，可参考之前的文章 移植 OpenSSL。 如果需要生成文档，还需要安装 doxygen 和 graphhviz： 1 apt install doxygen graphviz #\r2. 配置 Makefile\r#\r2.1. 修改交叉编译工具链\r新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.">
     <link rel="shortcut icon" href="/favicon.png" />
 
     </head>
@@ -152,12 +134,12 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
             </a>
         </li>
         
+        <li class="menu-bottom-section">
+            <ol class="menu">
 
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="8" cy="12" r="2" />
   <rect x="2" y="6" width="20" height="12" rx="6" />
@@ -165,7 +147,7 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 
 
 
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="16" cy="12" r="2" />
   <rect x="2" y="6" width="20" height="12" rx="6" />
@@ -173,10 +155,11 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 
 
 
-                    <span>暗色模式</span>
-                </li>
-            
-        </div>
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
     </ol>
 </aside>
 
@@ -298,9 +281,13 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
     <section class="article-content">
     
     
-    <h2 id="1-准备工作">1. 准备工作</h2>
-<h3 id="11-下载源码">1.1. 下载源码</h3>
-<p>两种方式下载源码:</p>
+    <h2 id="1-准备工作">
+    <a href="#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c">#</a>
+    1. 准备工作
+</h2><h3 id="11-下载源码">
+    <a href="#11-%e4%b8%8b%e8%bd%bd%e6%ba%90%e7%a0%81">#</a>
+    1.1. 下载源码
+</h3><p>两种方式下载源码:</p>
 <ol>
 <li>git clone</li>
 <li>直接下载指定 tag 源码</li>
@@ -308,8 +295,10 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 <p>对于第 1 种方式，会把历史 commit 都 clone 下来，对于立项久远、社区活跃的项目来说，体积较大，加之 github 在国内访问不稳定，而且只是使用不是开发，所以这里选择第 2 种方式。</p>
 <p>在其项目 <a class="link" href="https://github.com/eclipse/paho.mqtt.c/releases"  target="_blank" rel="noopener"
     >Release</a> 页找到最新的 Release Tag，下载 <code>Source code</code>。</p>
-<h3 id="12-安装依赖">1.2. 安装依赖</h3>
-<div class="highlight"><div class="chroma">
+<h3 id="12-安装依赖">
+    <a href="#12-%e5%ae%89%e8%a3%85%e4%be%9d%e8%b5%96">#</a>
+    1.2. 安装依赖
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -327,9 +316,13 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">apt install doxygen graphviz
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="2-配置-makefile">2. 配置 Makefile</h2>
-<h3 id="21-修改交叉编译工具链">2.1. 修改交叉编译工具链</h3>
-<p>新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：</p>
+</div><h2 id="2-配置-makefile">
+    <a href="#2-%e9%85%8d%e7%bd%ae-makefile">#</a>
+    2. 配置 Makefile
+</h2><h3 id="21-修改交叉编译工具链">
+    <a href="#21-%e4%bf%ae%e6%94%b9%e4%ba%a4%e5%8f%89%e7%bc%96%e8%af%91%e5%b7%a5%e5%85%b7%e9%93%be">#</a>
+    2.1. 修改交叉编译工具链
+</h3><p>新建一个目录作为编译用目录，拷贝 paho.mqtt 源码目录下 cmake 目录内的 toolchain.linux-arm11.cmake 至编译用目录，修改以下内容为自己的交叉编译工具链：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -338,8 +331,10 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 <pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">SET</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span> <span class="s">arm-linux-gnueabihf-gcc</span><span class="p">)</span><span class="err">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="22-生成-makefile">2.2. 生成 Makefile</h3>
-<div class="highlight"><div class="chroma">
+</div><h3 id="22-生成-makefile">
+    <a href="#22-%e7%94%9f%e6%88%90-makefile">#</a>
+    2.2. 生成 Makefile
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -408,8 +403,10 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 </tbody>
 </table></div>
 <p><em>如果 OPENSSL_ROOT_DIR 目录内含有共享库，那么编译完成的 paho.mqtt 共享库需要依赖 OpenSSL 的共享库。</em></p>
-<h2 id="3-编译">3. 编译</h2>
-<div class="highlight"><div class="chroma">
+<h2 id="3-编译">
+    <a href="#3-%e7%bc%96%e8%af%91">#</a>
+    3. 编译
+</h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -433,8 +430,10 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>然后重新生成一次 Makefile。原因是 <code>libanl</code> 只支持 <code>glibc</code>。</p>
-<h3 id="31-打包可选">3.1. 打包（可选）</h3>
-<div class="highlight"><div class="chroma">
+<h3 id="31-打包可选">
+    <a href="#31-%e6%89%93%e5%8c%85%e5%8f%af%e9%80%89">#</a>
+    3.1. 打包（可选）
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -528,7 +527,7 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
         
         
             <div class="article-image">
-                <img src="/post/2023/06/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/buildroot-note-1/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -552,13 +551,13 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
         
         
             <div class="article-image">
-                <img src="/post/2023/06/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/erpnext-14-manual-installation/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
                         alt="Featured image of post ERPNext 14 常规安装流程记录"
                         
-                        data-hash="md5-aCPR3MeVfxF22hsntgzQCw==">
+                        data-hash="md5-f8CPFVNGnA0/M9&#43;wu88c/Q==">
                 
             </div>
         
@@ -598,12 +597,12 @@ git clone 直接下载指定 tag 源码 对于第 1 种方式，会把历史 com
         
             2017 - 
         
-        2023 K CODE
+        2024 K CODE
     </section>
     
     <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

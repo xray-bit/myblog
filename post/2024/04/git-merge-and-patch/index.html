@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 #\r2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。">
+<title>大型项目使用 git merge 导致多文件混乱问题及解决</title>
+
+<link rel='canonical' href='https://kcode.cc/post/2024/04/git-merge-and-patch/'>
+
+<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="大型项目使用 git merge 导致多文件混乱问题及解决">
+<meta property='og:description' content="#\r1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 #\r2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。">
+<meta property='og:url' content='https://kcode.cc/post/2024/04/git-merge-and-patch/'>
+<meta property='og:site_name' content='K CODE'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2024-04-10T20:57:00&#43;08:00'/><meta property='article:modified_time' content='2024-04-10T21:39:33&#43;08:00'/><meta property='og:image' content='https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp' />
+<meta name="twitter:title" content="大型项目使用 git merge 导致多文件混乱问题及解决">
+<meta name="twitter:description" content="#\r1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 #\r2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp' />
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🌀</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">K CODE</a></h1>
+            <h2 class="site-description">A Simple Blog</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about.html' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-hexagon" width="44" height="44" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" />
+</svg>
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-原因">1. 原因</a></li>
+    <li><a href="#2-解决办法">2. 解决办法</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/post/2024/04/git-merge-and-patch/">
+                <img src="/post/2024/04/git-merge-and-patch/cover_hu2884efb7c48b683be7778856274b4b18_44030_800x0_resize_q75_h2_box_2.webp"
+                        srcset="/post/2024/04/git-merge-and-patch/cover_hu2884efb7c48b683be7778856274b4b18_44030_800x0_resize_q75_h2_box_2.webp 800w, /post/2024/04/git-merge-and-patch/cover_hu2884efb7c48b683be7778856274b4b18_44030_1600x0_resize_q75_h2_box_2.webp 1600w"
+                        width="800" 
+                        height="535" 
+                        loading="lazy"
+                        alt="Featured image of post 大型项目使用 git merge 导致多文件混乱问题及解决" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/git/" style="background-color: #1F222B; color: #e6e6e6;">
+                Git
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/2024/04/git-merge-and-patch/">大型项目使用 git merge 导致多文件混乱问题及解决</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024/04/10</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-原因">
+    <a href="#1-%e5%8e%9f%e5%9b%a0">#</a>
+    1. 原因
+</h2><p>之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。<br>
+随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。<br>
+于是使用 <code>git merge -X theirs [other_branch]</code> 进行合并，该命令是在合并遇到冲突时，保留 <code>[other_branch]</code> 的改动，删除自己的改动。</p>
+<p>合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。</p>
+<p>由于文件太多，不好一一比较删除，遂另寻他法。</p>
+<h2 id="2-解决办法">
+    <a href="#2-%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95">#</a>
+    2. 解决办法
+</h2><p>先使用 <code>git diff</code> 创建差异文件，具体用法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git diff <span class="o">[</span>待合并的分支<span class="o">]</span> <span class="o">[</span>想要被合并的分支<span class="o">]</span> -- <span class="s1">&#39;:![排除的文件(夹)1，可使用通配符]&#39;</span> <span class="s1">&#39;:![排除的文件(夹)2，可使用通配符]&#39;</span> &gt; /path/to/patch
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后使用 <code>git apply</code> 应用差异，具体用法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查是否可以应用，无任何输出则表示可以应用</span>
+</span></span><span class="line"><span class="cl">git apply --check /path/to/patch
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 应用差异 (先修复空格)</span>
+</span></span><span class="line"><span class="cl">git apply --reject --whitespace<span class="o">=</span>fix /path/to/patch
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时基本没太大问题，因为上面使用了 <code>--whitespace=fix</code>，有些末尾的空行等被删除了，此时再使用 <code>git merge -X theirs [other_branch]</code> 合并一次即可。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/git/">Git</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>本博客所有文章除特别声明外，均采用 BY-NC-SA 4.0 许可协议。转载请注明出处！</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2024/04/10 21:39 CST
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2024 K CODE
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,54 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 准备工作 OpenSSH 依赖 zlib、OpenSSL。
-源码下载：
-zlib
-zlib.net
-OpenSSL
-openssl.org
-OpenSSH
-mirrors.aliyun.com
-本文基于 zlib-1.2.11、openssl-1.1.1k、openssh-8.6p1 撰写。
-2. 交叉编译 2.1. zlib 2.1.1. 配置 Makefile 1 2 3 CHOST=arm-linux \ ./configure \ --prefix=/path/to/install CHOST
-zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。 2.1.2. 编译与安装 1 make &amp;amp;&amp;amp; make install 将安装在 --prefix 所指定的目录。
-2.2. OpenSSL 参考之前的文章 移植 OpenSSL。
-2.3. OpenSSH 2.3.1. 配置 Makefile 1 2 3 4 5 6 7 CC=arm-linux-gcc \ ./configure \ --host=arm-linux \ --with-libs \ --with-zlib=/path/to/zlib/install \ --with-ssl-dir=/path/to/openssl/install \ --disable-etc-default-login CC'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 准备工作\rOpenSSH 依赖 zlib、OpenSSL。 源码下载： zlib zlib.net OpenSSL openssl.org OpenSSH mirrors.aliyun.com 本文基于 zlib-1.2.11、openssl-1.1.1k、openssh-8.6p1 撰写。 #\r2. 交叉编译\r#\r2.1. zlib\r#\r2.1.1. 配置 Makefile\r1 2 3 CHOST=arm-linux \\ ./configure \\ --prefix=/path/to/install CHOST zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。 #\r2.1.2. 编译与安装\r1 make &amp;&amp; make install 将安装在 --prefix 所指定的目录。 #\r2.2. OpenSSL\r参考之前的文章 移植 OpenSSL。 #\r2.3. OpenSSH\r#\r2.3.1. 配置 Makefile\r1 2 3 4 5 6 7 CC=arm-linux-gcc \\ .">
 <title>移植 OpenSSH</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2021/07/porting-openssh.html'>
 
-<link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content='移植 OpenSSH'>
-<meta property='og:description' content='1. 准备工作 OpenSSH 依赖 zlib、OpenSSL。
-源码下载：
-zlib
-zlib.net
-OpenSSL
-openssl.org
-OpenSSH
-mirrors.aliyun.com
-本文基于 zlib-1.2.11、openssl-1.1.1k、openssh-8.6p1 撰写。
-2. 交叉编译 2.1. zlib 2.1.1. 配置 Makefile 1 2 3 CHOST=arm-linux \ ./configure \ --prefix=/path/to/install CHOST
-zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。 2.1.2. 编译与安装 1 make &amp;amp;&amp;amp; make install 将安装在 --prefix 所指定的目录。
-2.2. OpenSSL 参考之前的文章 移植 OpenSSL。
-2.3. OpenSSH 2.3.1. 配置 Makefile 1 2 3 4 5 6 7 CC=arm-linux-gcc \ ./configure \ --host=arm-linux \ --with-libs \ --with-zlib=/path/to/zlib/install \ --with-ssl-dir=/path/to/openssl/install \ --disable-etc-default-login CC'>
+<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="移植 OpenSSH">
+<meta property='og:description' content="#\r1. 准备工作\rOpenSSH 依赖 zlib、OpenSSL。 源码下载： zlib zlib.net OpenSSL openssl.org OpenSSH mirrors.aliyun.com 本文基于 zlib-1.2.11、openssl-1.1.1k、openssh-8.6p1 撰写。 #\r2. 交叉编译\r#\r2.1. zlib\r#\r2.1.1. 配置 Makefile\r1 2 3 CHOST=arm-linux \\ ./configure \\ --prefix=/path/to/install CHOST zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。 #\r2.1.2. 编译与安装\r1 make &amp;&amp; make install 将安装在 --prefix 所指定的目录。 #\r2.2. OpenSSL\r参考之前的文章 移植 OpenSSL。 #\r2.3. OpenSSH\r#\r2.3.1. 配置 Makefile\r1 2 3 4 5 6 7 CC=arm-linux-gcc \\ .">
 <meta property='og:url' content='https://kcode.cc/post/2021/07/porting-openssh.html'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssl' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='zlib' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-30T19:08:55&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="移植 OpenSSH">
-<meta name="twitter:description" content="1. 准备工作 OpenSSH 依赖 zlib、OpenSSL。
-源码下载：
-zlib
-zlib.net
-OpenSSL
-openssl.org
-OpenSSH
-mirrors.aliyun.com
-本文基于 zlib-1.2.11、openssl-1.1.1k、openssh-8.6p1 撰写。
-2. 交叉编译 2.1. zlib 2.1.1. 配置 Makefile 1 2 3 CHOST=arm-linux \ ./configure \ --prefix=/path/to/install CHOST
-zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。 2.1.2. 编译与安装 1 make &amp;amp;&amp;amp; make install 将安装在 --prefix 所指定的目录。
-2.2. OpenSSL 参考之前的文章 移植 OpenSSL。
-2.3. OpenSSH 2.3.1. 配置 Makefile 1 2 3 4 5 6 7 CC=arm-linux-gcc \ ./configure \ --host=arm-linux \ --with-libs \ --with-zlib=/path/to/zlib/install \ --with-ssl-dir=/path/to/openssl/install \ --disable-etc-default-login CC">
+<meta name="twitter:description" content="#\r1. 准备工作\rOpenSSH 依赖 zlib、OpenSSL。 源码下载： zlib zlib.net OpenSSL openssl.org OpenSSH mirrors.aliyun.com 本文基于 zlib-1.2.11、openssl-1.1.1k、openssh-8.6p1 撰写。 #\r2. 交叉编译\r#\r2.1. zlib\r#\r2.1.1. 配置 Makefile\r1 2 3 CHOST=arm-linux \\ ./configure \\ --prefix=/path/to/install CHOST zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。 #\r2.1.2. 编译与安装\r1 make &amp;&amp; make install 将安装在 --prefix 所指定的目录。 #\r2.2. OpenSSL\r参考之前的文章 移植 OpenSSL。 #\r2.3. OpenSSH\r#\r2.3.1. 配置 Makefile\r1 2 3 4 5 6 7 CC=arm-linux-gcc \\ .">
     <link rel="shortcut icon" href="/favicon.png" />
 
     </head>
@@ -170,12 +134,12 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
             </a>
         </li>
         
+        <li class="menu-bottom-section">
+            <ol class="menu">
 
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="8" cy="12" r="2" />
   <rect x="2" y="6" width="20" height="12" rx="6" />
@@ -183,7 +147,7 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 
 
 
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="16" cy="12" r="2" />
   <rect x="2" y="6" width="20" height="12" rx="6" />
@@ -191,10 +155,11 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 
 
 
-                    <span>暗色模式</span>
-                </li>
-            
-        </div>
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
     </ol>
 </aside>
 
@@ -330,8 +295,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
     <section class="article-content">
     
     
-    <h2 id="1-准备工作">1. 准备工作</h2>
-<p><code>OpenSSH</code> 依赖 <code>zlib</code>、<code>OpenSSL</code>。</p>
+    <h2 id="1-准备工作">
+    <a href="#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c">#</a>
+    1. 准备工作
+</h2><p><code>OpenSSH</code> 依赖 <code>zlib</code>、<code>OpenSSL</code>。</p>
 <p>源码下载：</p>
 <ul>
 <li>
@@ -351,10 +318,16 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </li>
 </ul>
 <p>本文基于 <code>zlib-1.2.11</code>、<code>openssl-1.1.1k</code>、<code>openssh-8.6p1</code> 撰写。</p>
-<h2 id="2-交叉编译">2. 交叉编译</h2>
-<h3 id="21-zlib">2.1. zlib</h3>
-<h4 id="211-配置-makefile">2.1.1. 配置 Makefile</h4>
-<div class="highlight"><div class="chroma">
+<h2 id="2-交叉编译">
+    <a href="#2-%e4%ba%a4%e5%8f%89%e7%bc%96%e8%af%91">#</a>
+    2. 交叉编译
+</h2><h3 id="21-zlib">
+    <a href="#21-zlib">#</a>
+    2.1. zlib
+</h3><h4 id="211-配置-makefile">
+    <a href="#211-%e9%85%8d%e7%bd%ae-makefile">#</a>
+    2.1.1. 配置 Makefile
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -370,8 +343,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 <li><code>CHOST</code><br>
 zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按上述配置，即自动将交叉编译工具名称设为 arm-linux-gcc、arm-linux-ld 等。</li>
 </ul>
-<h4 id="212-编译与安装">2.1.2. 编译与安装</h4>
-<div class="highlight"><div class="chroma">
+<h4 id="212-编译与安装">
+    <a href="#212-%e7%bc%96%e8%af%91%e4%b8%8e%e5%ae%89%e8%a3%85">#</a>
+    2.1.2. 编译与安装
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -380,11 +355,17 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>将安装在 <code>--prefix</code> 所指定的目录。</p>
-<h3 id="22-openssl">2.2. OpenSSL</h3>
-<p>参考之前的文章 <a class="link" href="./porting-openssl" >移植 OpenSSL</a>。</p>
-<h3 id="23-openssh">2.3. OpenSSH</h3>
-<h4 id="231-配置-makefile">2.3.1. 配置 Makefile</h4>
-<div class="highlight"><div class="chroma">
+<h3 id="22-openssl">
+    <a href="#22-openssl">#</a>
+    2.2. OpenSSL
+</h3><p>参考之前的文章 <a class="link" href="./porting-openssl" >移植 OpenSSL</a>。</p>
+<h3 id="23-openssh">
+    <a href="#23-openssh">#</a>
+    2.3. OpenSSH
+</h3><h4 id="231-配置-makefile">
+    <a href="#231-%e9%85%8d%e7%bd%ae-makefile">#</a>
+    2.3.1. 配置 Makefile
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -423,8 +404,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </li>
 </ul>
 <p><em>此处使用默认路径，不设置 &ndash;prefix。</em></p>
-<h4 id="232-编译">2.3.2. 编译</h4>
-<div class="highlight"><div class="chroma">
+<h4 id="232-编译">
+    <a href="#232-%e7%bc%96%e8%af%91">#</a>
+    2.3.2. 编译
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -433,10 +416,16 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意：这里不要安装。</p>
-<h2 id="3-在目标板上使用">3. 在目标板上使用</h2>
-<h3 id="31-安装至目标板">3.1. 安装至目标板</h3>
-<h4 id="311-准备工作">3.1.1. 准备工作</h4>
-<ol>
+<h2 id="3-在目标板上使用">
+    <a href="#3-%e5%9c%a8%e7%9b%ae%e6%a0%87%e6%9d%bf%e4%b8%8a%e4%bd%bf%e7%94%a8">#</a>
+    3. 在目标板上使用
+</h2><h3 id="31-安装至目标板">
+    <a href="#31-%e5%ae%89%e8%a3%85%e8%87%b3%e7%9b%ae%e6%a0%87%e6%9d%bf">#</a>
+    3.1. 安装至目标板
+</h3><h4 id="311-准备工作">
+    <a href="#311-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c">#</a>
+    3.1.1. 准备工作
+</h4><ol>
 <li>
 <p>确保目标板上有以下目录，没有则创建</p>
 <ul>
@@ -452,7 +441,7 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">sshd</span><span class="p">:</span><span class="n">x</span><span class="p">:</span><span class="mi">74</span><span class="p">:</span><span class="mi">74</span><span class="p">:</span><span class="n">Privilege</span><span class="o">-</span><span class="n">separated</span> <span class="n">SSH</span><span class="p">:</span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">empty</span><span class="o">/</span><span class="n">sshd</span><span class="p">:</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">nologin</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -468,8 +457,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </div>
 </div></li>
 </ol>
-<h4 id="312-拷贝程序至目标板">3.1.2. 拷贝程序至目标板</h4>
-<ol>
+<h4 id="312-拷贝程序至目标板">
+    <a href="#312-%e6%8b%b7%e8%b4%9d%e7%a8%8b%e5%ba%8f%e8%87%b3%e7%9b%ae%e6%a0%87%e6%9d%bf">#</a>
+    3.1.2. 拷贝程序至目标板
+</h4><ol>
 <li>
 <p>将 OpenSSH 交叉编译后的文件（在 <code>openssh-8.6p1</code> 根目录）拷贝至目标板相应目录</p>
 <div class="table-wrapper"><table>
@@ -597,8 +588,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </div>
 </div></li>
 </ol>
-<h3 id="32-建立工作目录">3.2. 建立工作目录</h3>
-<ol>
+<h3 id="32-建立工作目录">
+    <a href="#32-%e5%bb%ba%e7%ab%8b%e5%b7%a5%e4%bd%9c%e7%9b%ae%e5%bd%95">#</a>
+    3.2. 建立工作目录
+</h3><ol>
 <li>
 <p>在目标板上建立工作目录</p>
 <div class="highlight"><div class="chroma">
@@ -637,8 +630,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </div>
 </div></li>
 </ol>
-<h3 id="33-生成密钥">3.3. 生成密钥</h3>
-<div class="highlight"><div class="chroma">
+<h3 id="33-生成密钥">
+    <a href="#33-%e7%94%9f%e6%88%90%e5%af%86%e9%92%a5">#</a>
+    3.3. 生成密钥
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -650,8 +645,10 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
 </span></span><span class="line"><span class="cl">ssh-keygen -t ed25519 -f ssh_host_key -N <span class="s2">&#34;&#34;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="34-开启-sshd">3.4. 开启 sshd</h3>
-<div class="highlight"><div class="chroma">
+</div><h3 id="34-开启-sshd">
+    <a href="#34-%e5%bc%80%e5%90%af-sshd">#</a>
+    3.4. 开启 sshd
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -667,11 +664,11 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
     
     <section class="article-tags">
         
-            <a href="/tags/ssl/">ssl</a>
+            <a href="/tags/ssl/">Ssl</a>
         
-            <a href="/tags/ssh/">ssh</a>
+            <a href="/tags/ssh/">Ssh</a>
         
-            <a href="/tags/zlib/">zlib</a>
+            <a href="/tags/zlib/">Zlib</a>
         
             <a href="/tags/%E7%A7%BB%E6%A4%8D/">移植</a>
         
@@ -749,7 +746,7 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
         
         
             <div class="article-image">
-                <img src="/post/2023/06/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/buildroot-note-1/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -773,13 +770,13 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
         
         
             <div class="article-image">
-                <img src="/post/2023/06/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/erpnext-14-manual-installation/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
                         alt="Featured image of post ERPNext 14 常规安装流程记录"
                         
-                        data-hash="md5-aCPR3MeVfxF22hsntgzQCw==">
+                        data-hash="md5-f8CPFVNGnA0/M9&#43;wu88c/Q==">
                 
             </div>
         
@@ -819,12 +816,12 @@ zlib 的 configure 使用此变量自动配置交叉编译工具的前缀，按�
         
             2017 - 
         
-        2023 K CODE
+        2024 K CODE
     </section>
     
     <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

@@ -1,27 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 无显示器/键鼠初始化配置 1.1. 开启 sshd 在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 ssh 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。
-树莓派默认账户：pi，默认密码：raspberry。
-1.2. 配置 WLAN 在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 wpa_supplicant.conf 的文本文件，在文件中输入一下内容：
-1 2 3 4 5 6 7 8 9 10 11 country=CN # 国家/地区 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev update_config=1 network={ ssid=&amp;#34;WiFi-Name&amp;#34; # WiFi 名称 psk=&amp;#34;12345678&amp;#34; # WiFi 密码 key_mgmt=WPA-PSK # 加密方式 priority=1 # 优先级，数字越大优先级越高 scan_ssid=1 # 连接隐藏 WiFi 加上此行，否则不加或设为 0 } 2.'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 无显示器/键鼠初始化配置\r#\r1.1. 开启 sshd\r在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 ssh 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。 树莓派默认账户：pi，默认密码：raspberry。 #\r1.2. 配置 WLAN\r在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 wpa_supplicant.conf 的文本文件，在文件中输入一下内容： 1 2 3 4 5 6 7 8 9 10 11 country=CN # 国家/地区 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev update_config=1 network={ ssid=&#34;WiFi-Name&#34; # WiFi 名称 psk=&#34;12345678&#34; # WiFi 密码 key_mgmt=WPA-PSK # 加密方式 priority=1 # 优先级，数字越大优先级越高 scan_ssid=1 # 连接隐藏 WiFi 加上此行，否则不加或设为 0 } #\r2.">
 <title>树莓派备忘</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2019/06/memo-of-raspberry-pi.html'>
 
-<link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content='树莓派备忘'>
-<meta property='og:description' content='1. 无显示器/键鼠初始化配置 1.1. 开启 sshd 在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 ssh 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。
-树莓派默认账户：pi，默认密码：raspberry。
-1.2. 配置 WLAN 在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 wpa_supplicant.conf 的文本文件，在文件中输入一下内容：
-1 2 3 4 5 6 7 8 9 10 11 country=CN # 国家/地区 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev update_config=1 network={ ssid=&amp;#34;WiFi-Name&amp;#34; # WiFi 名称 psk=&amp;#34;12345678&amp;#34; # WiFi 密码 key_mgmt=WPA-PSK # 加密方式 priority=1 # 优先级，数字越大优先级越高 scan_ssid=1 # 连接隐藏 WiFi 加上此行，否则不加或设为 0 } 2.'>
+<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="树莓派备忘">
+<meta property='og:description' content="#\r1. 无显示器/键鼠初始化配置\r#\r1.1. 开启 sshd\r在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 ssh 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。 树莓派默认账户：pi，默认密码：raspberry。 #\r1.2. 配置 WLAN\r在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 wpa_supplicant.conf 的文本文件，在文件中输入一下内容： 1 2 3 4 5 6 7 8 9 10 11 country=CN # 国家/地区 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev update_config=1 network={ ssid=&#34;WiFi-Name&#34; # WiFi 名称 psk=&#34;12345678&#34; # WiFi 密码 key_mgmt=WPA-PSK # 加密方式 priority=1 # 优先级，数字越大优先级越高 scan_ssid=1 # 连接隐藏 WiFi 加上此行，否则不加或设为 0 } #\r2.">
 <meta property='og:url' content='https://kcode.cc/post/2019/06/memo-of-raspberry-pi.html'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2019-06-30T21:27:10&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="树莓派备忘">
-<meta name="twitter:description" content="1. 无显示器/键鼠初始化配置 1.1. 开启 sshd 在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 ssh 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。
-树莓派默认账户：pi，默认密码：raspberry。
-1.2. 配置 WLAN 在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 wpa_supplicant.conf 的文本文件，在文件中输入一下内容：
-1 2 3 4 5 6 7 8 9 10 11 country=CN # 国家/地区 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev update_config=1 network={ ssid=&amp;#34;WiFi-Name&amp;#34; # WiFi 名称 psk=&amp;#34;12345678&amp;#34; # WiFi 密码 key_mgmt=WPA-PSK # 加密方式 priority=1 # 优先级，数字越大优先级越高 scan_ssid=1 # 连接隐藏 WiFi 加上此行，否则不加或设为 0 } 2.">
+<meta name="twitter:description" content="#\r1. 无显示器/键鼠初始化配置\r#\r1.1. 开启 sshd\r在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 ssh 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。 树莓派默认账户：pi，默认密码：raspberry。 #\r1.2. 配置 WLAN\r在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 wpa_supplicant.conf 的文本文件，在文件中输入一下内容： 1 2 3 4 5 6 7 8 9 10 11 country=CN # 国家/地区 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev update_config=1 network={ ssid=&#34;WiFi-Name&#34; # WiFi 名称 psk=&#34;12345678&#34; # WiFi 密码 key_mgmt=WPA-PSK # 加密方式 priority=1 # 优先级，数字越大优先级越高 scan_ssid=1 # 连接隐藏 WiFi 加上此行，否则不加或设为 0 } #\r2.">
     <link rel="shortcut icon" href="/favicon.png" />
 
     </head>
@@ -143,12 +134,12 @@
             </a>
         </li>
         
+        <li class="menu-bottom-section">
+            <ol class="menu">
 
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="8" cy="12" r="2" />
   <rect x="2" y="6" width="20" height="12" rx="6" />
@@ -156,7 +147,7 @@
 
 
 
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="16" cy="12" r="2" />
   <rect x="2" y="6" width="20" height="12" rx="6" />
@@ -164,10 +155,11 @@
 
 
 
-                    <span>暗色模式</span>
-                </li>
-            
-        </div>
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
     </ol>
 </aside>
 
@@ -283,12 +275,18 @@
     <section class="article-content">
     
     
-    <h2 id="1-无显示器键鼠初始化配置">1. 无显示器/键鼠初始化配置</h2>
-<h3 id="11-开启-sshd">1.1. 开启 sshd</h3>
-<p>在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 <code>ssh</code> 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。<br>
+    <h2 id="1-无显示器键鼠初始化配置">
+    <a href="#1-%e6%97%a0%e6%98%be%e7%a4%ba%e5%99%a8%e9%94%ae%e9%bc%a0%e5%88%9d%e5%a7%8b%e5%8c%96%e9%85%8d%e7%bd%ae">#</a>
+    1. 无显示器/键鼠初始化配置
+</h2><h3 id="11-开启-sshd">
+    <a href="#11-%e5%bc%80%e5%90%af-sshd">#</a>
+    1.1. 开启 sshd
+</h3><p>在 PC 上部署完 Raspbian 系统至 TF 卡上后，在 boot 分区根目录新建一个名为 <code>ssh</code> 的空文件即可在树莓派启动后开启 Raspbian 的 sshd 服务。<br>
 树莓派默认账户：<code>pi</code>，默认密码：<code>raspberry</code>。</p>
-<h3 id="12-配置-wlan">1.2. 配置 WLAN</h3>
-<p>在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 <code>wpa_supplicant.conf</code> 的文本文件，在文件中输入一下内容：</p>
+<h3 id="12-配置-wlan">
+    <a href="#12-%e9%85%8d%e7%bd%ae-wlan">#</a>
+    1.2. 配置 WLAN
+</h3><p>在 PC 上部署完 Raspbian 系统至 TF 卡后，在 boot 分区根目录新建一个名为 <code>wpa_supplicant.conf</code> 的文本文件，在文件中输入一下内容：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -317,9 +315,13 @@
 </span></span><span class="line"><span class="cl"><span class="na">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="2-其他配置">2. 其他配置</h2>
-<h3 id="21-配置程序自启">2.1. 配置程序自启</h3>
-<p>Demo 如下：</p>
+</div><h2 id="2-其他配置">
+    <a href="#2-%e5%85%b6%e4%bb%96%e9%85%8d%e7%bd%ae">#</a>
+    2. 其他配置
+</h2><h3 id="21-配置程序自启">
+    <a href="#21-%e9%85%8d%e7%bd%ae%e7%a8%8b%e5%ba%8f%e8%87%aa%e5%90%af">#</a>
+    2.1. 配置程序自启
+</h3><p>Demo 如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -425,12 +427,12 @@
         
             2017 - 
         
-        2023 K CODE
+        2024 K CODE
     </section>
     
     <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

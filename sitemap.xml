@@ -2,23 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://kcode.cc/categories/</loc>
+    <lastmod>2024-04-10T21:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://kcode.cc/tags/git/</loc>
+    <lastmod>2024-04-10T21:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://kcode.cc/</loc>
+    <lastmod>2024-04-10T21:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://kcode.cc/post/</loc>
+    <lastmod>2024-04-10T21:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://kcode.cc/tags/</loc>
+    <lastmod>2024-04-10T21:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://kcode.cc/post/2024/04/git-merge-and-patch/</loc>
+    <lastmod>2024-04-10T21:39:33+08:00</lastmod>
+  </url><url>
     <loc>https://kcode.cc/tags/buildroot/</loc>
     <lastmod>2023-07-20T19:44:11+08:00</lastmod>
   </url><url>
     <loc>https://kcode.cc/post/2023/06/buildroot-note-1.html</loc>
     <lastmod>2023-07-20T19:44:11+08:00</lastmod>
-  </url><url>
-    <loc>https://kcode.cc/categories/</loc>
-    <lastmod>2023-09-28T10:41:18+08:00</lastmod>
-  </url><url>
-    <loc>https://kcode.cc/</loc>
-    <lastmod>2023-09-28T10:41:18+08:00</lastmod>
-  </url><url>
-    <loc>https://kcode.cc/post/</loc>
-    <lastmod>2023-09-28T10:41:18+08:00</lastmod>
-  </url><url>
-    <loc>https://kcode.cc/tags/</loc>
-    <lastmod>2023-09-28T10:41:18+08:00</lastmod>
   </url><url>
     <loc>https://kcode.cc/tags/erp/</loc>
     <lastmod>2023-09-28T10:41:18+08:00</lastmod>
@@ -94,6 +100,9 @@
   </url><url>
     <loc>https://kcode.cc/post/2017/03/gvlks-of-windows-and-office.html</loc>
     <lastmod>2023-06-21T14:42:16+08:00</lastmod>
+  </url><url>
+    <loc>https://kcode.cc/categories/git/</loc>
+    <lastmod>2024-04-10T21:39:21+08:00</lastmod>
   </url><url>
     <loc>https://kcode.cc/page/links/</loc>
     <lastmod>2023-06-21T14:42:16+08:00</lastmod>
