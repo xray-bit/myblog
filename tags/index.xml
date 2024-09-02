@@ -6,7 +6,23 @@
         <description>Recent content in Tags on K CODE</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cmn-Hans</language>
-        <lastBuildDate>Wed, 10 Apr 2024 20:57:00 +0800</lastBuildDate><atom:link href="https://kcode.cc/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 02 Sep 2024 18:20:00 +0800</lastBuildDate><atom:link href="https://kcode.cc/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>OpenOCD</title>
+        <link>https://kcode.cc/tags/openocd/</link>
+        <pubDate>Mon, 02 Sep 2024 18:20:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/openocd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>移植</title>
+        <link>https://kcode.cc/tags/%E7%A7%BB%E6%A4%8D/</link>
+        <pubDate>Mon, 02 Sep 2024 18:20:00 +0800</pubDate>
+        
+        <guid>https://kcode.cc/tags/%E7%A7%BB%E6%A4%8D/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Git</title>
         <link>https://kcode.cc/tags/git/</link>
         <pubDate>Wed, 10 Apr 2024 20:57:00 +0800</pubDate>
@@ -84,14 +100,6 @@
         <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
         
         <guid>https://kcode.cc/tags/zlib/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>移植</title>
-        <link>https://kcode.cc/tags/%E7%A7%BB%E6%A4%8D/</link>
-        <pubDate>Fri, 30 Jul 2021 19:08:55 +0800</pubDate>
-        
-        <guid>https://kcode.cc/tags/%E7%A7%BB%E6%A4%8D/</guid>
         <description></description>
         </item>
         <item>

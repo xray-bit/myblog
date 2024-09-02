@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 结构体定义\r该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员： 1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ #\r2. 结构体成员注解\r#\r2.1. 输入模式标志 c_iflag\rc_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下： IGNBRK 忽略输入时的中断（BREAK）条件 BRKINT 如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&rsquo;\\0&rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \\377 \\0 \\0。 IGNPAR">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 结构体定义\r该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员： 1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ 2. 结构体成员注解\r2.1. 输入模式标志 c_iflag\rc_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下： IGNBRK 忽略输入时的中断（BREAK）条件 BRKINT 如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&rsquo;\\0&rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \\377 \\0 \\0。 IGNPAR">
 <title>Linux termios 结构体注解</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2022/12/annotation-of-linux-termios-structure.html'>
 
-<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="Linux termios 结构体注解">
-<meta property='og:description' content="#\r1. 结构体定义\r该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员： 1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ #\r2. 结构体成员注解\r#\r2.1. 输入模式标志 c_iflag\rc_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下： IGNBRK 忽略输入时的中断（BREAK）条件 BRKINT 如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&rsquo;\\0&rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \\377 \\0 \\0。 IGNPAR">
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="Linux termios 结构体注解">
+<meta property='og:description' content="1. 结构体定义\r该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员： 1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ 2. 结构体成员注解\r2.1. 输入模式标志 c_iflag\rc_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下： IGNBRK 忽略输入时的中断（BREAK）条件 BRKINT 如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&rsquo;\\0&rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \\377 \\0 \\0。 IGNPAR">
 <meta property='og:url' content='https://kcode.cc/post/2022/12/annotation-of-linux-termios-structure.html'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='内核' /><meta property='article:tag' content='termios' /><meta property='article:published_time' content='2022-12-05T19:17:40&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="Linux termios 结构体注解">
-<meta name="twitter:description" content="#\r1. 结构体定义\r该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员： 1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ #\r2. 结构体成员注解\r#\r2.1. 输入模式标志 c_iflag\rc_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下： IGNBRK 忽略输入时的中断（BREAK）条件 BRKINT 如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&rsquo;\\0&rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \\377 \\0 \\0。 IGNPAR">
+<meta name="twitter:description" content="1. 结构体定义\r该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员： 1 2 3 4 5 tcflag_t c_iflag; /* input modes */ tcflag_t c_oflag; /* output modes */ tcflag_t c_cflag; /* control modes */ tcflag_t c_lflag; /* local modes */ cc_t c_cc[NCCS]; /* special characters */ 2. 结构体成员注解\r2.1. 输入模式标志 c_iflag\rc_iflag 用于设置终端 I/O 的输入参数，标志宏定义如下： IGNBRK 忽略输入时的中断（BREAK）条件 BRKINT 如果设置了 IGNBRK ，则忽略中断； 如果没有设置 IGNBRK ，但设置了 BRKINT ，那么中断（BREAK）会导致输入输出队列被冲洗（flush）；如果终端是前台进程组，中断（BREAK）将会向该终端发送 SIGINT 信号； 如果 IGNBRK 和 BRKINT 都未设置，中断（BREAK）字符将被读取为空字节（&rsquo;\\0&rsquo;）；如果设置了 PARMAR 标志，那么它将被读取为序列 \\377 \\0 \\0。 IGNPAR">
     <link rel="shortcut icon" href="/favicon.png" />
+
+  
+
 
     </head>
     <body class="
@@ -58,7 +61,7 @@
                     
                     
                         
-                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                        <img src="/images/avatar_hu3079210101010666945.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -274,9 +277,7 @@
     <section class="article-content">
     
     
-    <h2 id="1-结构体定义">
-    <a href="#1-%e7%bb%93%e6%9e%84%e4%bd%93%e5%ae%9a%e4%b9%89">#</a>
-    1. 结构体定义
+    <h2 id="1-结构体定义">1. 结构体定义
 </h2><p>该结构体定义在头文件 &lt;termios.h&gt; 中，至少包含以下成员：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -295,12 +296,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
-<h2 id="2-结构体成员注解">
-    <a href="#2-%e7%bb%93%e6%9e%84%e4%bd%93%e6%88%90%e5%91%98%e6%b3%a8%e8%a7%a3">#</a>
-    2. 结构体成员注解
-</h2><h3 id="21-输入模式标志-c_iflag">
-    <a href="#21-%e8%be%93%e5%85%a5%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_iflag">#</a>
-    2.1. 输入模式标志 <code>c_iflag</code>
+<h2 id="2-结构体成员注解">2. 结构体成员注解
+</h2><h3 id="21-输入模式标志-c_iflag">2.1. 输入模式标志 <code>c_iflag</code>
 </h3><p><code>c_iflag</code> 用于设置终端 I/O 的输入参数，标志宏定义如下：</p>
 <ul>
 <li>
@@ -368,9 +365,7 @@
 （不属于 POSIX）输入为 UTF8 字符</p>
 </li>
 </ul>
-<h3 id="22-输出模式标志-c_oflag">
-    <a href="#22-%e8%be%93%e5%87%ba%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_oflag">#</a>
-    2.2. 输出模式标志 <code>c_oflag</code>
+<h3 id="22-输出模式标志-c_oflag">2.2. 输出模式标志 <code>c_oflag</code>
 </h3><p><code>c_oflag</code> 用于设置终端 I/O 的输出参数，标志宏定义如下：</p>
 <ul>
 <li>
@@ -430,9 +425,7 @@
 （待补充）</p>
 </li>
 </ul>
-<h3 id="23-控制模式标志-c_cflag">
-    <a href="#23-%e6%8e%a7%e5%88%b6%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_cflag">#</a>
-    2.3. 控制模式标志 <code>c_cflag</code>
+<h3 id="23-控制模式标志-c_cflag">2.3. 控制模式标志 <code>c_cflag</code>
 </h3><p><code>c_cflag</code> 用于设置终端 I/O 的控制参数，标志宏定义如下：</p>
 <ul>
 <li>
@@ -488,9 +481,7 @@
 （不属于 POSIX）启用硬件 RTS/CTS 流控制</p>
 </li>
 </ul>
-<h3 id="24-本地模式标志-c_lflag">
-    <a href="#24-%e6%9c%ac%e5%9c%b0%e6%a8%a1%e5%bc%8f%e6%a0%87%e5%bf%97-c_lflag">#</a>
-    2.4. 本地模式标志 <code>c_lflag</code>
+<h3 id="24-本地模式标志-c_lflag">2.4. 本地模式标志 <code>c_lflag</code>
 </h3><p><code>c_lflag</code> 用于设置终端 I/O 的本地参数，标志宏定义如下：</p>
 <ul>
 <li>
@@ -558,9 +549,7 @@
 （不属于 POSIX）（待补充）</p>
 </li>
 </ul>
-<h3 id="25-终端特殊字符定义数组-c_cc">
-    <a href="#25-%e7%bb%88%e7%ab%af%e7%89%b9%e6%ae%8a%e5%ad%97%e7%ac%a6%e5%ae%9a%e4%b9%89%e6%95%b0%e7%bb%84-c_cc">#</a>
-    2.5. 终端特殊字符定义数组 <code>c_cc</code>
+<h3 id="25-终端特殊字符定义数组-c_cc">2.5. 终端特殊字符定义数组 <code>c_cc</code>
 </h3><ul>
 <li>VDISCARD</li>
 <li>VDSUSP</li>
@@ -637,12 +626,25 @@
         <div class="flex article-list--tile">
             
                 
+<article class="">
+    <a href="/post/2024/04/cross-compile-openocd-to-windows/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">交叉编译 OpenOCD 到 Windows 使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
 <article class="has-image">
     <a href="/post/2023/06/buildroot-note-1.html">
         
         
             <div class="article-image">
-                <img src="/post/2023/06/buildroot-note-1/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/buildroot-note-1/cover.6823d1dcc7957f1176da1b27b60cd00b_hu8467303290478934340.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -666,7 +668,7 @@
         
         
             <div class="article-image">
-                <img src="/post/2023/06/erpnext-14-manual-installation/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/erpnext-14-manual-installation/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu10977772892428621247.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -710,19 +712,6 @@
 </article>
 
             
-                
-<article class="">
-    <a href="/post/2021/07/porting-openssl.html">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">移植 OpenSSL</h2>
-        </div>
-    </a>
-</article>
-
-            
         </div>
     </div>
 </aside>
@@ -743,7 +732,7 @@
     
     <section class="powerby">
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

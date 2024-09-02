@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 源码\r官网：https://www.openssl.org/source/ #\r2. 配置 Makefile\r1 2 3 4 ./Configure linux-armv4 \\ --cross-compile-prefix=arm-linux- \\ --prefix=/path/to/install \\ no-asm shared no-async linux-armv4 从 config 文件来看，armv[1-3] 使用 linux-generic32，armv[7-9] 使用 linux-armv4。 no-asm 不使用汇编代码；从 INSTALL 文件得知，建议 debug 期间使用，生产环境不使用。 shared 生成共享库。 no-async uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作。 此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。 #\r3. 编译与安装\r1 make &amp;&amp; make install 最终程序将安装在 --prefix 所指定的目录中。">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 源码\r官网：https://www.openssl.org/source/ 2. 配置 Makefile\r1 2 3 4 ./Configure linux-armv4 \\ --cross-compile-prefix=arm-linux- \\ --prefix=/path/to/install \\ no-asm shared no-async linux-armv4 从 config 文件来看，armv[1-3] 使用 linux-generic32，armv[7-9] 使用 linux-armv4。 no-asm 不使用汇编代码；从 INSTALL 文件得知，建议 debug 期间使用，生产环境不使用。 shared 生成共享库。 no-async uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作。 此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。 3. 编译与安装\r1 make &amp;&amp; make install 最终程序将安装在 --prefix 所指定的目录中。">
 <title>移植 OpenSSL</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2021/07/porting-openssl.html'>
 
-<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="移植 OpenSSL">
-<meta property='og:description' content="#\r1. 源码\r官网：https://www.openssl.org/source/ #\r2. 配置 Makefile\r1 2 3 4 ./Configure linux-armv4 \\ --cross-compile-prefix=arm-linux- \\ --prefix=/path/to/install \\ no-asm shared no-async linux-armv4 从 config 文件来看，armv[1-3] 使用 linux-generic32，armv[7-9] 使用 linux-armv4。 no-asm 不使用汇编代码；从 INSTALL 文件得知，建议 debug 期间使用，生产环境不使用。 shared 生成共享库。 no-async uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作。 此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。 #\r3. 编译与安装\r1 make &amp;&amp; make install 最终程序将安装在 --prefix 所指定的目录中。">
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="移植 OpenSSL">
+<meta property='og:description' content="1. 源码\r官网：https://www.openssl.org/source/ 2. 配置 Makefile\r1 2 3 4 ./Configure linux-armv4 \\ --cross-compile-prefix=arm-linux- \\ --prefix=/path/to/install \\ no-asm shared no-async linux-armv4 从 config 文件来看，armv[1-3] 使用 linux-generic32，armv[7-9] 使用 linux-armv4。 no-asm 不使用汇编代码；从 INSTALL 文件得知，建议 debug 期间使用，生产环境不使用。 shared 生成共享库。 no-async uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作。 此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。 3. 编译与安装\r1 make &amp;&amp; make install 最终程序将安装在 --prefix 所指定的目录中。">
 <meta property='og:url' content='https://kcode.cc/post/2021/07/porting-openssl.html'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssl' /><meta property='article:tag' content='移植' /><meta property='article:published_time' content='2021-07-13T10:11:05&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="移植 OpenSSL">
-<meta name="twitter:description" content="#\r1. 源码\r官网：https://www.openssl.org/source/ #\r2. 配置 Makefile\r1 2 3 4 ./Configure linux-armv4 \\ --cross-compile-prefix=arm-linux- \\ --prefix=/path/to/install \\ no-asm shared no-async linux-armv4 从 config 文件来看，armv[1-3] 使用 linux-generic32，armv[7-9] 使用 linux-armv4。 no-asm 不使用汇编代码；从 INSTALL 文件得知，建议 debug 期间使用，生产环境不使用。 shared 生成共享库。 no-async uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作。 此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。 #\r3. 编译与安装\r1 make &amp;&amp; make install 最终程序将安装在 --prefix 所指定的目录中。">
+<meta name="twitter:description" content="1. 源码\r官网：https://www.openssl.org/source/ 2. 配置 Makefile\r1 2 3 4 ./Configure linux-armv4 \\ --cross-compile-prefix=arm-linux- \\ --prefix=/path/to/install \\ no-asm shared no-async linux-armv4 从 config 文件来看，armv[1-3] 使用 linux-generic32，armv[7-9] 使用 linux-armv4。 no-asm 不使用汇编代码；从 INSTALL 文件得知，建议 debug 期间使用，生产环境不使用。 shared 生成共享库。 no-async uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作。 此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。 3. 编译与安装\r1 make &amp;&amp; make install 最终程序将安装在 --prefix 所指定的目录中。">
     <link rel="shortcut icon" href="/favicon.png" />
+
+  
+
 
     </head>
     <body class="
@@ -58,7 +61,7 @@
                     
                     
                         
-                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                        <img src="/images/avatar_hu3079210101010666945.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -267,14 +270,10 @@
     <section class="article-content">
     
     
-    <h2 id="1-源码">
-    <a href="#1-%e6%ba%90%e7%a0%81">#</a>
-    1. 源码
+    <h2 id="1-源码">1. 源码
 </h2><p>官网：<a class="link" href="https://www.openssl.org/source/"  target="_blank" rel="noopener"
     >https://www.openssl.org/source/</a></p>
-<h2 id="2-配置-makefile">
-    <a href="#2-%e9%85%8d%e7%bd%ae-makefile">#</a>
-    2. 配置 Makefile
+<h2 id="2-配置-makefile">2. 配置 Makefile
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -308,9 +307,7 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 </li>
 </ul>
 <p>此配置是基于 openssl-1.1.1k 所写，不同版本可能会有差异，具体查看源码目录下的 INSTALL 文件。</p>
-<h2 id="3-编译与安装">
-    <a href="#3-%e7%bc%96%e8%af%91%e4%b8%8e%e5%ae%89%e8%a3%85">#</a>
-    3. 编译与安装
+<h2 id="3-编译与安装">3. 编译与安装
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -389,6 +386,19 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
             
                 
 <article class="">
+    <a href="/post/2024/04/cross-compile-openocd-to-windows/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">交叉编译 OpenOCD 到 Windows 使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
     <a href="/post/2021/07/porting-paho-mqtt.html">
         
         
@@ -406,7 +416,7 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         
         
             <div class="article-image">
-                <img src="/post/2023/06/buildroot-note-1/cover.6823d1dcc7957f1176da1b27b60cd00b_hubc60e9a3f0b88499f7ed48cd534a12e6_31016_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/buildroot-note-1/cover.6823d1dcc7957f1176da1b27b60cd00b_hu8467303290478934340.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -430,7 +440,7 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
         
         
             <div class="article-image">
-                <img src="/post/2023/06/erpnext-14-manual-installation/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu001c7eb3bc249382dee1503e32d3ae7c_31552_250x150_fill_q75_h2_box_smart1_2.webp" 
+                <img src="/post/2023/06/erpnext-14-manual-installation/cover.7fc08f1553469c0d3f33dfb0bbcf1cfd_hu10977772892428621247.webp" 
                         width="250" 
                         height="150" 
                         loading="lazy"
@@ -443,19 +453,6 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
 
         <div class="article-details">
             <h2 class="article-title">ERPNext 14 常规安装流程记录</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/post/2022/12/annotation-of-linux-termios-structure.html">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Linux termios 结构体注解</h2>
         </div>
     </a>
 </article>
@@ -481,7 +478,7 @@ uclibc/musll-ibc 等库不提供 ucontext 库，所以无法使用异步操作�
     
     <section class="powerby">
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

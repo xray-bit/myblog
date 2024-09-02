@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 #\r2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。">
 <title>大型项目使用 git merge 导致多文件混乱问题及解决</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2024/04/git-merge-and-patch/'>
 
-<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="大型项目使用 git merge 导致多文件混乱问题及解决">
-<meta property='og:description' content="#\r1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 #\r2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。">
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="大型项目使用 git merge 导致多文件混乱问题及解决">
+<meta property='og:description' content="1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。">
 <meta property='og:url' content='https://kcode.cc/post/2024/04/git-merge-and-patch/'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2024-04-10T20:57:00&#43;08:00'/><meta property='article:modified_time' content='2024-04-10T21:39:33&#43;08:00'/><meta property='og:image' content='https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp' />
 <meta name="twitter:title" content="大型项目使用 git merge 导致多文件混乱问题及解决">
-<meta name="twitter:description" content="#\r1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 #\r2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="1. 原因\r之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。 于是使用 git merge -X theirs [other_branch] 进行合并，该命令是在合并遇到冲突时，保留 [other_branch] 的改动，删除自己的改动。 合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。 由于文件太多，不好一一比较删除，遂另寻他法。 2. 解决办法\r先使用 git diff 创建差异文件，具体用法： 1 git diff [待合并的分支] [想要被合并的分支] -- &#39;:![排除的文件(夹)1，可使用通配符]&#39; &#39;:![排除的文件(夹)2，可使用通配符]&#39; &gt; /path/to/patch 然后使用 git apply 应用差异，具体用法： 1 2 3 4 5 # 检查是否可以应用，无任何输出则表示可以应用 git apply --check /path/to/patch # 应用差异 (先修复空格) git apply --reject --whitespace=fix /path/to/patch 此时基本没太大问题，因为上面使用了 --whitespace=fix，有些末尾的空行等被删除了，此时再使用 git merge -X theirs [other_branch] 合并一次即可。"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp' />
     <link rel="shortcut icon" href="/favicon.png" />
+
+  
+
 
     </head>
     <body class="
@@ -59,7 +62,7 @@
                     
                     
                         
-                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                        <img src="/images/avatar_hu3079210101010666945.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -203,8 +206,8 @@
     <header class="article-header">
         <div class="article-image">
             <a href="/post/2024/04/git-merge-and-patch/">
-                <img src="/post/2024/04/git-merge-and-patch/cover_hu2884efb7c48b683be7778856274b4b18_44030_800x0_resize_q75_h2_box_2.webp"
-                        srcset="/post/2024/04/git-merge-and-patch/cover_hu2884efb7c48b683be7778856274b4b18_44030_800x0_resize_q75_h2_box_2.webp 800w, /post/2024/04/git-merge-and-patch/cover_hu2884efb7c48b683be7778856274b4b18_44030_1600x0_resize_q75_h2_box_2.webp 1600w"
+                <img src="/post/2024/04/git-merge-and-patch/cover_hu9741148698871857428.webp"
+                        srcset="/post/2024/04/git-merge-and-patch/cover_hu9741148698871857428.webp 800w, /post/2024/04/git-merge-and-patch/cover_hu12021110254954742288.webp 1600w"
                         width="800" 
                         height="535" 
                         loading="lazy"
@@ -279,17 +282,13 @@
     <section class="article-content">
     
     
-    <h2 id="1-原因">
-    <a href="#1-%e5%8e%9f%e5%9b%a0">#</a>
-    1. 原因
+    <h2 id="1-原因">1. 原因
 </h2><p>之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。<br>
 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。<br>
 于是使用 <code>git merge -X theirs [other_branch]</code> 进行合并，该命令是在合并遇到冲突时，保留 <code>[other_branch]</code> 的改动，删除自己的改动。</p>
 <p>合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。</p>
 <p>由于文件太多，不好一一比较删除，遂另寻他法。</p>
-<h2 id="2-解决办法">
-    <a href="#2-%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95">#</a>
-    2. 解决办法
+<h2 id="2-解决办法">2. 解决办法
 </h2><p>先使用 <code>git diff</code> 创建差异文件，具体用法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -380,7 +379,7 @@
     
     <section class="powerby">
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

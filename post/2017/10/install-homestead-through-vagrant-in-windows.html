@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#\r1. 简介\rLaravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。 Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！ Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下： Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程 #\r2. 准备工作\r需要先安装的软件： Vagrant Oracle VM VirtualBox">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 简介\rLaravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。 Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！ Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下： Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程 2. 准备工作\r需要先安装的软件： Vagrant Oracle VM VirtualBox 可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。">
 <title>Windows 环境下通过 Vagrant 安装 Homestead</title>
 
 <link rel='canonical' href='https://kcode.cc/post/2017/10/install-homestead-through-vagrant-in-windows.html'>
 
-<link rel="stylesheet" href="/scss/style.min.fec648d95dd3f1a32bc914e3cc01d7edd209ad11d650d6fd453efddb5160afc5.css"><meta property='og:title' content="Windows 环境下通过 Vagrant 安装 Homestead">
-<meta property='og:description' content="#\r1. 简介\rLaravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。 Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！ Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下： Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程 #\r2. 准备工作\r需要先安装的软件： Vagrant Oracle VM VirtualBox">
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="Windows 环境下通过 Vagrant 安装 Homestead">
+<meta property='og:description' content="1. 简介\rLaravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。 Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！ Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下： Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程 2. 准备工作\r需要先安装的软件： Vagrant Oracle VM VirtualBox 可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。">
 <meta property='og:url' content='https://kcode.cc/post/2017/10/install-homestead-through-vagrant-in-windows.html'>
 <meta property='og:site_name' content='K CODE'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2017-10-12T12:00:00&#43;08:00'/><meta property='article:modified_time' content='2023-06-21T14:42:16&#43;08:00'/>
 <meta name="twitter:title" content="Windows 环境下通过 Vagrant 安装 Homestead">
-<meta name="twitter:description" content="#\r1. 简介\rLaravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。 Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！ Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下： Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程 #\r2. 准备工作\r需要先安装的软件： Vagrant Oracle VM VirtualBox">
+<meta name="twitter:description" content="1. 简介\rLaravel 为开发者提供了一套完善的重量级本地开发环境 Laravel Homestead。 Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 Vagrant 官方文档），该盒子为我们提供了一个优秀的开发环境，有了它，我们不再需要在本地环境安装 PHP、Composer、Nginx、MySQL、Memcached、Redis、Node 等其它工具软件，我们也完全不用再担心误操作搞乱操作系统 因为 Vagrant 盒子是一次性的，如果出现错误，可以在数分钟内销毁并重新创建该 Vagrant 盒子！ Homestead 可以运行在 Windows、Mac 以及 Linux 等主流操作系统上，预装的软件和工具列表如下： Ubuntu 16.04 Git PHP 7.1 Nginx MySQL MariaDB SQLite 3 Postgres Composer Node（With Yarn, Bower, Grunt, and Gulp） Redis Memcached Beanstalkd Mailhog ngrok 引用自[ Laravel 5.5 文档 ] 快速入门 重量级开发环境：Homestead 安装使用详细教程 2. 准备工作\r需要先安装的软件： Vagrant Oracle VM VirtualBox 可选，Vagrant 支持的虚拟机有: Parallels, VirtualBox, VMWare_Desktop。本文选用VirtualBox。">
     <link rel="shortcut icon" href="/favicon.png" />
+
+  
+
 
     </head>
     <body class="
@@ -58,7 +61,7 @@
                     
                     
                         
-                        <img src="/images/avatar_hu79b1e496e9bb69734abce0ed360b2ea5_26457_300x0_resize_q75_box.jpg" width="300"
+                        <img src="/images/avatar_hu3079210101010666945.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -286,9 +289,7 @@
     <section class="article-content">
     
     
-    <h2 id="1-简介">
-    <a href="#1-%e7%ae%80%e4%bb%8b">#</a>
-    1. 简介
+    <h2 id="1-简介">1. 简介
 </h2><blockquote>
 <p>Laravel 为开发者提供了一套完善的重量级本地开发环境  Laravel Homestead。</p>
 <p>Laravel Homestead 实际是一个打包好各种 Laravel 开发所需软件和工具的 Vagrant 盒子（关于 Vagrant 盒子的释义请参考 <a class="link" href="https://www.vagrantup.com/docs/boxes.html"  target="_blank" rel="noopener"
@@ -314,9 +315,7 @@
 </blockquote>
 <p>引用自<a class="link" href="http://laravelacademy.org/post/7658.html"  target="_blank" rel="noopener"
     >[ Laravel 5.5 文档 ] 快速入门  重量级开发环境：Homestead 安装使用详细教程</a></p>
-<h2 id="2-准备工作">
-    <a href="#2-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c">#</a>
-    2. 准备工作
+<h2 id="2-准备工作">2. 准备工作
 </h2><p>需要先安装的软件：</p>
 <ul>
 <li>
@@ -341,9 +340,7 @@
 由于官方 box 源都在境外，国内网络在线安装可能会不稳定，有文章说在线安装时不支持断点续传的，所以可以先自行用下载工具下好，具体链接为: <a class="link" href="https://atlas.hashicorp.com/laravel/boxes/homestead/versions/3.1.0/providers/virtualbox.box"  target="_blank" rel="noopener"
     >https://atlas.hashicorp.com/laravel/boxes/homestead/versions/3.1.0/providers/virtualbox.box</a>，其中 3.1.0 为版本号，可自行在根据情况替换。</li>
 </ul>
-<h2 id="3-安装">
-    <a href="#3-%e5%ae%89%e8%a3%85">#</a>
-    3. 安装
+<h2 id="3-安装">3. 安装
 </h2><p>在装备儿工作都做好以后，就可以开始安装了。</p>
 <p>如无特殊说明，都可使用 CMD 或者 Git Bash 键入命令，尽量使用 Git Bash，本文使用 <code>$</code> 来表示 Bash 下的命令，复制命令的时候请勿将 <code>$</code> 一起复制。
 首先使用 Git Bash 键入以下命令生成 ssh 密钥：</p>
@@ -359,9 +356,7 @@
 </div>
 </div><p>一路回车即可。</p>
 <p>默认安装会将 box 安装在 <code>C:\Users\你的用户名\</code> 下的，如果你像我 C 盘容量紧缺的情况下，可以更改 Vagrant 的 HOME 路径，将 box 安装到其他地方，更改方法为<code>计算机 &gt; 右键 &gt; 属性 &gt; 高级系统设置 &gt; 高级 &gt; 环境变量 &gt; 新建</code>，变量名：<code>VAGRANT_HOME</code>，变量值：<code>目标路径</code>。改完需要重启一次计算机才能生效。</p>
-<h3 id="31-安装-homestead-vagrant-box">
-    <a href="#31-%e5%ae%89%e8%a3%85-homestead-vagrant-box">#</a>
-    3.1. 安装 Homestead Vagrant Box
+<h3 id="31-安装-homestead-vagrant-box">3.1. 安装 Homestead Vagrant Box
 </h3><p>如果你是使用在线安装，可直接键入以下命令：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -441,9 +436,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>则说明已经安装成功。</p>
-<h3 id="32-安装-homestead">
-    <a href="#32-%e5%ae%89%e8%a3%85-homestead">#</a>
-    3.2. 安装 Homestead
+<h3 id="32-安装-homestead">3.2. 安装 Homestead
 </h3><p>通过克隆 Laravel 的 Github 代码来安装 Homestead :</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -476,13 +469,9 @@
 </span></span><span class="line"><span class="cl">init.bat
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="4-配置-homestead">
-    <a href="#4-%e9%85%8d%e7%bd%ae-homestead">#</a>
-    4. 配置 Homestead
+</div><h2 id="4-配置-homestead">4. 配置 Homestead
 </h2><p>初始化完成后，使用文本编辑器打开 <code>../Homestead/</code> 目录下的 <code>Homestead.yaml</code> 。</p>
-<h3 id="41-配置系统资源">
-    <a href="#41-%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f%e8%b5%84%e6%ba%90">#</a>
-    4.1. 配置系统资源
+<h3 id="41-配置系统资源">4.1. 配置系统资源
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -498,9 +487,7 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>这几行配置的是：虚拟机 IP 、虚拟机可使用的内存大小、虚拟机可使用的 CPU 数量、使用的虚拟机环境。可根据实际情况修改。</p>
-<h3 id="42-配置共享文件夹">
-    <a href="#42-%e9%85%8d%e7%bd%ae%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6%e5%a4%b9">#</a>
-    4.2. 配置共享文件夹
+<h3 id="42-配置共享文件夹">4.2. 配置共享文件夹
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -514,9 +501,7 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>这项配置的是本地与虚拟机共享的目录，如果需要增加共享文件夹的数量，可按格式自行填写即可。</p>
-<h3 id="43-配置-homestead-的-nginx">
-    <a href="#43-%e9%85%8d%e7%bd%ae-homestead-%e7%9a%84-nginx">#</a>
-    4.3. 配置 Homestead 的 Nginx
+<h3 id="43-配置-homestead-的-nginx">4.3. 配置 Homestead 的 Nginx
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -530,9 +515,7 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>通过 <code>sites</code> 属性可以很方便地将站点映射到虚拟机的指定目录下，而不需要进入虚拟手动修改 Nignx 的配置。如果你打算在同一个Homestead同时开发多个项目，可以按照相同格式添加更多映射。</p>
-<h4 id="431-配置本机-host">
-    <a href="#431-%e9%85%8d%e7%bd%ae%e6%9c%ac%e6%9c%ba-host">#</a>
-    4.3.1. 配置本机 Host
+<h4 id="431-配置本机-host">4.3.1. 配置本机 Host
 </h4><p>使用管理员权限用文本编辑器将 <code>C:\Windows\System32\drivers\etc</code>路径下的 <code>hosts</code> 文件打开，向末尾添加一行：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -543,9 +526,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>以后你就可以直接在浏览器中输入 <code>http://homestead.app</code> 访问你的项目站点了。</p>
-<h3 id="44-配置数据库">
-    <a href="#44-%e9%85%8d%e7%bd%ae%e6%95%b0%e6%8d%ae%e5%ba%93">#</a>
-    4.4. 配置数据库
+<h3 id="44-配置数据库">4.4. 配置数据库
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -557,9 +538,7 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>本项默认数据库名为 <code>homestead</code> ，使用的数据库为 MySQL ，默认用户名 <code>homestead</code> ，默认密码 <code>secret</code> ，如果需要增加数据库，同样按照格式添加一个数据库名即可，Homestead 将自动为你创建。</p>
-<h2 id="5-启动虚拟系统">
-    <a href="#5-%e5%90%af%e5%8a%a8%e8%99%9a%e6%8b%9f%e7%b3%bb%e7%bb%9f">#</a>
-    5. 启动虚拟系统
+<h2 id="5-启动虚拟系统">5. 启动虚拟系统
 </h2><p>安装和配置都完成了，接下来就可以启动 Vagrant Box 了：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -580,9 +559,7 @@
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ vgrant ssh
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="6-其他操作">
-    <a href="#6-%e5%85%b6%e4%bb%96%e6%93%8d%e4%bd%9c">#</a>
-    6. 其他操作
+</div><h2 id="6-其他操作">6. 其他操作
 </h2><p>如果你修改了配置文件 Homestead.yaml ，只需要执行以下命令即可生效：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -678,7 +655,7 @@
     
     <section class="powerby">
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
 

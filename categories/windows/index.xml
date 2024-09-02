@@ -32,9 +32,7 @@
         <pubDate>Sun, 30 Jun 2019 22:52:13 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2019/06/activate-windows-and-office-by-kms.html</guid>
-        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;
-    &lt;a href=&#34;#1-%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c&#34;&gt;#&lt;/a&gt;
-    1. 准备工作
+        <description>&lt;h2 id=&#34;1-准备工作&#34;&gt;1. 准备工作
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;确定自己的是 VOL 版 Windows 或者 Office&lt;/p&gt;
@@ -44,9 +42,7 @@
 可参考 &lt;a class=&#34;link&#34; href=&#34;https://kcode.cc/post/2017/03/gvlks-of-windows-and-office.html&#34; &gt;Windows 和 Office KMS 密钥&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;2-激活-windows&#34;&gt;
-    &lt;a href=&#34;#2-%e6%bf%80%e6%b4%bb-windows&#34;&gt;#&lt;/a&gt;
-    2. 激活 Windows
+&lt;h2 id=&#34;2-激活-windows&#34;&gt;2. 激活 Windows
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;管理员权限运行 CMD 或 PowerShell&lt;/p&gt;
@@ -97,9 +93,7 @@
 &lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;更多命令及命令帮助直接输入 &lt;code&gt;slmgr&lt;/code&gt;。&lt;/p&gt;
-&lt;h2 id=&#34;3-激活-ms-office&#34;&gt;
-    &lt;a href=&#34;#3-%e6%bf%80%e6%b4%bb-ms-office&#34;&gt;#&lt;/a&gt;
-    3. 激活 MS Office
+&lt;h2 id=&#34;3-激活-ms-office&#34;&gt;3. 激活 MS Office
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;管理员权限运行 CMD 或 PowerShell&lt;/p&gt;
@@ -161,9 +155,7 @@
         <description>&lt;p&gt;GVLK (Generic Volume License Key) 是用于 KMS 客户端的通用序列号。
 这里提供部分微软官方公布的 Windows 10 / Office 2013 / Office 2016 / Office 2019 的 GVLKs ，可用于 KMS 激活。&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Office 的 GVLKs 只能用于 VOL 版!&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&#34;windows-10&#34;&gt;
-    &lt;a href=&#34;#windows-10&#34;&gt;#&lt;/a&gt;
-    Windows 10
+&lt;h2 id=&#34;windows-10&#34;&gt;Windows 10
 &lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -210,9 +202,7 @@
 &lt;li&gt;注意：带 N 的版本去掉了 Windows Media Player 播放器&lt;/li&gt;
 &lt;li&gt;家庭版不需要 KMS&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;office-2013&#34;&gt;
-    &lt;a href=&#34;#office-2013&#34;&gt;#&lt;/a&gt;
-    Office 2013
+&lt;h2 id=&#34;office-2013&#34;&gt;Office 2013
 &lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -283,9 +273,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;office-2016&#34;&gt;
-    &lt;a href=&#34;#office-2016&#34;&gt;#&lt;/a&gt;
-    Office 2016
+&lt;h2 id=&#34;office-2016&#34;&gt;Office 2016
 &lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -352,9 +340,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;office-2019&#34;&gt;
-    &lt;a href=&#34;#office-2019&#34;&gt;#&lt;/a&gt;
-    Office 2019
+&lt;h2 id=&#34;office-2019&#34;&gt;Office 2019
 &lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -413,12 +399,8 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;附部分-office2016-vol-下载地址&#34;&gt;
-    &lt;a href=&#34;#%e9%99%84%e9%83%a8%e5%88%86-office2016-vol-%e4%b8%8b%e8%bd%bd%e5%9c%b0%e5%9d%80&#34;&gt;#&lt;/a&gt;
-    附部分 Office2016 VOL 下载地址
-&lt;/h2&gt;&lt;h3 id=&#34;office-2016-pro-plus-64位&#34;&gt;
-    &lt;a href=&#34;#office-2016-pro-plus-64%e4%bd%8d&#34;&gt;#&lt;/a&gt;
-    Office 2016 Pro Plus 64位
+&lt;h2 id=&#34;附部分-office2016-vol-下载地址&#34;&gt;附部分 Office2016 VOL 下载地址
+&lt;/h2&gt;&lt;h3 id=&#34;office-2016-pro-plus-64位&#34;&gt;Office 2016 Pro Plus 64位
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO&lt;br&gt;
 &lt;strong&gt;文件大小:&lt;/strong&gt; 1123452928 字节&lt;br&gt;
@@ -427,9 +409,7 @@
 &lt;strong&gt;CRC32:&lt;/strong&gt; 8D8AC6D1&lt;br&gt;
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO%7c1123452928%7c31087A00FF67D4F5B4CBF4AA07C3433B%7c/&#34; &gt;ed2k://|file|SW_DVD5_Office_Professional_Plus_2016_64Bit_ChnSimp_MLF_X20-42426.ISO|1123452928|31087A00FF67D4F5B4CBF4AA07C3433B|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-pro-plus-32位&#34;&gt;
-    &lt;a href=&#34;#office-2016-pro-plus-32%e4%bd%8d&#34;&gt;#&lt;/a&gt;
-    Office 2016 Pro Plus 32位
+&lt;h3 id=&#34;office-2016-pro-plus-32位&#34;&gt;Office 2016 Pro Plus 32位
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 986441728 字节
@@ -438,9 +418,7 @@
 &lt;strong&gt;CRC32:&lt;/strong&gt; FF96B0B5
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO%7c986441728%7c2DE74581C10096137481873B3AD57D43%7c/&#34; &gt;ed2k://|file|SW_DVD5_Office_Professional_Plus_2016_W32_ChnSimp_MLF_X20-41351.ISO|986441728|2DE74581C10096137481873B3AD57D43|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-project-pro-64位&#34;&gt;
-    &lt;a href=&#34;#office-2016-project-pro-64%e4%bd%8d&#34;&gt;#&lt;/a&gt;
-    Office 2016 Project Pro 64位
+&lt;h3 id=&#34;office-2016-project-pro-64位&#34;&gt;Office 2016 Project Pro 64位
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 647157760 字节
@@ -449,9 +427,7 @@
 &lt;strong&gt;CRC32:&lt;/strong&gt; 6AB6A570
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO%7c647157760%7c0BBBF20CA3A5F61A819586ADCE6E4DCB%7c/&#34; &gt;ed2k://|file|SW_DVD5_Project_Pro_2016_64Bit_ChnSimp_MLF_X20-42676.ISO|647157760|0BBBF20CA3A5F61A819586ADCE6E4DCB|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-project-pro-32位&#34;&gt;
-    &lt;a href=&#34;#office-2016-project-pro-32%e4%bd%8d&#34;&gt;#&lt;/a&gt;
-    Office 2016 Project Pro 32位
+&lt;h3 id=&#34;office-2016-project-pro-32位&#34;&gt;Office 2016 Project Pro 32位
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 714913792 字节
@@ -460,9 +436,7 @@
 &lt;strong&gt;CRC32:&lt;/strong&gt; F813794B
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Project_Pro_2016_W32_ChnSimp_MLF_X20-41511.ISO%7c555210752%7cCA3BD5F8C7B3E263105B041DDD4104AB%7c/&#34; &gt;ed2k://|file|SW_DVD5_Project_Pro_2016_W32_ChnSimp_MLF_X20-41511.ISO|555210752|CA3BD5F8C7B3E263105B041DDD4104AB|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-visio-pro-64位&#34;&gt;
-    &lt;a href=&#34;#office-2016-visio-pro-64%e4%bd%8d&#34;&gt;#&lt;/a&gt;
-    Office 2016 Visio Pro 64位
+&lt;h3 id=&#34;office-2016-visio-pro-64位&#34;&gt;Office 2016 Visio Pro 64位
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 714913792 字节
@@ -471,9 +445,7 @@
 &lt;strong&gt;CRC32:&lt;/strong&gt; F813794B
 &lt;strong&gt;下载地址:&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;ed2k://%7cfile%7cSW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO%7c714913792%7cFC930AB97B366B3595FC2F28ABAC2A6F%7c/&#34; &gt;ed2k://|file|SW_DVD5_Visio_Pro_2016_64Bit_ChnSimp_MLF_X20-42759.ISO|714913792|FC930AB97B366B3595FC2F28ABAC2A6F|/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;office-2016-visio-pro-32位&#34;&gt;
-    &lt;a href=&#34;#office-2016-visio-pro-32%e4%bd%8d&#34;&gt;#&lt;/a&gt;
-    Office 2016 Visio Pro 32位
+&lt;h3 id=&#34;office-2016-visio-pro-32位&#34;&gt;Office 2016 Visio Pro 32位
 &lt;/h3&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;文件名:&lt;/strong&gt; SW_DVD5_Visio_Pro_2016_W32_ChnSimp_MLF_X20-41580.ISO
 &lt;strong&gt;文件大小:&lt;/strong&gt; 609447936 字节

@@ -11,17 +11,13 @@
         <pubDate>Wed, 10 Apr 2024 20:57:00 +0800</pubDate>
         
         <guid>https://kcode.cc/post/2024/04/git-merge-and-patch/</guid>
-        <description>&lt;img src="https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp" alt="Featured image of post 大型项目使用 git merge 导致多文件混乱问题及解决" /&gt;&lt;h2 id=&#34;1-原因&#34;&gt;
-    &lt;a href=&#34;#1-%e5%8e%9f%e5%9b%a0&#34;&gt;#&lt;/a&gt;
-    1. 原因
+        <description>&lt;img src="https://kcode.cc/post/2024/04/git-merge-and-patch/cover.webp" alt="Featured image of post 大型项目使用 git merge 导致多文件混乱问题及解决" /&gt;&lt;h2 id=&#34;1-原因&#34;&gt;1. 原因
 &lt;/h2&gt;&lt;p&gt;之前 clone 可以一个大型开源项目，自己创建了一个分支进行修改。&lt;br&gt;
 随着自己的分支和开源项目自身的迭代，自己每次都使用 merge 将远程的主分支合并到自己分支。最近由于隔了非常多版本没有合并，现在使用 merge 合并出现了大量冲突。&lt;br&gt;
 于是使用 &lt;code&gt;git merge -X theirs [other_branch]&lt;/code&gt; 进行合并，该命令是在合并遇到冲突时，保留 &lt;code&gt;[other_branch]&lt;/code&gt; 的改动，删除自己的改动。&lt;/p&gt;
 &lt;p&gt;合并过程顺利，但是实际出现了本不应该存在的文件，自己的分支没有创建过该文件，远程最新主分支也没有该文件，猜测可能是远程分支中途 commit 出现过该文件，但是在后续的迭代中又删除了该文件。&lt;/p&gt;
 &lt;p&gt;由于文件太多，不好一一比较删除，遂另寻他法。&lt;/p&gt;
-&lt;h2 id=&#34;2-解决办法&#34;&gt;
-    &lt;a href=&#34;#2-%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95&#34;&gt;#&lt;/a&gt;
-    2. 解决办法
+&lt;h2 id=&#34;2-解决办法&#34;&gt;2. 解决办法
 &lt;/h2&gt;&lt;p&gt;先使用 &lt;code&gt;git diff&lt;/code&gt; 创建差异文件，具体用法：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
